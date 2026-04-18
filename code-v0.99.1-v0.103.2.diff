@@ -1,0 +1,3901 @@
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Acrobatics.cs MegaCrit/Sts2/Core/Models/Cards/Acrobatics.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Acrobatics.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Acrobatics.cs
+@@ -7,21 +7,21 @@
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class Acrobatics : CardModel
+ {
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new CardsVar(3));
+ 
+ 	public Acrobatics()
+-		: base(1, CardType.Skill, CardRarity.Common, TargetType.Self)
++		: base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await CardPileCmd.Draw(choiceContext, base.DynamicVars.Cards.BaseValue, base.Owner);
+ 		CardModel cardModel = (await CardSelectCmd.FromHandForDiscard(choiceContext, base.Owner, new CardSelectorPrefs(CardSelectorPrefs.DiscardSelectionPrompt, 1), null, this)).FirstOrDefault();
+ 		if (cardModel != null)
+ 		{
+ 			await CardCmd.Discard(choiceContext, cardModel);
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Alignment.cs MegaCrit/Sts2/Core/Models/Cards/Alignment.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Alignment.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Alignment.cs
+@@ -3,21 +3,21 @@
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.HoverTips;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class Alignment : CardModel
+ {
+-	public override int CanonicalStarCost => 2;
++	public override int CanonicalStarCost => 3;
+ 
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new EnergyVar(2));
+ 
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(base.EnergyHoverTip);
+ 
+ 	public Alignment()
+ 		: base(0, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+ 	{
+ 	}
+ 
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Anticipate.cs MegaCrit/Sts2/Core/Models/Cards/Anticipate.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Anticipate.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Anticipate.cs
+@@ -4,30 +4,30 @@
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.HoverTips;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class Anticipate : CardModel
+ {
+-	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new PowerVar<DexterityPower>(3m));
++	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new PowerVar<DexterityPower>(2m));
+ 
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromPower<DexterityPower>());
+ 
+ 	public Anticipate()
+ 		: base(0, CardType.Skill, CardRarity.Common, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+ 		await PowerCmd.Apply<AnticipatePower>(base.Owner.Creature, base.DynamicVars.Dexterity.BaseValue, base.Owner.Creature, this);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+-		base.DynamicVars.Dexterity.UpgradeValueBy(2m);
++		base.DynamicVars.Dexterity.UpgradeValueBy(1m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Arsenal.cs MegaCrit/Sts2/Core/Models/Cards/Arsenal.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Arsenal.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Arsenal.cs
+@@ -21,13 +21,13 @@
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+ 		await PowerCmd.Apply<ArsenalPower>(base.Owner.Creature, base.DynamicVars["ArsenalPower"].BaseValue, base.Owner.Creature, this);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+-		base.DynamicVars["ArsenalPower"].UpgradeValueBy(1m);
++		AddKeyword(CardKeyword.Innate);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/BansheesCry.cs MegaCrit/Sts2/Core/Models/Cards/BansheesCry.cs
+--- MegaCrit/Sts2/Core/Models/Cards/BansheesCry.cs
++++ MegaCrit/Sts2/Core/Models/Cards/BansheesCry.cs
+@@ -16,34 +16,34 @@
+ {
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromKeyword(CardKeyword.Ethereal));
+ 
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
+ 	{
+ 		new DamageVar(33m, ValueProp.Move),
+ 		new EnergyVar(2)
+ 	});
+ 
+ 	public BansheesCry()
+-		: base(6, CardType.Attack, CardRarity.Rare, TargetType.AllEnemies)
++		: base(9, CardType.Attack, CardRarity.Rare, TargetType.AllEnemies)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).FromCard(this).TargetingAllOpponents(base.CombatState)
+ 			.WithHitFx("vfx/vfx_attack_slash")
+ 			.Execute(choiceContext);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+-		base.DynamicVars.Damage.UpgradeValueBy(6m);
++		base.EnergyCost.UpgradeBy(-2);
+ 	}
+ 
+ 	public override Task AfterCardEnteredCombat(CardModel card)
+ 	{
+ 		if (card != this)
+ 		{
+ 			return Task.CompletedTask;
+ 		}
+ 		if (base.IsClone)
+ 		{
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Begone.cs MegaCrit/Sts2/Core/Models/Cards/Begone.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Begone.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Begone.cs
+@@ -1,48 +1,34 @@
+-using System;
+ using System.Collections.Generic;
+ using System.Linq;
+ using System.Threading.Tasks;
+ using MegaCrit.Sts2.Core.CardSelection;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.HoverTips;
+-using MegaCrit.Sts2.Core.Localization.DynamicVars;
+-using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class Begone : CardModel
+ {
+-	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new DamageVar(4m, ValueProp.Move));
++	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromCard<MinionStrike>(base.IsUpgraded));
+ 
+-	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromCard<MinionDiveBomb>(base.IsUpgraded));
+-
+ 	public Begone()
+-		: base(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
++		: base(1, CardType.Skill, CardRarity.Common, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+-		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
+-		await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).FromCard(this).Targeting(cardPlay.Target)
+-			.WithHitFx("vfx/vfx_attack_slash")
+-			.Execute(choiceContext);
+ 		CardModel cardModel = (await CardSelectCmd.FromHand(prefs: new CardSelectorPrefs(CardSelectorPrefs.TransformSelectionPrompt, 1), context: choiceContext, player: base.Owner, filter: null, source: this)).FirstOrDefault();
+ 		if (cardModel != null)
+ 		{
+-			CardModel cardModel2 = base.CombatState.CreateCard<MinionDiveBomb>(base.Owner);
++			CardModel cardModel2 = base.CombatState.CreateCard<MinionStrike>(base.Owner);
+ 			if (base.IsUpgraded)
+ 			{
+ 				CardCmd.Upgrade(cardModel2);
+ 			}
+ 			await CardCmd.Transform(cardModel, cardModel2);
+ 		}
+-	}
+-
+-	protected override void OnUpgrade()
+-	{
+-		base.DynamicVars.Damage.UpgradeValueBy(1m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/BelieveInYou.cs MegaCrit/Sts2/Core/Models/Cards/BelieveInYou.cs
+--- MegaCrit/Sts2/Core/Models/Cards/BelieveInYou.cs
++++ MegaCrit/Sts2/Core/Models/Cards/BelieveInYou.cs
+@@ -8,21 +8,21 @@
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class BelieveInYou : CardModel
+ {
+ 	public override CardMultiplayerConstraint MultiplayerConstraint => CardMultiplayerConstraint.MultiplayerOnly;
+ 
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(base.EnergyHoverTip);
+ 
+-	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new EnergyVar(3));
++	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new EnergyVar(2));
+ 
+ 	public BelieveInYou()
+ 		: base(0, CardType.Skill, CardRarity.Uncommon, TargetType.AnyAlly)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
+ 		await PlayerCmd.GainEnergy(base.DynamicVars.Energy.IntValue, cardPlay.Target.Player);
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/BladeOfInk.cs MegaCrit/Sts2/Core/Models/Cards/BladeOfInk.cs
+--- MegaCrit/Sts2/Core/Models/Cards/BladeOfInk.cs
++++ MegaCrit/Sts2/Core/Models/Cards/BladeOfInk.cs
+@@ -1,33 +1,44 @@
+ using System.Collections.Generic;
+ using System.Threading.Tasks;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.HoverTips;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+-using MegaCrit.Sts2.Core.Models.Powers;
++using MegaCrit.Sts2.Core.Models.Enchantments;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class BladeOfInk : CardModel
+ {
+-	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromPower<StrengthPower>());
++	protected override IEnumerable<IHoverTip> ExtraHoverTips
++	{
++		get
++		{
++			List<IHoverTip> list = new List<IHoverTip>();
++			list.Add(HoverTipFactory.FromCard<Shiv>());
++			list.AddRange(HoverTipFactory.FromEnchantment<Inky>());
++			return new _003C_003Ez__ReadOnlyList<IHoverTip>(list);
++		}
++	}
+ 
+-	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new PowerVar<StrengthPower>(2m));
++	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new CardsVar(2));
+ 
+ 	public BladeOfInk()
+ 		: base(1, CardType.Skill, CardRarity.Rare, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+-		await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+-		await PowerCmd.Apply<BladeOfInkPower>(base.Owner.Creature, base.DynamicVars.Strength.IntValue, base.Owner.Creature, this);
++		foreach (CardModel item in await Shiv.CreateInHand(base.Owner, base.DynamicVars.Cards.IntValue, base.CombatState))
++		{
++			CardCmd.Enchant<Inky>(item, 1m);
++		}
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+-		base.DynamicVars.Strength.UpgradeValueBy(1m);
++		base.DynamicVars.Cards.UpgradeValueBy(1m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/BorrowedTime.cs MegaCrit/Sts2/Core/Models/Cards/BorrowedTime.cs
+--- MegaCrit/Sts2/Core/Models/Cards/BorrowedTime.cs
++++ MegaCrit/Sts2/Core/Models/Cards/BorrowedTime.cs
+@@ -4,41 +4,37 @@
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.HoverTips;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class BorrowedTime : CardModel
+ {
+-	public const int doomAmount = 3;
++	private const string _extraCostKey = "ExtraCost";
+ 
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
+ 	{
+-		new PowerVar<DoomPower>(3m),
+-		new EnergyVar(1)
++		new EnergyVar(4),
++		new EnergyVar("ExtraCost", 1)
+ 	});
+ 
+-	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlyArray<IHoverTip>(new IHoverTip[2]
+-	{
+-		HoverTipFactory.FromPower<DoomPower>(),
+-		base.EnergyHoverTip
+-	});
++	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(base.EnergyHoverTip);
+ 
+ 	public BorrowedTime()
+-		: base(0, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
++		: base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+-		await PowerCmd.Apply<DoomPower>(base.Owner.Creature, base.DynamicVars.Doom.BaseValue, base.Owner.Creature, this);
+ 		await PlayerCmd.GainEnergy(base.DynamicVars.Energy.BaseValue, base.Owner);
++		await PowerCmd.Apply<BorrowedTimePower>(base.Owner.Creature, base.DynamicVars["ExtraCost"].BaseValue, base.Owner.Creature, this);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+-		base.DynamicVars.Energy.UpgradeValueBy(1m);
++		base.DynamicVars.Energy.UpgradeValueBy(2m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Break.cs MegaCrit/Sts2/Core/Models/Cards/Break.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Break.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Break.cs
+@@ -15,29 +15,29 @@
+ {
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromPower<VulnerablePower>());
+ 
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
+ 	{
+ 		new DamageVar(20m, ValueProp.Move),
+ 		new PowerVar<VulnerablePower>(5m)
+ 	});
+ 
+ 	public Break()
+-		: base(2, CardType.Attack, CardRarity.Ancient, TargetType.AnyEnemy)
++		: base(1, CardType.Attack, CardRarity.Ancient, TargetType.AnyEnemy)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
+ 		await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).FromCard(this).Targeting(cardPlay.Target)
+ 			.WithHitFx("vfx/vfx_attack_blunt", null, "blunt_attack.mp3")
+ 			.Execute(choiceContext);
+ 		await PowerCmd.Apply<VulnerablePower>(cardPlay.Target, base.DynamicVars.Vulnerable.BaseValue, base.Owner.Creature, this);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+-		base.DynamicVars.Damage.UpgradeValueBy(5m);
++		base.DynamicVars.Damage.UpgradeValueBy(10m);
+ 		base.DynamicVars.Vulnerable.UpgradeValueBy(2m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/BundleOfJoy.cs MegaCrit/Sts2/Core/Models/Cards/BundleOfJoy.cs
+--- MegaCrit/Sts2/Core/Models/Cards/BundleOfJoy.cs
++++ MegaCrit/Sts2/Core/Models/Cards/BundleOfJoy.cs
+@@ -9,21 +9,21 @@
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class BundleOfJoy : CardModel
+ {
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new CardsVar(3));
+ 
+ 	public override IEnumerable<CardKeyword> CanonicalKeywords => new global::_003C_003Ez__ReadOnlySingleElementList<CardKeyword>(CardKeyword.Exhaust);
+ 
+ 	public BundleOfJoy()
+-		: base(2, CardType.Skill, CardRarity.Rare, TargetType.Self)
++		: base(1, CardType.Skill, CardRarity.Rare, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		IEnumerable<CardModel> distinctForCombat = CardFactory.GetDistinctForCombat(base.Owner, ModelDb.CardPool<ColorlessCardPool>().GetUnlockedCards(base.Owner.UnlockState, base.RunState.CardMultiplayerConstraint), base.DynamicVars.Cards.IntValue, base.Owner.RunState.Rng.CombatCardGeneration);
+ 		foreach (CardModel item in distinctForCombat)
+ 		{
+ 			await CardPileCmd.AddGeneratedCardToCombat(item, PileType.Hand, addedByPlayer: true);
+ 		}
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/CelestialMight.cs MegaCrit/Sts2/Core/Models/Cards/CelestialMight.cs
+--- MegaCrit/Sts2/Core/Models/Cards/CelestialMight.cs
++++ MegaCrit/Sts2/Core/Models/Cards/CelestialMight.cs
+@@ -26,13 +26,13 @@
+ 	{
+ 		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
+ 		await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).WithHitCount(base.DynamicVars.Repeat.IntValue).FromCard(this)
+ 			.Targeting(cardPlay.Target)
+ 			.WithHitFx("vfx/vfx_starry_impact", null, "blunt_attack.mp3")
+ 			.Execute(choiceContext);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+-		base.DynamicVars.Damage.UpgradeValueBy(2m);
++		base.DynamicVars.Repeat.UpgradeValueBy(1m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Charge.cs MegaCrit/Sts2/Core/Models/Cards/Charge.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Charge.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Charge.cs
+@@ -5,36 +5,36 @@
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.HoverTips;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class Charge : CardModel
+ {
+-	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromCard<MinionStrike>(base.IsUpgraded));
++	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromCard<MinionDiveBomb>(base.IsUpgraded));
+ 
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new CardsVar(2));
+ 
+ 	public Charge()
+ 		: base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+ 		List<CardModel> cardsIn = (from c in PileType.Draw.GetPile(base.Owner).Cards
+ 			orderby c.Rarity, c.Id
+ 			select c).ToList();
+ 		List<CardModel> list = (await CardSelectCmd.FromSimpleGrid(choiceContext, cardsIn, base.Owner, new CardSelectorPrefs(CardSelectorPrefs.TransformSelectionPrompt, base.DynamicVars.Cards.IntValue))).ToList();
+ 		foreach (CardModel item in list)
+ 		{
+-			CardPileAddResult? cardPileAddResult = await CardCmd.TransformTo<MinionStrike>(item);
++			CardPileAddResult? cardPileAddResult = await CardCmd.TransformTo<MinionDiveBomb>(item);
+ 			if (base.IsUpgraded && cardPileAddResult.HasValue)
+ 			{
+ 				CardCmd.Upgrade(cardPileAddResult.Value.cardAdded);
+ 			}
+ 		}
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Cinder.cs MegaCrit/Sts2/Core/Models/Cards/Cinder.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Cinder.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Cinder.cs
+@@ -1,55 +1,44 @@
+ using System;
+ using System.Collections.Generic;
+-using System.Linq;
+ using System.Threading.Tasks;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.HoverTips;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ using MegaCrit.Sts2.Core.Nodes.Vfx;
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class Cinder : CardModel
+ {
+-	private const string _cardsToExhaustKey = "CardsToExhaust";
++	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new DamageVar(18m, ValueProp.Move));
+ 
+-	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
+-	{
+-		new DamageVar(17m, ValueProp.Move),
+-		new DynamicVar("CardsToExhaust", 1m)
+-	});
+-
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromKeyword(CardKeyword.Exhaust));
+ 
+ 	public Cinder()
+ 		: base(2, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
+ 		await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).FromCard(this).Targeting(cardPlay.Target)
+ 			.WithHitVfxNode((Creature t) => NFireBurstVfx.Create(t, 0.75f))
+ 			.Execute(choiceContext);
+-		CardPile drawPile = PileType.Draw.GetPile(base.Owner);
+-		for (int i = 0; i < base.DynamicVars["CardsToExhaust"].IntValue; i++)
++		CardPile pile = PileType.Hand.GetPile(base.Owner);
++		CardModel cardModel = base.Owner.RunState.Rng.CombatCardSelection.NextItem(pile.Cards);
++		if (cardModel != null)
+ 		{
+-			await CardPileCmd.ShuffleIfNecessary(choiceContext, base.Owner);
+-			CardModel cardModel = drawPile.Cards.FirstOrDefault();
+-			if (cardModel != null)
+-			{
+-				await CardCmd.Exhaust(choiceContext, cardModel);
+-			}
++			await CardCmd.Exhaust(choiceContext, cardModel);
+ 		}
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+-		base.DynamicVars.Damage.UpgradeValueBy(5m);
++		base.DynamicVars.Damage.UpgradeValueBy(6m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/CollisionCourse.cs MegaCrit/Sts2/Core/Models/Cards/CollisionCourse.cs
+--- MegaCrit/Sts2/Core/Models/Cards/CollisionCourse.cs
++++ MegaCrit/Sts2/Core/Models/Cards/CollisionCourse.cs
+@@ -7,32 +7,32 @@
+ using MegaCrit.Sts2.Core.HoverTips;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class CollisionCourse : CardModel
+ {
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromCard<Debris>());
+ 
+-	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new DamageVar(9m, ValueProp.Move));
++	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new DamageVar(11m, ValueProp.Move));
+ 
+ 	public CollisionCourse()
+ 		: base(0, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
+ 		await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).FromCard(this).Targeting(cardPlay.Target)
+ 			.WithHitFx("vfx/vfx_attack_blunt", null, "blunt_attack.mp3")
+ 			.Execute(choiceContext);
+ 		await CardPileCmd.AddGeneratedCardToCombat(base.CombatState.CreateCard<Debris>(base.Owner), PileType.Hand, addedByPlayer: true);
+ 		await Cmd.Wait(0.5f);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+-		base.DynamicVars.Damage.UpgradeValueBy(3m);
++		base.DynamicVars.Damage.UpgradeValueBy(4m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Colossus.cs MegaCrit/Sts2/Core/Models/Cards/Colossus.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Colossus.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Colossus.cs
+@@ -18,21 +18,21 @@
+ 
+ 	public override bool GainsBlock => true;
+ 
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
+ 	{
+ 		new BlockVar(5m, ValueProp.Move),
+ 		new DynamicVar("Colossus", 1m)
+ 	});
+ 
+ 	public Colossus()
+-		: base(1, CardType.Skill, CardRarity.Rare, TargetType.Self)
++		: base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+ 		await CreatureCmd.GainBlock(base.Owner.Creature, base.DynamicVars.Block, cardPlay);
+ 		await PowerCmd.Apply<ColossusPower>(base.Owner.Creature, base.DynamicVars["Colossus"].BaseValue, base.Owner.Creature, this);
+ 	}
+ 
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/CorrosiveWave.cs MegaCrit/Sts2/Core/Models/Cards/CorrosiveWave.cs
+--- MegaCrit/Sts2/Core/Models/Cards/CorrosiveWave.cs
++++ MegaCrit/Sts2/Core/Models/Cards/CorrosiveWave.cs
+@@ -6,21 +6,21 @@
+ using MegaCrit.Sts2.Core.HoverTips;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class CorrosiveWave : CardModel
+ {
+ 	private const string _powerKey = "CorrosiveWave";
+ 
+-	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new DynamicVar("CorrosiveWave", 3m));
++	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new DynamicVar("CorrosiveWave", 2m));
+ 
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromPower<PoisonPower>());
+ 
+ 	public CorrosiveWave()
+ 		: base(1, CardType.Skill, CardRarity.Rare, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/DanseMacabre.cs MegaCrit/Sts2/Core/Models/Cards/DanseMacabre.cs
+--- MegaCrit/Sts2/Core/Models/Cards/DanseMacabre.cs
++++ MegaCrit/Sts2/Core/Models/Cards/DanseMacabre.cs
+@@ -6,32 +6,32 @@
+ using MegaCrit.Sts2.Core.HoverTips;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class DanseMacabre : CardModel
+ {
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
+ 	{
+-		new PowerVar<DanseMacabrePower>(3m),
++		new PowerVar<DanseMacabrePower>(4m),
+ 		new EnergyVar(2)
+ 	});
+ 
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(base.EnergyHoverTip);
+ 
+ 	public DanseMacabre()
+ 		: base(1, CardType.Power, CardRarity.Uncommon, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+ 		await PowerCmd.Apply<DanseMacabrePower>(base.Owner.Creature, base.DynamicVars["DanseMacabrePower"].BaseValue, base.Owner.Creature, this);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+-		base.DynamicVars["DanseMacabrePower"].UpgradeValueBy(1m);
++		base.DynamicVars["DanseMacabrePower"].UpgradeValueBy(2m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Debilitate.cs MegaCrit/Sts2/Core/Models/Cards/Debilitate.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Debilitate.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Debilitate.cs
+@@ -14,21 +14,21 @@
+ public sealed class Debilitate : CardModel
+ {
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlyArray<IHoverTip>(new IHoverTip[2]
+ 	{
+ 		HoverTipFactory.FromPower<VulnerablePower>(),
+ 		HoverTipFactory.FromPower<WeakPower>()
+ 	});
+ 
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
+ 	{
+-		new DamageVar(7m, ValueProp.Move),
++		new DamageVar(10m, ValueProp.Move),
+ 		new PowerVar<DebilitatePower>(3m)
+ 	});
+ 
+ 	public Debilitate()
+ 		: base(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/DecisionsDecisions.cs MegaCrit/Sts2/Core/Models/Cards/DecisionsDecisions.cs
+--- MegaCrit/Sts2/Core/Models/Cards/DecisionsDecisions.cs
++++ MegaCrit/Sts2/Core/Models/Cards/DecisionsDecisions.cs
+@@ -23,23 +23,24 @@
+ 
+ 	public DecisionsDecisions()
+ 		: base(0, CardType.Skill, CardRarity.Rare, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+ 		await CardPileCmd.Draw(choiceContext, base.DynamicVars.Cards.IntValue, base.Owner);
+-		CardSelectorPrefs cardSelectorPrefs = new CardSelectorPrefs(base.SelectionScreenPrompt, 1);
+-		cardSelectorPrefs.PretendCardsCanBePlayed = true;
+-		CardSelectorPrefs prefs = cardSelectorPrefs;
++		CardSelectorPrefs prefs = new CardSelectorPrefs(base.SelectionScreenPrompt, 1)
++		{
++			PretendCardsCanBePlayed = true
++		};
+ 		CardModel card = (await CardSelectCmd.FromHand(choiceContext, base.Owner, prefs, (CardModel c) => c.Type == CardType.Skill && !c.Keywords.Contains(CardKeyword.Unplayable), this)).FirstOrDefault();
+ 		if (card != null)
+ 		{
+ 			for (int i = 0; i < base.DynamicVars.Repeat.IntValue; i++)
+ 			{
+ 				await CardCmd.AutoPlay(choiceContext, card, null);
+ 			}
+ 		}
+ 	}
+ 
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Defy.cs MegaCrit/Sts2/Core/Models/Cards/Defy.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Defy.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Defy.cs
+@@ -33,14 +33,13 @@
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
+ 		await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.AttackAnimDelay);
+ 		await CreatureCmd.GainBlock(base.Owner.Creature, base.DynamicVars.Block, cardPlay);
+ 		await PowerCmd.Apply<WeakPower>(cardPlay.Target, base.DynamicVars.Weak.BaseValue, base.Owner.Creature, this);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+-		base.DynamicVars.Block.UpgradeValueBy(1m);
+-		base.DynamicVars.Weak.UpgradeValueBy(1m);
++		base.DynamicVars.Block.UpgradeValueBy(3m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/DeprecatedCard.cs MegaCrit/Sts2/Core/Models/Cards/DeprecatedCard.cs
+--- MegaCrit/Sts2/Core/Models/Cards/DeprecatedCard.cs
++++ MegaCrit/Sts2/Core/Models/Cards/DeprecatedCard.cs
+@@ -1,16 +1,29 @@
+ using System.Collections.Generic;
++using System.Threading.Tasks;
++using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Cards;
++using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class DeprecatedCard : CardModel
+ {
+ 	public override int MaxUpgradeLevel => 0;
+ 
+-	public override IEnumerable<CardKeyword> CanonicalKeywords => new global::_003C_003Ez__ReadOnlySingleElementList<CardKeyword>(CardKeyword.Unplayable);
++	public override IEnumerable<CardKeyword> CanonicalKeywords => new global::_003C_003Ez__ReadOnlySingleElementList<CardKeyword>(CardKeyword.Exhaust);
+ 
+ 	public DeprecatedCard()
+-		: base(-1, CardType.Curse, CardRarity.Curse, TargetType.None, shouldShowInCardLibrary: false)
++		: base(0, CardType.Status, CardRarity.Status, TargetType.None, shouldShowInCardLibrary: false)
+ 	{
++	}
++
++	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
++	{
++		await CardPileCmd.Draw(choiceContext, 1m, base.Owner);
++		if (base.DeckVersion != null)
++		{
++			await CardPileCmd.RemoveFromDeck(base.DeckVersion);
++			base.DeckVersion = null;
++		}
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Dirge.cs MegaCrit/Sts2/Core/Models/Cards/Dirge.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Dirge.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Dirge.cs
+@@ -6,20 +6,22 @@
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.HoverTips;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class Dirge : CardModel
+ {
+ 	protected override bool HasEnergyCostX => true;
+ 
++	public override IEnumerable<CardKeyword> CanonicalKeywords => new global::_003C_003Ez__ReadOnlySingleElementList<CardKeyword>(CardKeyword.Exhaust);
++
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new SummonVar(3m));
+ 
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlyArray<IHoverTip>(new IHoverTip[2]
+ 	{
+ 		HoverTipFactory.Static(StaticHoverTip.SummonDynamic, base.DynamicVars.Summon),
+ 		HoverTipFactory.FromCard<Soul>(base.IsUpgraded)
+ 	});
+ 
+ 	public Dirge()
+ 		: base(0, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Discovery.cs MegaCrit/Sts2/Core/Models/Cards/Discovery.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Discovery.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Discovery.cs
+@@ -26,21 +26,21 @@
+ 		{
+ 			List<CardModel> cards = CardFactory.GetDistinctForCombat(base.Owner, base.Owner.Character.CardPool.GetUnlockedCards(base.Owner.UnlockState, base.Owner.RunState.CardMultiplayerConstraint), 3, base.Owner.RunState.Rng.CombatCardGeneration).ToList();
+ 			cardModel = await CardSelectCmd.FromChooseACardScreen(choiceContext, cards, base.Owner, canSkip: true);
+ 		}
+ 		else
+ 		{
+ 			cardModel = _mockSelectedCard;
+ 		}
+ 		if (cardModel != null)
+ 		{
+-			cardModel.EnergyCost.SetThisTurnOrUntilPlayed(0);
++			cardModel.SetToFreeThisTurn();
+ 			await CardPileCmd.AddGeneratedCardToCombat(cardModel, PileType.Hand, addedByPlayer: true);
+ 		}
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+ 		RemoveKeyword(CardKeyword.Exhaust);
+ 	}
+ 
+ 	public void MockSelectedCard(CardModel card)
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Dominate.cs MegaCrit/Sts2/Core/Models/Cards/Dominate.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Dominate.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Dominate.cs
+@@ -1,48 +1,49 @@
+ using System;
+ using System.Collections.Generic;
+-using System.Linq;
+ using System.Threading.Tasks;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Cards;
+-using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.HoverTips;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class Dominate : CardModel
+ {
+ 	private const string _strengthPerVulnerableKey = "StrengthPerVulnerable";
+ 
+-	protected override bool ShouldGlowGoldInternal => base.CombatState?.HittableEnemies.Any((Creature e) => e.HasPower<VulnerablePower>()) ?? false;
+-
+ 	public override IEnumerable<CardKeyword> CanonicalKeywords => new global::_003C_003Ez__ReadOnlySingleElementList<CardKeyword>(CardKeyword.Exhaust);
+ 
+-	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new DynamicVar("StrengthPerVulnerable", 1m));
++	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
++	{
++		new PowerVar<VulnerablePower>(1m),
++		new DynamicVar("StrengthPerVulnerable", 1m)
++	});
+ 
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlyArray<IHoverTip>(new IHoverTip[2]
+ 	{
+ 		HoverTipFactory.FromPower<StrengthPower>(),
+ 		HoverTipFactory.FromPower<VulnerablePower>()
+ 	});
+ 
+ 	public Dominate()
+ 		: base(1, CardType.Skill, CardRarity.Uncommon, TargetType.AnyEnemy)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
+-		int strengthToApply = cardPlay.Target.GetPower<VulnerablePower>()?.Amount ?? 0;
+ 		await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+-		await PowerCmd.Apply<StrengthPower>(base.Owner.Creature, strengthToApply, base.Owner.Creature, this);
++		await PowerCmd.Apply<VulnerablePower>(cardPlay.Target, base.DynamicVars["VulnerablePower"].BaseValue, base.Owner.Creature, this);
++		int num = cardPlay.Target.GetPower<VulnerablePower>()?.Amount ?? 0;
++		await PowerCmd.Apply<StrengthPower>(base.Owner.Creature, num, base.Owner.Creature, this);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+-		RemoveKeyword(CardKeyword.Exhaust);
++		base.DynamicVars["VulnerablePower"].UpgradeValueBy(1m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/EternalArmor.cs MegaCrit/Sts2/Core/Models/Cards/EternalArmor.cs
+--- MegaCrit/Sts2/Core/Models/Cards/EternalArmor.cs
++++ MegaCrit/Sts2/Core/Models/Cards/EternalArmor.cs
+@@ -10,27 +10,27 @@
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class EternalArmor : CardModel
+ {
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlyArray<IHoverTip>(new IHoverTip[2]
+ 	{
+ 		HoverTipFactory.FromPower<PlatingPower>(),
+ 		HoverTipFactory.Static(StaticHoverTip.Block)
+ 	});
+ 
+-	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new PowerVar<PlatingPower>(7m));
++	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new PowerVar<PlatingPower>(9m));
+ 
+ 	public EternalArmor()
+ 		: base(3, CardType.Power, CardRarity.Rare, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await PowerCmd.Apply<PlatingPower>(base.Owner.Creature, base.DynamicVars["PlatingPower"].IntValue, base.Owner.Creature, this);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+-		base.DynamicVars["PlatingPower"].UpgradeValueBy(2m);
++		base.DynamicVars["PlatingPower"].UpgradeValueBy(3m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/ExpectAFight.cs MegaCrit/Sts2/Core/Models/Cards/ExpectAFight.cs
+--- MegaCrit/Sts2/Core/Models/Cards/ExpectAFight.cs
++++ MegaCrit/Sts2/Core/Models/Cards/ExpectAFight.cs
+@@ -1,42 +1,44 @@
+ using System.Collections.Generic;
+ using System.Linq;
+ using System.Threading.Tasks;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.HoverTips;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
++using MegaCrit.Sts2.Core.Models.Powers;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class ExpectAFight : CardModel
+ {
+ 	private const string _calculatedEnergyKey = "CalculatedEnergy";
+ 
+-	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(base.EnergyHoverTip);
+-
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[4]
+ 	{
+ 		new EnergyVar(0),
+ 		new CalculationBaseVar(0m),
+ 		new CalculationExtraVar(1m),
+ 		new CalculatedVar("CalculatedEnergy").WithMultiplier((CardModel card, Creature? _) => PileType.Hand.GetPile(card.Owner).Cards.Count((CardModel c) => c.Type == CardType.Attack))
+ 	});
+ 
++	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(base.EnergyHoverTip);
++
+ 	public ExpectAFight()
+ 		: base(2, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+ 		await PlayerCmd.GainEnergy(((CalculatedVar)base.DynamicVars["CalculatedEnergy"]).Calculate(cardPlay.Target), base.Owner);
++		await PowerCmd.Apply<NoEnergyGainPower>(base.Owner.Creature, 1m, base.Owner.Creature, this);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+ 		base.EnergyCost.UpgradeBy(-1);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/FallingStar.cs MegaCrit/Sts2/Core/Models/Cards/FallingStar.cs
+--- MegaCrit/Sts2/Core/Models/Cards/FallingStar.cs
++++ MegaCrit/Sts2/Core/Models/Cards/FallingStar.cs
+@@ -10,21 +10,21 @@
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class FallingStar : CardModel
+ {
+ 	public override int CanonicalStarCost => 2;
+ 
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[3]
+ 	{
+-		new DamageVar(7m, ValueProp.Move),
++		new DamageVar(8m, ValueProp.Move),
+ 		new PowerVar<VulnerablePower>(1m),
+ 		new PowerVar<WeakPower>(1m)
+ 	});
+ 
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlyArray<IHoverTip>(new IHoverTip[2]
+ 	{
+ 		HoverTipFactory.FromPower<WeakPower>(),
+ 		HoverTipFactory.FromPower<VulnerablePower>()
+ 	});
+ 
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/FightMe.cs MegaCrit/Sts2/Core/Models/Cards/FightMe.cs
+--- MegaCrit/Sts2/Core/Models/Cards/FightMe.cs
++++ MegaCrit/Sts2/Core/Models/Cards/FightMe.cs
+@@ -14,21 +14,21 @@
+ public sealed class FightMe : CardModel
+ {
+ 	private const string _enemyStrengthKey = "EnemyStrength";
+ 
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromPower<StrengthPower>());
+ 
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[4]
+ 	{
+ 		new DamageVar(5m, ValueProp.Move),
+ 		new RepeatVar(2),
+-		new PowerVar<StrengthPower>(2m),
++		new PowerVar<StrengthPower>(3m),
+ 		new DynamicVar("EnemyStrength", 1m)
+ 	});
+ 
+ 	public FightMe()
+ 		: base(2, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/FlickFlack.cs MegaCrit/Sts2/Core/Models/Cards/FlickFlack.cs
+--- MegaCrit/Sts2/Core/Models/Cards/FlickFlack.cs
++++ MegaCrit/Sts2/Core/Models/Cards/FlickFlack.cs
+@@ -3,21 +3,21 @@
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class FlickFlack : CardModel
+ {
+-	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new DamageVar(7m, ValueProp.Move));
++	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new DamageVar(6m, ValueProp.Move));
+ 
+ 	public override IEnumerable<CardKeyword> CanonicalKeywords => new global::_003C_003Ez__ReadOnlySingleElementList<CardKeyword>(CardKeyword.Sly);
+ 
+ 	public FlickFlack()
+ 		: base(1, CardType.Attack, CardRarity.Common, TargetType.AllEnemies)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/FollowThrough.cs MegaCrit/Sts2/Core/Models/Cards/FollowThrough.cs
+--- MegaCrit/Sts2/Core/Models/Cards/FollowThrough.cs
++++ MegaCrit/Sts2/Core/Models/Cards/FollowThrough.cs
+@@ -1,62 +1,53 @@
++using System;
+ using System.Collections.Generic;
+ using System.Linq;
+ using System.Threading.Tasks;
+-using MegaCrit.Sts2.Core.Combat;
+-using MegaCrit.Sts2.Core.Combat.History.Entries;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+-using MegaCrit.Sts2.Core.HoverTips;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+-using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class FollowThrough : CardModel
+ {
+-	protected override bool ShouldGlowGoldInternal => WasLastCardPlayedSkill;
++	private const string _cardCountKey = "CardCount";
+ 
+-	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
+-	{
+-		new DamageVar(6m, ValueProp.Move),
+-		new PowerVar<WeakPower>(1m)
+-	});
++	protected override bool ShouldGlowGoldInternal => IsPlayedAnAdditionalTime;
+ 
+-	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromPower<WeakPower>());
+-
+-	private bool WasLastCardPlayedSkill
++	private bool IsPlayedAnAdditionalTime
+ 	{
+ 		get
+ 		{
+-			CardPlayStartedEntry cardPlayStartedEntry = CombatManager.Instance.History.CardPlaysStarted.LastOrDefault((CardPlayStartedEntry e) => e.CardPlay.Card.Owner == base.Owner && e.HappenedThisTurn(base.CombatState) && e.CardPlay.Card != this);
+-			if (cardPlayStartedEntry == null)
+-			{
+-				return false;
+-			}
+-			return cardPlayStartedEntry.CardPlay.Card.Type == CardType.Skill;
++			decimal? num = base.Owner.PlayerCombatState?.Hand.Cards.Count((CardModel c) => c != this);
++			decimal baseValue = base.DynamicVars["CardCount"].BaseValue;
++			return (num.GetValueOrDefault() >= baseValue) & num.HasValue;
+ 		}
+ 	}
+ 
++	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
++	{
++		new DamageVar(7m, ValueProp.Move),
++		new DynamicVar("CardCount", 5m)
++	});
++
+ 	public FollowThrough()
+-		: base(1, CardType.Attack, CardRarity.Uncommon, TargetType.AllEnemies)
++		: base(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+-		await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).FromCard(this).TargetingAllOpponents(base.CombatState)
++		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
++		await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).FromCard(this).Targeting(cardPlay.Target)
++			.WithHitCount((!IsPlayedAnAdditionalTime) ? 1 : 2)
+ 			.WithHitFx("vfx/vfx_attack_slash")
+ 			.Execute(choiceContext);
+-		if (WasLastCardPlayedSkill)
+-		{
+-			await PowerCmd.Apply<WeakPower>(base.CombatState.HittableEnemies, base.DynamicVars.Weak.BaseValue, base.Owner.Creature, this);
+-		}
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+ 		base.DynamicVars.Damage.UpgradeValueBy(2m);
+-		base.DynamicVars.Weak.UpgradeValueBy(1m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Folly.cs MegaCrit/Sts2/Core/Models/Cards/Folly.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Folly.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Folly.cs
+@@ -2,22 +2,23 @@
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class Folly : CardModel
+ {
+ 	public override bool CanBeGeneratedByModifiers => false;
+ 
+ 	public override int MaxUpgradeLevel => 0;
+ 
+-	public override IEnumerable<CardKeyword> CanonicalKeywords => new global::_003C_003Ez__ReadOnlyArray<CardKeyword>(new CardKeyword[3]
++	public override IEnumerable<CardKeyword> CanonicalKeywords => new global::_003C_003Ez__ReadOnlyArray<CardKeyword>(new CardKeyword[4]
+ 	{
+ 		CardKeyword.Unplayable,
+ 		CardKeyword.Eternal,
+-		CardKeyword.Innate
++		CardKeyword.Innate,
++		CardKeyword.Ethereal
+ 	});
+ 
+ 	public Folly()
+ 		: base(-1, CardType.Curse, CardRarity.Curse, TargetType.None)
+ 	{
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/ForgottenRitual.cs MegaCrit/Sts2/Core/Models/Cards/ForgottenRitual.cs
+--- MegaCrit/Sts2/Core/Models/Cards/ForgottenRitual.cs
++++ MegaCrit/Sts2/Core/Models/Cards/ForgottenRitual.cs
+@@ -11,20 +11,22 @@
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ using MegaCrit.Sts2.Core.Nodes.Rooms;
+ using MegaCrit.Sts2.Core.Nodes.Vfx;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class ForgottenRitual : CardModel
+ {
+ 	protected override bool ShouldGlowGoldInternal => WasCardExhaustedThisTurn;
+ 
++	public override IEnumerable<CardKeyword> CanonicalKeywords => new global::_003C_003Ez__ReadOnlySingleElementList<CardKeyword>(CardKeyword.Exhaust);
++
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new EnergyVar(3));
+ 
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlyArray<IHoverTip>(new IHoverTip[2]
+ 	{
+ 		base.EnergyHoverTip,
+ 		HoverTipFactory.FromKeyword(CardKeyword.Exhaust)
+ 	});
+ 
+ 	protected override IEnumerable<string> ExtraRunAssetPaths => NGroundFireVfx.AssetPaths;
+ 
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/GatherLight.cs MegaCrit/Sts2/Core/Models/Cards/GatherLight.cs
+--- MegaCrit/Sts2/Core/Models/Cards/GatherLight.cs
++++ MegaCrit/Sts2/Core/Models/Cards/GatherLight.cs
+@@ -7,21 +7,21 @@
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class GatherLight : CardModel
+ {
+ 	public override bool GainsBlock => true;
+ 
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
+ 	{
+-		new BlockVar(7m, ValueProp.Move),
++		new BlockVar(8m, ValueProp.Move),
+ 		new StarsVar(1)
+ 	});
+ 
+ 	public GatherLight()
+ 		: base(1, CardType.Skill, CardRarity.Common, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Glitterstream.cs MegaCrit/Sts2/Core/Models/Cards/Glitterstream.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Glitterstream.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Glitterstream.cs
+@@ -12,21 +12,21 @@
+ 
+ public sealed class Glitterstream : CardModel
+ {
+ 	private const string _blockNextTurnKey = "BlockNextTurn";
+ 
+ 	public override bool GainsBlock => true;
+ 
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
+ 	{
+ 		new BlockVar(11m, ValueProp.Move),
+-		new BlockVar("BlockNextTurn", 4m, ValueProp.Move)
++		new BlockVar("BlockNextTurn", 5m, ValueProp.Move)
+ 	});
+ 
+ 	public Glitterstream()
+ 		: base(2, CardType.Skill, CardRarity.Common, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Glow.cs MegaCrit/Sts2/Core/Models/Cards/Glow.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Glow.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Glow.cs
+@@ -1,34 +1,36 @@
+ using System.Collections.Generic;
+ using System.Threading.Tasks;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
++using MegaCrit.Sts2.Core.Models.Powers;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class Glow : CardModel
+ {
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
+ 	{
+ 		new StarsVar(1),
+-		new CardsVar(2)
++		new CardsVar(1)
+ 	});
+ 
+ 	public Glow()
+ 		: base(1, CardType.Skill, CardRarity.Common, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+ 		await PlayerCmd.GainStars(base.DynamicVars.Stars.BaseValue, base.Owner);
+ 		await CardPileCmd.Draw(choiceContext, base.DynamicVars.Cards.BaseValue, base.Owner);
++		await PowerCmd.Apply<DrawCardsNextTurnPower>(base.Owner.Creature, base.DynamicVars.Cards.BaseValue, base.Owner.Creature, this);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+ 		base.DynamicVars.Stars.UpgradeValueBy(1m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/GrandFinale.cs MegaCrit/Sts2/Core/Models/Cards/GrandFinale.cs
+--- MegaCrit/Sts2/Core/Models/Cards/GrandFinale.cs
++++ MegaCrit/Sts2/Core/Models/Cards/GrandFinale.cs
+@@ -5,31 +5,31 @@
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class GrandFinale : CardModel
+ {
+ 	protected override bool ShouldGlowGoldInternal => IsPlayable;
+ 
+-	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new DamageVar(50m, ValueProp.Move));
++	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new DamageVar(60m, ValueProp.Move));
+ 
+ 	protected override bool IsPlayable => PileType.Draw.GetPile(base.Owner).Cards.Count == 0;
+ 
+ 	public GrandFinale()
+ 		: base(0, CardType.Attack, CardRarity.Rare, TargetType.AllEnemies)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).FromCard(this).TargetingAllOpponents(base.CombatState)
+ 			.WithHitFx("vfx/vfx_attack_slash", null, "blunt_attack.mp3")
+ 			.Execute(choiceContext);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+-		base.DynamicVars.Damage.UpgradeValueBy(10m);
++		base.DynamicVars.Damage.UpgradeValueBy(15m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Grapple.cs MegaCrit/Sts2/Core/Models/Cards/Grapple.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Grapple.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Grapple.cs
+@@ -1,40 +0,0 @@
+-using System;
+-using System.Collections.Generic;
+-using System.Threading.Tasks;
+-using MegaCrit.Sts2.Core.Commands;
+-using MegaCrit.Sts2.Core.Entities.Cards;
+-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+-using MegaCrit.Sts2.Core.Localization.DynamicVars;
+-using MegaCrit.Sts2.Core.Models.Powers;
+-using MegaCrit.Sts2.Core.ValueProps;
+-
+-namespace MegaCrit.Sts2.Core.Models.Cards;
+-
+-public sealed class Grapple : CardModel
+-{
+-	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
+-	{
+-		new DamageVar(7m, ValueProp.Move),
+-		new PowerVar<GrapplePower>(5m)
+-	});
+-
+-	public Grapple()
+-		: base(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+-	{
+-	}
+-
+-	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+-	{
+-		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
+-		await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).FromCard(this).Targeting(cardPlay.Target)
+-			.WithHitFx("vfx/vfx_attack_slash")
+-			.Execute(choiceContext);
+-		await PowerCmd.Apply<GrapplePower>(cardPlay.Target, base.DynamicVars["GrapplePower"].IntValue, base.Owner.Creature, this);
+-	}
+-
+-	protected override void OnUpgrade()
+-	{
+-		base.DynamicVars.Damage.UpgradeValueBy(2m);
+-		base.DynamicVars["GrapplePower"].UpgradeValueBy(2m);
+-	}
+-}
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/GraveWarden.cs MegaCrit/Sts2/Core/Models/Cards/GraveWarden.cs
+--- MegaCrit/Sts2/Core/Models/Cards/GraveWarden.cs
++++ MegaCrit/Sts2/Core/Models/Cards/GraveWarden.cs
+@@ -1,49 +1,40 @@
+ using System.Collections.Generic;
+-using System.Linq;
+ using System.Threading.Tasks;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.HoverTips;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class GraveWarden : CardModel
+ {
+ 	public override bool GainsBlock => true;
+ 
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
+ 	{
+ 		new BlockVar(8m, ValueProp.Move),
+ 		new CardsVar(1)
+ 	});
+ 
+-	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromCard<Soul>(base.IsUpgraded));
++	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromCard<Soul>());
+ 
+ 	public GraveWarden()
+ 		: base(1, CardType.Skill, CardRarity.Common, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+ 		await CreatureCmd.GainBlock(base.Owner.Creature, base.DynamicVars.Block, cardPlay);
+-		List<Soul> list = Soul.Create(base.Owner, base.DynamicVars.Cards.IntValue, base.CombatState).ToList();
+-		if (base.IsUpgraded)
+-		{
+-			foreach (Soul item in list)
+-			{
+-				CardCmd.Upgrade(item);
+-			}
+-		}
+-		CardCmd.PreviewCardPileAdd(await CardPileCmd.AddGeneratedCardsToCombat(list, PileType.Draw, addedByPlayer: true, CardPilePosition.Random));
++		CardCmd.PreviewCardPileAdd(await CardPileCmd.AddGeneratedCardsToCombat(Soul.Create(base.Owner, base.DynamicVars.Cards.IntValue, base.CombatState), PileType.Draw, addedByPlayer: true, CardPilePosition.Random));
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+-		base.DynamicVars.Block.UpgradeValueBy(2m);
++		base.DynamicVars.Block.UpgradeValueBy(3m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Guards.cs MegaCrit/Sts2/Core/Models/Cards/Guards.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Guards.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Guards.cs
+@@ -16,21 +16,21 @@
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromCard<MinionSacrifice>(base.IsUpgraded));
+ 
+ 	public Guards()
+ 		: base(2, CardType.Skill, CardRarity.Rare, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+-		List<CardModel> list = (await CardSelectCmd.FromHand(prefs: new CardSelectorPrefs(base.SelectionScreenPrompt, 0, 999), context: choiceContext, player: base.Owner, filter: null, source: this)).ToList();
++		List<CardModel> list = (await CardSelectCmd.FromHand(prefs: new CardSelectorPrefs(base.SelectionScreenPrompt, 0, 999999999), context: choiceContext, player: base.Owner, filter: null, source: this)).ToList();
+ 		foreach (CardModel item in list)
+ 		{
+ 			CardModel cardModel = base.CombatState.CreateCard<MinionSacrifice>(base.Owner);
+ 			if (base.IsUpgraded)
+ 			{
+ 				CardCmd.Upgrade(cardModel);
+ 			}
+ 			await CardCmd.Transform(item, cardModel);
+ 		}
+ 	}
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/GuidingStar.cs MegaCrit/Sts2/Core/Models/Cards/GuidingStar.cs
+--- MegaCrit/Sts2/Core/Models/Cards/GuidingStar.cs
++++ MegaCrit/Sts2/Core/Models/Cards/GuidingStar.cs
+@@ -1,20 +1,19 @@
+ using System;
+ using System.Collections.Generic;
+ using System.Threading.Tasks;
+ using Godot;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+-using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.Nodes.Combat;
+ using MegaCrit.Sts2.Core.Nodes.Rooms;
+ using MegaCrit.Sts2.Core.Nodes.Vfx;
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class GuidingStar : CardModel
+ {
+ 	private const string _guidingStarSfx = "event:/sfx/characters/regent/regent_guiding_star";
+@@ -40,19 +39,19 @@
+ 		if (nCreature != null)
+ 		{
+ 			SfxCmd.Play("event:/sfx/characters/regent/regent_guiding_star");
+ 			NSmallMagicMissileVfx nSmallMagicMissileVfx = NSmallMagicMissileVfx.Create(nCreature.GetBottomOfHitbox(), new Color("50b598"));
+ 			NCombatRoom.Instance.CombatVfxContainer.AddChildSafely(nSmallMagicMissileVfx);
+ 			await Cmd.Wait(nSmallMagicMissileVfx.WaitTime);
+ 		}
+ 		await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).WithNoAttackerAnim().FromCard(this)
+ 			.Targeting(cardPlay.Target)
+ 			.Execute(choiceContext);
+-		await PowerCmd.Apply<DrawCardsNextTurnPower>(base.Owner.Creature, base.DynamicVars.Cards.BaseValue, base.Owner.Creature, this);
++		await CardPileCmd.Draw(choiceContext, base.DynamicVars.Cards.BaseValue, base.Owner);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+ 		base.DynamicVars.Damage.UpgradeValueBy(1m);
+ 		base.DynamicVars.Cards.UpgradeValueBy(1m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Hang.cs MegaCrit/Sts2/Core/Models/Cards/Hang.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Hang.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Hang.cs
+@@ -20,22 +20,22 @@
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
+ 		await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).FromCard(this).Targeting(cardPlay.Target)
+ 			.WithHitFx("vfx/vfx_attack_slash")
+ 			.Execute(choiceContext);
+ 		int powerAmount = cardPlay.Target.GetPowerAmount<HangPower>();
+ 		int num = Math.Max(2, powerAmount);
+-		if (powerAmount + num > 999)
++		if (powerAmount + num > 999999999)
+ 		{
+-			num = Math.Max(0, 999 - powerAmount);
++			num = Math.Max(0, 999999999 - powerAmount);
+ 		}
+ 		await PowerCmd.Apply<HangPower>(cardPlay.Target, num, base.Owner.Creature, this);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+ 		base.DynamicVars.Damage.UpgradeValueBy(3m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/HeirloomHammer.cs MegaCrit/Sts2/Core/Models/Cards/HeirloomHammer.cs
+--- MegaCrit/Sts2/Core/Models/Cards/HeirloomHammer.cs
++++ MegaCrit/Sts2/Core/Models/Cards/HeirloomHammer.cs
+@@ -8,21 +8,21 @@
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class HeirloomHammer : CardModel
+ {
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
+ 	{
+-		new DamageVar(17m, ValueProp.Move),
++		new DamageVar(20m, ValueProp.Move),
+ 		new RepeatVar(1)
+ 	});
+ 
+ 	public HeirloomHammer()
+ 		: base(2, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Hemokinesis.cs MegaCrit/Sts2/Core/Models/Cards/Hemokinesis.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Hemokinesis.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Hemokinesis.cs
+@@ -7,21 +7,21 @@
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class Hemokinesis : CardModel
+ {
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
+ 	{
+ 		new HpLossVar(2m),
+-		new DamageVar(14m, ValueProp.Move)
++		new DamageVar(15m, ValueProp.Move)
+ 	});
+ 
+ 	public Hemokinesis()
+ 		: base(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/HiddenGem.cs MegaCrit/Sts2/Core/Models/Cards/HiddenGem.cs
+--- MegaCrit/Sts2/Core/Models/Cards/HiddenGem.cs
++++ MegaCrit/Sts2/Core/Models/Cards/HiddenGem.cs
+@@ -6,20 +6,22 @@
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.HoverTips;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class HiddenGem : CardModel
+ {
+ 	private const string _replayKey = "Replay";
+ 
++	public override bool CanBeGeneratedInCombat => false;
++
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new IntVar("Replay", 2m));
+ 
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.Static(StaticHoverTip.ReplayStatic));
+ 
+ 	public HiddenGem()
+ 		: base(1, CardType.Skill, CardRarity.Rare, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+@@ -33,21 +35,21 @@
+ 		List<CardModel> list2 = list.Where(delegate(CardModel c)
+ 		{
+ 			bool flag = !c.Keywords.Contains(CardKeyword.Unplayable);
+ 			bool flag2 = flag;
+ 			if (flag2)
+ 			{
+ 				CardType type = c.Type;
+ 				bool flag3 = (uint)(type - 5) <= 1u;
+ 				flag2 = !flag3;
+ 			}
+-			return flag2;
++			return flag2 && c.GetEnchantedReplayCount() < 1;
+ 		}).ToList();
+ 		List<CardModel> list3 = list2.Where(delegate(CardModel c)
+ 		{
+ 			CardType type = c.Type;
+ 			return (uint)(type - 1) <= 2u;
+ 		}).ToList();
+ 		IEnumerable<CardModel> items = ((list3.Count == 0) ? list2 : list3);
+ 		CardModel cardModel = base.Owner.RunState.Rng.CombatCardSelection.NextItem(items);
+ 		if (cardModel != null)
+ 		{
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Hotfix.cs MegaCrit/Sts2/Core/Models/Cards/Hotfix.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Hotfix.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Hotfix.cs
+@@ -6,28 +6,30 @@
+ using MegaCrit.Sts2.Core.HoverTips;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class Hotfix : CardModel
+ {
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromPower<FocusPower>());
+ 
++	public override IEnumerable<CardKeyword> CanonicalKeywords => new global::_003C_003Ez__ReadOnlySingleElementList<CardKeyword>(CardKeyword.Exhaust);
++
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new PowerVar<FocusPower>(2m));
+ 
+ 	public Hotfix()
+ 		: base(0, CardType.Skill, CardRarity.Common, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+ 		await PowerCmd.Apply<HotfixPower>(base.Owner.Creature, base.DynamicVars["FocusPower"].BaseValue, base.Owner.Creature, this);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+-		base.DynamicVars["FocusPower"].UpgradeValueBy(1m);
++		RemoveKeyword(CardKeyword.Exhaust);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/HuddleUp.cs MegaCrit/Sts2/Core/Models/Cards/HuddleUp.cs
+--- MegaCrit/Sts2/Core/Models/Cards/HuddleUp.cs
++++ MegaCrit/Sts2/Core/Models/Cards/HuddleUp.cs
+@@ -8,20 +8,22 @@
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class HuddleUp : CardModel
+ {
+ 	public override CardMultiplayerConstraint MultiplayerConstraint => CardMultiplayerConstraint.MultiplayerOnly;
+ 
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new CardsVar(2));
+ 
++	public override IEnumerable<CardKeyword> CanonicalKeywords => new global::_003C_003Ez__ReadOnlySingleElementList<CardKeyword>(CardKeyword.Exhaust);
++
+ 	public HuddleUp()
+ 		: base(1, CardType.Skill, CardRarity.Uncommon, TargetType.AllAllies)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		IEnumerable<Creature> enumerable = from c in base.CombatState.GetTeammatesOf(base.Owner.Creature)
+ 			where c != null && c.IsAlive && c.IsPlayer
+ 			select c;
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/IAmInvincible.cs MegaCrit/Sts2/Core/Models/Cards/IAmInvincible.cs
+--- MegaCrit/Sts2/Core/Models/Cards/IAmInvincible.cs
++++ MegaCrit/Sts2/Core/Models/Cards/IAmInvincible.cs
+@@ -7,21 +7,21 @@
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class IAmInvincible : CardModel
+ {
+ 	public override bool GainsBlock => true;
+ 
+-	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new BlockVar(9m, ValueProp.Move));
++	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new BlockVar(10m, ValueProp.Move));
+ 
+ 	public IAmInvincible()
+ 		: base(1, CardType.Skill, CardRarity.Rare, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await CreatureCmd.GainBlock(base.Owner.Creature, base.DynamicVars.Block, cardPlay);
+ 	}
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/KinglyKick.cs MegaCrit/Sts2/Core/Models/Cards/KinglyKick.cs
+--- MegaCrit/Sts2/Core/Models/Cards/KinglyKick.cs
++++ MegaCrit/Sts2/Core/Models/Cards/KinglyKick.cs
+@@ -4,38 +4,38 @@
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class KinglyKick : CardModel
+ {
+-	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new DamageVar(24m, ValueProp.Move));
++	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new DamageVar(27m, ValueProp.Move));
+ 
+ 	public KinglyKick()
+ 		: base(4, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
+ 		await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).FromCard(this).Targeting(cardPlay.Target)
+ 			.WithHitFx("vfx/vfx_attack_slash", null, "heavy_attack.mp3")
+ 			.Execute(choiceContext);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+-		base.DynamicVars.Damage.UpgradeValueBy(6m);
++		base.DynamicVars.Damage.UpgradeValueBy(8m);
+ 	}
+ 
+ 	public override Task AfterCardDrawn(PlayerChoiceContext choiceContext, CardModel card, bool fromHandDraw)
+ 	{
+ 		if (card != this)
+ 		{
+ 			return Task.CompletedTask;
+ 		}
+ 		base.EnergyCost.AddThisCombat(-1);
+ 		return Task.CompletedTask;
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/KinglyPunch.cs MegaCrit/Sts2/Core/Models/Cards/KinglyPunch.cs
+--- MegaCrit/Sts2/Core/Models/Cards/KinglyPunch.cs
++++ MegaCrit/Sts2/Core/Models/Cards/KinglyPunch.cs
+@@ -24,21 +24,21 @@
+ 		set
+ 		{
+ 			AssertMutable();
+ 			_extraDamage = value;
+ 		}
+ 	}
+ 
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
+ 	{
+ 		new DamageVar(8m, ValueProp.Move),
+-		new DynamicVar("Increase", 3m)
++		new DynamicVar("Increase", 4m)
+ 	});
+ 
+ 	public KinglyPunch()
+ 		: base(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
+@@ -54,19 +54,20 @@
+ 			return Task.CompletedTask;
+ 		}
+ 		decimal baseValue = base.DynamicVars["Increase"].BaseValue;
+ 		base.DynamicVars.Damage.BaseValue += baseValue;
+ 		ExtraDamage += baseValue;
+ 		return Task.CompletedTask;
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
++		base.DynamicVars.Damage.UpgradeValueBy(2m);
+ 		base.DynamicVars["Increase"].UpgradeValueBy(2m);
+ 	}
+ 
+ 	protected override void AfterDowngraded()
+ 	{
+ 		base.AfterDowngraded();
+ 		base.DynamicVars.Damage.BaseValue += ExtraDamage;
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/LeadingStrike.cs MegaCrit/Sts2/Core/Models/Cards/LeadingStrike.cs
+--- MegaCrit/Sts2/Core/Models/Cards/LeadingStrike.cs
++++ MegaCrit/Sts2/Core/Models/Cards/LeadingStrike.cs
+@@ -11,22 +11,22 @@
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class LeadingStrike : CardModel
+ {
+ 	private const string _shivsKey = "Shivs";
+ 
+ 	protected override HashSet<CardTag> CanonicalTags => new HashSet<CardTag> { CardTag.Strike };
+ 
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
+ 	{
+-		new CardsVar("Shivs", 1),
+-		new DamageVar(7m, ValueProp.Move)
++		new CardsVar("Shivs", 2),
++		new DamageVar(3m, ValueProp.Move)
+ 	});
+ 
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromCard<Shiv>());
+ 
+ 	public LeadingStrike()
+ 		: base(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/MadScience.cs MegaCrit/Sts2/Core/Models/Cards/MadScience.cs
+--- MegaCrit/Sts2/Core/Models/Cards/MadScience.cs
++++ MegaCrit/Sts2/Core/Models/Cards/MadScience.cs
+@@ -273,21 +273,21 @@
+ 			break;
+ 		case TinkerTime.RiderEffect.Energized:
+ 			await PlayerCmd.GainEnergy(base.DynamicVars["EnergizedEnergy"].IntValue, base.Owner);
+ 			break;
+ 		case TinkerTime.RiderEffect.Wisdom:
+ 			await CardPileCmd.Draw(choiceContext, base.DynamicVars["WisdomCards"].IntValue, base.Owner);
+ 			break;
+ 		case TinkerTime.RiderEffect.Chaos:
+ 		{
+ 			CardModel cardModel = ((MockedChaosCard == null) ? CardFactory.GetDistinctForCombat(base.Owner, base.Owner.Character.CardPool.GetUnlockedCards(base.Owner.UnlockState, base.Owner.RunState.CardMultiplayerConstraint), 1, base.Owner.RunState.Rng.CombatCardGeneration).First() : MockedChaosCard);
+-			cardModel.EnergyCost.SetThisTurnOrUntilPlayed(0);
++			cardModel.SetToFreeThisTurn();
+ 			await CardPileCmd.Add(cardModel, PileType.Hand);
+ 			break;
+ 		}
+ 		default:
+ 			throw new ArgumentOutOfRangeException("rider", rider, null);
+ 		}
+ 	}
+ 
+ 	public void MockChaosCard(CardModel card)
+ 	{
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/MementoMori.cs MegaCrit/Sts2/Core/Models/Cards/MementoMori.cs
+--- MegaCrit/Sts2/Core/Models/Cards/MementoMori.cs
++++ MegaCrit/Sts2/Core/Models/Cards/MementoMori.cs
+@@ -10,21 +10,21 @@
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class MementoMori : CardModel
+ {
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[3]
+ 	{
+-		new CalculationBaseVar(8m),
++		new CalculationBaseVar(9m),
+ 		new ExtraDamageVar(4m),
+ 		new CalculatedDamageVar(ValueProp.Move).WithMultiplier((CardModel card, Creature? _) => CombatManager.Instance.History.Entries.OfType<CardDiscardedEntry>().Count((CardDiscardedEntry e) => e.HappenedThisTurn(card.CombatState) && e.Card.Owner == card.Owner))
+ 	});
+ 
+ 	public MementoMori()
+ 		: base(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/MinionDiveBomb.cs MegaCrit/Sts2/Core/Models/Cards/MinionDiveBomb.cs
+--- MegaCrit/Sts2/Core/Models/Cards/MinionDiveBomb.cs
++++ MegaCrit/Sts2/Core/Models/Cards/MinionDiveBomb.cs
+@@ -12,21 +12,21 @@
+ 
+ public sealed class MinionDiveBomb : CardModel
+ {
+ 	protected override HashSet<CardTag> CanonicalTags => new HashSet<CardTag> { CardTag.Minion };
+ 
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new DamageVar(13m, ValueProp.Move));
+ 
+ 	public override IEnumerable<CardKeyword> CanonicalKeywords => new global::_003C_003Ez__ReadOnlySingleElementList<CardKeyword>(CardKeyword.Exhaust);
+ 
+ 	public MinionDiveBomb()
+-		: base(1, CardType.Attack, CardRarity.Token, TargetType.AnyEnemy)
++		: base(0, CardType.Attack, CardRarity.Token, TargetType.AnyEnemy)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
+ 		await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).FromCard(this).WithAttackerAnim("Cast", 1f)
+ 			.Targeting(cardPlay.Target)
+ 			.WithAttackerFx(() => NMinionDiveBombVfx.Create(base.Owner.Creature, cardPlay.Target))
+ 			.Execute(choiceContext);
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/MinionStrike.cs MegaCrit/Sts2/Core/Models/Cards/MinionStrike.cs
+--- MegaCrit/Sts2/Core/Models/Cards/MinionStrike.cs
++++ MegaCrit/Sts2/Core/Models/Cards/MinionStrike.cs
+@@ -14,21 +14,21 @@
+ 	protected override HashSet<CardTag> CanonicalTags => new HashSet<CardTag>
+ 	{
+ 		CardTag.Strike,
+ 		CardTag.Minion
+ 	};
+ 
+ 	public override IEnumerable<CardKeyword> CanonicalKeywords => new global::_003C_003Ez__ReadOnlySingleElementList<CardKeyword>(CardKeyword.Exhaust);
+ 
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
+ 	{
+-		new DamageVar(7m, ValueProp.Move),
++		new DamageVar(6m, ValueProp.Move),
+ 		new CardsVar(1)
+ 	});
+ 
+ 	public MinionStrike()
+ 		: base(0, CardType.Attack, CardRarity.Token, TargetType.AnyEnemy)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Mocks/MockSkillCard.cs MegaCrit/Sts2/Core/Models/Cards/Mocks/MockSkillCard.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Mocks/MockSkillCard.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Mocks/MockSkillCard.cs
+@@ -17,48 +17,59 @@
+ {
+ 	private struct PowerApplication
+ 	{
+ 		public Type powerType;
+ 
+ 		public int amount;
+ 
+ 		public TargetType targetType;
+ 	}
+ 
++	private struct CardCreation
++	{
++		public CardModel canonicalCard;
++
++		public int amount;
++	}
++
+ 	private const string _drawKey = "Draw";
+ 
+ 	private const string _discardKey = "Discard";
+ 
+ 	private int _blockCount = 1;
+ 
+ 	private TargetType _targetType = TargetType.Self;
+ 
+ 	private List<PowerApplication> _powerApplications = new List<PowerApplication>();
+ 
++	private List<CardCreation> _cardCreations = new List<CardCreation>();
++
+ 	public override CardType Type => CardType.Skill;
+ 
+ 	public override TargetType TargetType => _targetType;
+ 
+-	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[6]
++	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[7]
+ 	{
+ 		new BlockVar(5m, ValueProp.Move),
+ 		new CardsVar("Draw", 0),
+ 		new CardsVar("Discard", 0),
++		new EnergyVar(0),
+ 		new ForgeVar(0),
+ 		new StarsVar(0),
+ 		new SummonVar(0m)
+ 	});
+ 
+ 	protected override void DeepCloneFields()
+ 	{
+ 		base.DeepCloneFields();
+ 		_powerApplications = _powerApplications.ToList();
++		_cardCreations = _cardCreations.ToList();
+ 	}
+ 
+ 	public override MockSkillCard MockBlock(int block)
+ 	{
+ 		AssertMutable();
+ 		base.DynamicVars.Block.BaseValue = block;
+ 		return this;
+ 	}
+ 
+ 	public MockSkillCard MockBlockCount(int blockCount)
+@@ -96,37 +107,55 @@
+ 		return this;
+ 	}
+ 
+ 	public MockSkillCard MockStarGain(decimal stars)
+ 	{
+ 		AssertMutable();
+ 		base.DynamicVars.Stars.BaseValue = stars;
+ 		return this;
+ 	}
+ 
++	public MockSkillCard MockEnergyGain(decimal energy)
++	{
++		AssertMutable();
++		base.DynamicVars.Energy.BaseValue = energy;
++		return this;
++	}
++
+ 	public MockSkillCard MockPower<TPower>(int amount, TargetType targetType) where TPower : PowerModel
+ 	{
+ 		AssertMutable();
+ 		if (_powerApplications.Any((PowerApplication a) => a.targetType != targetType))
+ 		{
+ 			throw new InvalidOperationException("Cannot have multiple power applications with different target types.");
+ 		}
+ 		_targetType = targetType;
+ 		_powerApplications.Add(new PowerApplication
+ 		{
+ 			powerType = typeof(TPower),
+ 			amount = amount,
+ 			targetType = targetType
+ 		});
+ 		return this;
+ 	}
+ 
++	public MockSkillCard MockCreateCards<TCard>(int amount) where TCard : CardModel
++	{
++		AssertMutable();
++		_cardCreations.Add(new CardCreation
++		{
++			canonicalCard = ModelDb.Card<TCard>(),
++			amount = amount
++		});
++		return this;
++	}
++
+ 	protected override int GetBaseBlock()
+ 	{
+ 		return base.DynamicVars.Block.IntValue;
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		if (_mockSelfHpLoss > 0)
+ 		{
+ 			await CreatureCmd.Damage(choiceContext, base.Owner.Creature, _mockSelfHpLoss, ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move, this);
+@@ -148,32 +177,58 @@
+ 			await ForgeCmd.Forge(base.DynamicVars.Forge.BaseValue, base.Owner, this);
+ 		}
+ 		if (base.DynamicVars.Stars.BaseValue > 0m)
+ 		{
+ 			await PlayerCmd.GainStars(base.DynamicVars.Stars.BaseValue, base.Owner);
+ 		}
+ 		if (base.DynamicVars.Summon.BaseValue > 0m)
+ 		{
+ 			await OstyCmd.Summon(choiceContext, base.Owner, base.DynamicVars.Summon.BaseValue, this);
+ 		}
++		if (base.DynamicVars.Energy.BaseValue > 0m)
++		{
++			await PlayerCmd.GainEnergy(base.DynamicVars.Energy.BaseValue, base.Owner);
++		}
+ 		foreach (PowerApplication application in _powerApplications)
+ 		{
+ 			foreach (Creature item in application.targetType switch
+ 			{
+ 				TargetType.AllEnemies => base.CombatState.Enemies, 
+ 				TargetType.AnyEnemy => new global::_003C_003Ez__ReadOnlySingleElementList<Creature>(cardPlay.Target), 
+ 				TargetType.Self => new global::_003C_003Ez__ReadOnlySingleElementList<Creature>(base.Owner.Creature), 
+ 				_ => throw new ArgumentOutOfRangeException("targetType", application.targetType, null), 
+ 			})
+ 			{
+ 				PowerModel power = ModelDb.GetById<PowerModel>(ModelDb.GetId(application.powerType)).ToMutable();
+ 				await PowerCmd.Apply(power, item, application.amount, base.Owner.Creature, this);
++			}
++		}
++		foreach (CardCreation cardCreation in _cardCreations)
++		{
++			CardModel canonicalCard = cardCreation.canonicalCard;
++			if (!(canonicalCard is Shiv))
++			{
++				if (canonicalCard is Soul)
++				{
++					await Soul.CreateInHand(base.Owner, cardCreation.amount, base.CombatState);
++					continue;
++				}
++				List<CardModel> list = new List<CardModel>();
++				for (int j = 0; j < cardCreation.amount; j++)
++				{
++					list.Add(base.CombatState.CreateCard(cardCreation.canonicalCard, base.Owner));
++				}
++				await CardPileCmd.AddGeneratedCardsToCombat(list, PileType.Hand, addedByPlayer: true);
++			}
++			else
++			{
++				await Shiv.CreateInHand(base.Owner, cardCreation.amount, base.CombatState);
+ 			}
+ 		}
+ 		if (_mockExtraLogic != null)
+ 		{
+ 			await _mockExtraLogic(this);
+ 		}
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/NeowsFury.cs MegaCrit/Sts2/Core/Models/Cards/NeowsFury.cs
+--- MegaCrit/Sts2/Core/Models/Cards/NeowsFury.cs
++++ MegaCrit/Sts2/Core/Models/Cards/NeowsFury.cs
+@@ -36,12 +36,13 @@
+ 		IEnumerable<CardModel> enumerable = PileType.Discard.GetPile(base.Owner).Cards.TakeRandom(base.DynamicVars.Cards.IntValue, base.Owner.RunState.Rng.CombatCardSelection);
+ 		foreach (CardModel item in enumerable)
+ 		{
+ 			await CardPileCmd.Add(item, PileType.Hand);
+ 		}
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+ 		base.DynamicVars.Damage.UpgradeValueBy(4m);
++		base.DynamicVars.Cards.UpgradeValueBy(1m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/NotYet.cs MegaCrit/Sts2/Core/Models/Cards/NotYet.cs
+--- MegaCrit/Sts2/Core/Models/Cards/NotYet.cs
++++ MegaCrit/Sts2/Core/Models/Cards/NotYet.cs
+@@ -0,0 +1,33 @@
++using System.Collections.Generic;
++using System.Threading.Tasks;
++using MegaCrit.Sts2.Core.Commands;
++using MegaCrit.Sts2.Core.Entities.Cards;
++using MegaCrit.Sts2.Core.GameActions.Multiplayer;
++using MegaCrit.Sts2.Core.Localization.DynamicVars;
++
++namespace MegaCrit.Sts2.Core.Models.Cards;
++
++public sealed class NotYet : CardModel
++{
++	public override bool CanBeGeneratedInCombat => false;
++
++	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new HealVar(10m));
++
++	public override IEnumerable<CardKeyword> CanonicalKeywords => new global::_003C_003Ez__ReadOnlySingleElementList<CardKeyword>(CardKeyword.Exhaust);
++
++	public NotYet()
++		: base(2, CardType.Skill, CardRarity.Rare, TargetType.Self)
++	{
++	}
++
++	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
++	{
++		await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
++		await CreatureCmd.Heal(base.Owner.Creature, base.DynamicVars.Heal.BaseValue);
++	}
++
++	protected override void OnUpgrade()
++	{
++		base.DynamicVars.Heal.UpgradeValueBy(3m);
++	}
++}
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Parry.cs MegaCrit/Sts2/Core/Models/Cards/Parry.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Parry.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Parry.cs
+@@ -10,28 +10,28 @@
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class Parry : CardModel
+ {
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlyArray<IHoverTip>(new IHoverTip[2]
+ 	{
+ 		HoverTipFactory.FromCard<SovereignBlade>(),
+ 		HoverTipFactory.Static(StaticHoverTip.Block)
+ 	});
+ 
+-	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new PowerVar<ParryPower>(6m));
++	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new PowerVar<ParryPower>(10m));
+ 
+ 	public Parry()
+ 		: base(1, CardType.Power, CardRarity.Uncommon, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+ 		await PowerCmd.Apply<ParryPower>(base.Owner.Creature, base.DynamicVars["ParryPower"].BaseValue, base.Owner.Creature, this);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+-		base.DynamicVars["ParryPower"].UpgradeValueBy(3m);
++		base.DynamicVars["ParryPower"].UpgradeValueBy(4m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Patter.cs MegaCrit/Sts2/Core/Models/Cards/Patter.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Patter.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Patter.cs
+@@ -9,21 +9,21 @@
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class Patter : CardModel
+ {
+ 	public override bool GainsBlock => true;
+ 
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
+ 	{
+-		new BlockVar(8m, ValueProp.Move),
++		new BlockVar(9m, ValueProp.Move),
+ 		new PowerVar<VigorPower>(2m)
+ 	});
+ 
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromPower<VigorPower>());
+ 
+ 	public Patter()
+ 		: base(1, CardType.Skill, CardRarity.Common, TargetType.Self)
+ 	{
+ 	}
+ 
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Pinpoint.cs MegaCrit/Sts2/Core/Models/Cards/Pinpoint.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Pinpoint.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Pinpoint.cs
+@@ -7,38 +7,38 @@
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class Pinpoint : CardModel
+ {
+-	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new DamageVar(17m, ValueProp.Move));
++	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new DamageVar(15m, ValueProp.Move));
+ 
+ 	public Pinpoint()
+ 		: base(3, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
+ 		await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).FromCard(this).Targeting(cardPlay.Target)
+ 			.WithHitFx("vfx/vfx_attack_slash")
+ 			.Execute(choiceContext);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+-		base.DynamicVars.Damage.UpgradeValueBy(5m);
++		base.DynamicVars.Damage.UpgradeValueBy(4m);
+ 	}
+ 
+ 	public override Task AfterCardEnteredCombat(CardModel card)
+ 	{
+ 		if (card != this)
+ 		{
+ 			return Task.CompletedTask;
+ 		}
+ 		if (base.IsClone)
+ 		{
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Production.cs MegaCrit/Sts2/Core/Models/Cards/Production.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Production.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Production.cs
+@@ -21,13 +21,13 @@
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await PlayerCmd.GainEnergy(base.DynamicVars.Energy.BaseValue, base.Owner);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+-		RemoveKeyword(CardKeyword.Exhaust);
++		base.DynamicVars.Energy.UpgradeValueBy(1m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Radiate.cs MegaCrit/Sts2/Core/Models/Cards/Radiate.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Radiate.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Radiate.cs
+@@ -16,21 +16,21 @@
+ {
+ 	private const string _calculatedHitsKey = "CalculatedHits";
+ 
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[5]
+ 	{
+ 		new DamageVar(3m, ValueProp.Move),
+ 		new StarsVar(1),
+ 		new CalculationBaseVar(0m),
+ 		new CalculationExtraVar(1m),
+ 		new CalculatedVar("CalculatedHits").WithMultiplier((CardModel card, Creature? _) => (from e in CombatManager.Instance.History.Entries.OfType<StarsModifiedEntry>()
+-			where e.HappenedThisTurn(card.CombatState) && e.Amount > 0
++			where e.HappenedThisTurn(card.CombatState) && e.Amount > 0 && e.Actor == card.Owner.Creature
+ 			select e).Sum((StarsModifiedEntry e) => e.Amount))
+ 	});
+ 
+ 	public Radiate()
+ 		: base(0, CardType.Attack, CardRarity.Uncommon, TargetType.AllEnemies)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/RefineBlade.cs MegaCrit/Sts2/Core/Models/Cards/RefineBlade.cs
+--- MegaCrit/Sts2/Core/Models/Cards/RefineBlade.cs
++++ MegaCrit/Sts2/Core/Models/Cards/RefineBlade.cs
+@@ -6,21 +6,21 @@
+ using MegaCrit.Sts2.Core.HoverTips;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class RefineBlade : CardModel
+ {
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
+ 	{
+-		new ForgeVar(6),
++		new ForgeVar(9),
+ 		new EnergyVar(1)
+ 	});
+ 
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => HoverTipFactory.FromForge();
+ 
+ 	public RefineBlade()
+ 		: base(1, CardType.Skill, CardRarity.Common, TargetType.Self)
+ 	{
+ 	}
+ 
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/RipAndTear.cs MegaCrit/Sts2/Core/Models/Cards/RipAndTear.cs
+--- MegaCrit/Sts2/Core/Models/Cards/RipAndTear.cs
++++ MegaCrit/Sts2/Core/Models/Cards/RipAndTear.cs
+@@ -11,21 +11,21 @@
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class RipAndTear : CardModel
+ {
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new DamageVar(7m, ValueProp.Move));
+ 
+ 	public override CardPoolModel VisualCardPool => ModelDb.CardPool<DefectCardPool>();
+ 
+ 	public RipAndTear()
+-		: base(1, CardType.Attack, CardRarity.Uncommon, TargetType.RandomEnemy)
++		: base(1, CardType.Attack, CardRarity.Event, TargetType.RandomEnemy)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).WithHitCount(2).FromCard(this)
+ 			.TargetingRandomOpponents(base.CombatState)
+ 			.WithHitVfxNode((Creature t) => NScratchVfx.Create(t, goingRight: true))
+ 			.Execute(choiceContext);
+ 	}
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/RocketPunch.cs MegaCrit/Sts2/Core/Models/Cards/RocketPunch.cs
+--- MegaCrit/Sts2/Core/Models/Cards/RocketPunch.cs
++++ MegaCrit/Sts2/Core/Models/Cards/RocketPunch.cs
+@@ -26,28 +26,32 @@
+ 	{
+ 		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
+ 		await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).FromCard(this).Targeting(cardPlay.Target)
+ 			.WithHitFx("vfx/vfx_attack_blunt", null, "blunt_attack.mp3")
+ 			.Execute(choiceContext);
+ 		await CardPileCmd.Draw(choiceContext, base.DynamicVars.Cards.BaseValue, base.Owner);
+ 	}
+ 
+ 	public override Task AfterCardGeneratedForCombat(CardModel card, bool addedByPlayer)
+ 	{
++		if (!addedByPlayer)
++		{
++			return Task.CompletedTask;
++		}
+ 		if (card.Owner != base.Owner)
+ 		{
+ 			return Task.CompletedTask;
+ 		}
+ 		if (card.Type != CardType.Status)
+ 		{
+ 			return Task.CompletedTask;
+ 		}
+-		base.EnergyCost.SetThisTurnOrUntilPlayed(0);
++		base.EnergyCost.SetUntilPlayed(0);
+ 		return Task.CompletedTask;
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+ 		base.DynamicVars.Damage.UpgradeValueBy(1m);
+ 		base.DynamicVars.Cards.UpgradeValueBy(1m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/SculptingStrike.cs MegaCrit/Sts2/Core/Models/Cards/SculptingStrike.cs
+--- MegaCrit/Sts2/Core/Models/Cards/SculptingStrike.cs
++++ MegaCrit/Sts2/Core/Models/Cards/SculptingStrike.cs
+@@ -11,21 +11,21 @@
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class SculptingStrike : CardModel
+ {
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromKeyword(CardKeyword.Ethereal));
+ 
+ 	protected override HashSet<CardTag> CanonicalTags => new HashSet<CardTag> { CardTag.Strike };
+ 
+-	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new DamageVar(8m, ValueProp.Move));
++	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new DamageVar(9m, ValueProp.Move));
+ 
+ 	public SculptingStrike()
+ 		: base(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
+ 		await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).FromCard(this).Targeting(cardPlay.Target)
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Seance.cs MegaCrit/Sts2/Core/Models/Cards/Seance.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Seance.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Seance.cs
+@@ -9,34 +9,35 @@
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class Seance : CardModel
+ {
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new CardsVar(1));
+ 
+ 	public override IEnumerable<CardKeyword> CanonicalKeywords => new global::_003C_003Ez__ReadOnlySingleElementList<CardKeyword>(CardKeyword.Ethereal);
+ 
+-	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromCard<Soul>(base.IsUpgraded));
++	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromCard<Soul>());
+ 
+ 	public Seance()
+-		: base(0, CardType.Skill, CardRarity.Rare, TargetType.Self)
++		: base(1, CardType.Skill, CardRarity.Rare, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+ 		List<CardModel> cardsIn = (from c in PileType.Draw.GetPile(base.Owner).Cards
+ 			orderby c.Rarity, c.Id
+ 			select c).ToList();
+ 		List<CardModel> list = (await CardSelectCmd.FromSimpleGrid(choiceContext, cardsIn, base.Owner, new CardSelectorPrefs(CardSelectorPrefs.TransformSelectionPrompt, base.DynamicVars.Cards.IntValue))).ToList();
+ 		foreach (CardModel item in list)
+ 		{
+-			CardPileAddResult? cardPileAddResult = await CardCmd.TransformTo<Soul>(item);
+-			if (base.IsUpgraded && cardPileAddResult.HasValue)
+-			{
+-				CardCmd.Upgrade(cardPileAddResult.Value.cardAdded);
+-			}
++			await CardCmd.TransformTo<Soul>(item);
+ 		}
++	}
++
++	protected override void OnUpgrade()
++	{
++		base.EnergyCost.UpgradeBy(-1);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/SeekerStrike.cs MegaCrit/Sts2/Core/Models/Cards/SeekerStrike.cs
+--- MegaCrit/Sts2/Core/Models/Cards/SeekerStrike.cs
++++ MegaCrit/Sts2/Core/Models/Cards/SeekerStrike.cs
+@@ -11,21 +11,21 @@
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class SeekerStrike : CardModel
+ {
+ 	protected override HashSet<CardTag> CanonicalTags => new HashSet<CardTag> { CardTag.Strike };
+ 
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
+ 	{
+-		new DamageVar(6m, ValueProp.Move),
++		new DamageVar(9m, ValueProp.Move),
+ 		new CardsVar(3)
+ 	});
+ 
+ 	public SeekerStrike()
+ 		: base(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/SeekingEdge.cs MegaCrit/Sts2/Core/Models/Cards/SeekingEdge.cs
+--- MegaCrit/Sts2/Core/Models/Cards/SeekingEdge.cs
++++ MegaCrit/Sts2/Core/Models/Cards/SeekingEdge.cs
+@@ -16,19 +16,19 @@
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new ForgeVar(7));
+ 
+ 	public SeekingEdge()
+ 		: base(1, CardType.Power, CardRarity.Rare, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+-		await ForgeCmd.Forge(base.DynamicVars.Forge.IntValue, base.Owner, this);
+ 		await PowerCmd.Apply<SeekingEdgePower>(base.Owner.Creature, 1m, base.Owner.Creature, this);
++		await ForgeCmd.Forge(base.DynamicVars.Forge.IntValue, base.Owner, this);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+ 		base.DynamicVars.Forge.UpgradeValueBy(4m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/SerpentForm.cs MegaCrit/Sts2/Core/Models/Cards/SerpentForm.cs
+--- MegaCrit/Sts2/Core/Models/Cards/SerpentForm.cs
++++ MegaCrit/Sts2/Core/Models/Cards/SerpentForm.cs
+@@ -18,13 +18,13 @@
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+ 		await PowerCmd.Apply<SerpentFormPower>(base.Owner.Creature, base.DynamicVars["SerpentFormPower"].BaseValue, base.Owner.Creature, this);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+-		base.DynamicVars["SerpentFormPower"].UpgradeValueBy(1m);
++		base.DynamicVars["SerpentFormPower"].UpgradeValueBy(2m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Shiv.cs MegaCrit/Sts2/Core/Models/Cards/Shiv.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Shiv.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Shiv.cs
+@@ -27,35 +27,29 @@
+ 			if (!HasFanOfKnives)
+ 			{
+ 				return TargetType.AnyEnemy;
+ 			}
+ 			return TargetType.AllEnemies;
+ 		}
+ 	}
+ 
+ 	protected override HashSet<CardTag> CanonicalTags => new HashSet<CardTag> { CardTag.Shiv };
+ 
+-	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[4]
+-	{
+-		new DamageVar(4m, ValueProp.Move),
+-		new CalculationBaseVar(0m),
+-		new CalculationExtraVar(1m),
+-		new CalculatedVar("FanOfKnivesAmount").WithMultiplier((CardModel card, Creature? _) => (card != null && card.IsMutable && card.Owner != null) ? card.Owner.Creature.GetPowerAmount<FanOfKnivesPower>() : 0)
+-	});
++	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new DamageVar(4m, ValueProp.Move));
+ 
+ 	public override IEnumerable<CardKeyword> CanonicalKeywords => new global::_003C_003Ez__ReadOnlySingleElementList<CardKeyword>(CardKeyword.Exhaust);
+ 
+ 	private bool HasFanOfKnives
+ 	{
+ 		get
+ 		{
+-			if (CombatManager.Instance.IsInProgress)
++			if (base.IsMutable && base.Owner != null)
+ 			{
+ 				return base.Owner.Creature.HasPower<FanOfKnivesPower>();
+ 			}
+ 			return false;
+ 		}
+ 	}
+ 
+ 	public Shiv()
+ 		: base(0, CardType.Attack, CardRarity.Token, TargetType.AnyEnemy)
+ 	{
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Skewer.cs MegaCrit/Sts2/Core/Models/Cards/Skewer.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Skewer.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Skewer.cs
+@@ -8,21 +8,21 @@
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ using MegaCrit.Sts2.Core.Nodes.Vfx;
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class Skewer : CardModel
+ {
+ 	protected override bool HasEnergyCostX => true;
+ 
+-	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new DamageVar(7m, ValueProp.Move));
++	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new DamageVar(8m, ValueProp.Move));
+ 
+ 	public Skewer()
+ 		: base(0, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
+ 		await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).WithHitCount(ResolveEnergyXValue()).FromCard(this)
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/SolarStrike.cs MegaCrit/Sts2/Core/Models/Cards/SolarStrike.cs
+--- MegaCrit/Sts2/Core/Models/Cards/SolarStrike.cs
++++ MegaCrit/Sts2/Core/Models/Cards/SolarStrike.cs
+@@ -8,21 +8,21 @@
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class SolarStrike : CardModel
+ {
+ 	protected override HashSet<CardTag> CanonicalTags => new HashSet<CardTag> { CardTag.Strike };
+ 
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
+ 	{
+-		new DamageVar(8m, ValueProp.Move),
++		new DamageVar(9m, ValueProp.Move),
+ 		new StarsVar(1)
+ 	});
+ 
+ 	public SolarStrike()
+ 		: base(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/SovereignBlade.cs MegaCrit/Sts2/Core/Models/Cards/SovereignBlade.cs
+--- MegaCrit/Sts2/Core/Models/Cards/SovereignBlade.cs
++++ MegaCrit/Sts2/Core/Models/Cards/SovereignBlade.cs
+@@ -1,15 +1,14 @@
+ using System;
+ using System.Collections.Generic;
+ using System.Linq;
+ using System.Threading.Tasks;
+-using MegaCrit.Sts2.Core.Combat;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Commands.Builders;
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Entities.Players;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.Nodes.Combat;
+ using MegaCrit.Sts2.Core.Nodes.Rooms;
+@@ -91,21 +90,21 @@
+ 		new CalculationBaseVar(0m),
+ 		new CalculationExtraVar(1m),
+ 		new CalculatedVar("SeekingEdgeAmount").WithMultiplier((CardModel card, Creature? _) => (card != null && card.IsMutable && card.Owner != null) ? card.Owner.Creature.GetPowerAmount<SeekingEdgePower>() : 0),
+ 		new RepeatVar(1)
+ 	});
+ 
+ 	private bool HasSeekingEdge
+ 	{
+ 		get
+ 		{
+-			if (CombatManager.Instance.IsInProgress)
++			if (base.IsMutable && base.Owner != null)
+ 			{
+ 				return base.Owner.Creature.HasPower<SeekingEdgePower>();
+ 			}
+ 			return false;
+ 		}
+ 	}
+ 
+ 	public SovereignBlade()
+ 		: base(2, CardType.Attack, CardRarity.Token, TargetType.AnyEnemy)
+ 	{
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Speedster.cs MegaCrit/Sts2/Core/Models/Cards/Speedster.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Speedster.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Speedster.cs
+@@ -17,13 +17,13 @@
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await PowerCmd.Apply<SpeedsterPower>(base.Owner.Creature, base.DynamicVars["SpeedsterPower"].IntValue, base.Owner.Creature, this);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+-		base.DynamicVars["SpeedsterPower"].UpgradeValueBy(1m);
++		AddKeyword(CardKeyword.Innate);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Spite.cs MegaCrit/Sts2/Core/Models/Cards/Spite.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Spite.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Spite.cs
+@@ -1,48 +1,50 @@
+ using System;
+ using System.Collections.Generic;
+ using System.Linq;
+ using System.Threading.Tasks;
+ using MegaCrit.Sts2.Core.Combat;
+ using MegaCrit.Sts2.Core.Combat.History.Entries;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Cards;
++using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class Spite : CardModel
+ {
+-	protected override bool ShouldGlowGoldInternal => TookDamageThisTurn;
++	protected override bool ShouldGlowGoldInternal => LostHpThisTurn(base.Owner.Creature);
+ 
+-	private bool TookDamageThisTurn => CombatManager.Instance.History.Entries.OfType<DamageReceivedEntry>().Any((DamageReceivedEntry e) => e.HappenedThisTurn(base.CombatState) && e.Receiver == base.Owner.Creature && e.Result.UnblockedDamage > 0 && e.CurrentSide == CombatSide.Player);
+-
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
+ 	{
+-		new DamageVar(6m, ValueProp.Move),
+-		new CardsVar(1)
++		new DamageVar(5m, ValueProp.Move),
++		new RepeatVar(2)
+ 	});
+ 
+ 	public Spite()
+ 		: base(0, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
+-		await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).FromCard(this).Targeting(cardPlay.Target)
++		int hitCount = ((!LostHpThisTurn(base.Owner.Creature)) ? 1 : base.DynamicVars.Repeat.IntValue);
++		await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).WithHitCount(hitCount).FromCard(this)
++			.Targeting(cardPlay.Target)
+ 			.WithHitFx("vfx/vfx_attack_slash")
+ 			.Execute(choiceContext);
+-		if (TookDamageThisTurn)
+-		{
+-			await CardPileCmd.Draw(choiceContext, base.DynamicVars.Cards.IntValue, base.Owner);
+-		}
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+-		base.DynamicVars.Damage.UpgradeValueBy(3m);
++		base.DynamicVars.Repeat.UpgradeValueBy(1m);
++	}
++
++	private static bool LostHpThisTurn(Creature creature)
++	{
++		return CombatManager.Instance.History.Entries.OfType<DamageReceivedEntry>().Any((DamageReceivedEntry e) => e.HappenedThisTurn(creature.CombatState) && e.Receiver == creature && e.Result.UnblockedDamage > 0);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/SpoilsOfBattle.cs MegaCrit/Sts2/Core/Models/Cards/SpoilsOfBattle.cs
+--- MegaCrit/Sts2/Core/Models/Cards/SpoilsOfBattle.cs
++++ MegaCrit/Sts2/Core/Models/Cards/SpoilsOfBattle.cs
+@@ -3,29 +3,34 @@
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.HoverTips;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class SpoilsOfBattle : CardModel
+ {
+-	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new ForgeVar(10));
++	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
++	{
++		new ForgeVar(5),
++		new CardsVar(2)
++	});
+ 
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => HoverTipFactory.FromForge();
+ 
+ 	public SpoilsOfBattle()
+ 		: base(1, CardType.Skill, CardRarity.Common, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await ForgeCmd.Forge(base.DynamicVars.Forge.IntValue, base.Owner, this);
++		await CardPileCmd.Draw(choiceContext, base.DynamicVars.Cards.BaseValue, base.Owner);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+-		base.DynamicVars.Forge.UpgradeValueBy(5m);
++		base.DynamicVars.Forge.UpgradeValueBy(3m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Stoke.cs MegaCrit/Sts2/Core/Models/Cards/Stoke.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Stoke.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Stoke.cs
+@@ -1,35 +1,35 @@
+ using System.Collections.Generic;
+ using System.Linq;
+ using System.Threading.Tasks;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Cards;
++using MegaCrit.Sts2.Core.Factories;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
++using MegaCrit.Sts2.Core.Nodes.CommonUi;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class Stoke : CardModel
+ {
+-	public override IEnumerable<CardKeyword> CanonicalKeywords => new global::_003C_003Ez__ReadOnlySingleElementList<CardKeyword>(CardKeyword.Exhaust);
+-
+ 	public Stoke()
+ 		: base(1, CardType.Skill, CardRarity.Rare, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+ 		List<CardModel> list = PileType.Hand.GetPile(base.Owner).Cards.ToList();
+-		int cardCount = list.Count;
++		int exhaustCount = list.Count;
+ 		foreach (CardModel item in list)
+ 		{
+ 			await CardCmd.Exhaust(choiceContext, item);
+ 		}
+-		await CardPileCmd.Draw(choiceContext, cardCount, base.Owner);
+-	}
+-
+-	protected override void OnUpgrade()
+-	{
+-		base.EnergyCost.UpgradeBy(-1);
++		List<CardModel> cards = CardFactory.GetForCombat(base.Owner, base.Owner.Character.CardPool.GetUnlockedCards(base.Owner.UnlockState, base.Owner.RunState.CardMultiplayerConstraint), exhaustCount, base.Owner.RunState.Rng.CombatCardGeneration).ToList();
++		if (base.IsUpgraded)
++		{
++			CardCmd.Upgrade(cards, CardPreviewStyle.None);
++		}
++		await CardPileCmd.AddGeneratedCardsToCombat(cards, PileType.Hand, addedByPlayer: true);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Tremble.cs MegaCrit/Sts2/Core/Models/Cards/Tremble.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Tremble.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Tremble.cs
+@@ -5,21 +5,23 @@
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.HoverTips;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class Tremble : CardModel
+ {
+-	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new PowerVar<VulnerablePower>(2m));
++	public override IEnumerable<CardKeyword> CanonicalKeywords => new global::_003C_003Ez__ReadOnlySingleElementList<CardKeyword>(CardKeyword.Exhaust);
++
++	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new PowerVar<VulnerablePower>(3m));
+ 
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromPower<VulnerablePower>());
+ 
+ 	public Tremble()
+ 		: base(1, CardType.Skill, CardRarity.Common, TargetType.AnyEnemy)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Untouchable.cs MegaCrit/Sts2/Core/Models/Cards/Untouchable.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Untouchable.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Untouchable.cs
+@@ -5,29 +5,29 @@
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class Untouchable : CardModel
+ {
+ 	public override bool GainsBlock => true;
+ 
+-	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new BlockVar(9m, ValueProp.Move));
++	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new BlockVar(6m, ValueProp.Move));
+ 
+ 	public override IEnumerable<CardKeyword> CanonicalKeywords => new global::_003C_003Ez__ReadOnlySingleElementList<CardKeyword>(CardKeyword.Sly);
+ 
+ 	public Untouchable()
+ 		: base(2, CardType.Skill, CardRarity.Common, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await CreatureCmd.GainBlock(base.Owner.Creature, base.DynamicVars.Block, cardPlay);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+-		base.DynamicVars.Block.UpgradeValueBy(3m);
++		base.DynamicVars.Block.UpgradeValueBy(2m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/VoidForm.cs MegaCrit/Sts2/Core/Models/Cards/VoidForm.cs
+--- MegaCrit/Sts2/Core/Models/Cards/VoidForm.cs
++++ MegaCrit/Sts2/Core/Models/Cards/VoidForm.cs
+@@ -3,29 +3,31 @@
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class VoidForm : CardModel
+ {
++	public override IEnumerable<CardKeyword> CanonicalKeywords => new global::_003C_003Ez__ReadOnlySingleElementList<CardKeyword>(CardKeyword.Ethereal);
++
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new PowerVar<VoidFormPower>(2m));
+ 
+ 	public VoidForm()
+ 		: base(3, CardType.Power, CardRarity.Rare, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+ 		await PowerCmd.Apply<VoidFormPower>(base.Owner.Creature, base.DynamicVars["VoidFormPower"].BaseValue, base.Owner.Creature, this);
+ 		PlayerCmd.EndTurn(base.Owner, canBackOut: false);
+ 	}
+ 
+ 	protected override void OnUpgrade()
+ 	{
+-		base.DynamicVars["VoidFormPower"].UpgradeValueBy(1m);
++		RemoveKeyword(CardKeyword.Ethereal);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Voltaic.cs MegaCrit/Sts2/Core/Models/Cards/Voltaic.cs
+--- MegaCrit/Sts2/Core/Models/Cards/Voltaic.cs
++++ MegaCrit/Sts2/Core/Models/Cards/Voltaic.cs
+@@ -26,21 +26,21 @@
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[3]
+ 	{
+ 		new CalculationBaseVar(0m),
+ 		new CalculationExtraVar(1m),
+ 		new CalculatedVar("CalculatedChannels").WithMultiplier((CardModel card, Creature? _) => CombatManager.Instance.History.Entries.OfType<OrbChanneledEntry>().Count((OrbChanneledEntry e) => e.Actor.Player == card.Owner && e.Orb is LightningOrb))
+ 	});
+ 
+ 	public override IEnumerable<CardKeyword> CanonicalKeywords => new global::_003C_003Ez__ReadOnlySingleElementList<CardKeyword>(CardKeyword.Exhaust);
+ 
+ 	public Voltaic()
+-		: base(2, CardType.Skill, CardRarity.Rare, TargetType.Self)
++		: base(3, CardType.Skill, CardRarity.Rare, TargetType.Self)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+ 	{
+ 		await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
+ 		int lightningChanneledCount = (int)((CalculatedVar)base.DynamicVars["CalculatedChannels"]).Calculate(cardPlay.Target);
+ 		for (int i = 0; i < lightningChanneledCount; i++)
+ 		{
+ 			await OrbCmd.Channel<LightningOrb>(choiceContext, base.Owner);
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/WroughtInWar.cs MegaCrit/Sts2/Core/Models/Cards/WroughtInWar.cs
+--- MegaCrit/Sts2/Core/Models/Cards/WroughtInWar.cs
++++ MegaCrit/Sts2/Core/Models/Cards/WroughtInWar.cs
+@@ -8,21 +8,21 @@
+ using MegaCrit.Sts2.Core.Localization.DynamicVars;
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Cards;
+ 
+ public sealed class WroughtInWar : CardModel
+ {
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
+ 	{
+ 		new DamageVar(7m, ValueProp.Move),
+-		new ForgeVar(5)
++		new ForgeVar(7)
+ 	});
+ 
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => HoverTipFactory.FromForge();
+ 
+ 	public WroughtInWar()
+ 		: base(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
+ 	{
+ 	}
+ 
+ 	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/ArsenalPower.cs MegaCrit/Sts2/Core/Models/Powers/ArsenalPower.cs
+--- MegaCrit/Sts2/Core/Models/Powers/ArsenalPower.cs
++++ MegaCrit/Sts2/Core/Models/Powers/ArsenalPower.cs
+@@ -1,27 +1,25 @@
+ using System.Collections.Generic;
+ using System.Threading.Tasks;
+ using MegaCrit.Sts2.Core.Commands;
+-using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.Entities.Powers;
+-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.HoverTips;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Powers;
+ 
+ public sealed class ArsenalPower : PowerModel
+ {
+ 	public override PowerType Type => PowerType.Buff;
+ 
+ 	public override PowerStackType StackType => PowerStackType.Counter;
+ 
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromPower<StrengthPower>());
+ 
+-	public override async Task AfterCardPlayed(PlayerChoiceContext context, CardPlay cardPlay)
++	public override async Task AfterCardGeneratedForCombat(CardModel card, bool addedByPlayer)
+ 	{
+-		if (cardPlay.Card.Owner == base.Owner.Player && cardPlay.Card.VisualCardPool.IsColorless)
++		if (card.Owner == base.Owner.Player && addedByPlayer)
+ 		{
+ 			Flash();
+ 			await PowerCmd.Apply<StrengthPower>(base.Owner, base.Amount, base.Owner, null);
+ 		}
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/BeaconOfHopePower.cs MegaCrit/Sts2/Core/Models/Powers/BeaconOfHopePower.cs
+--- MegaCrit/Sts2/Core/Models/Powers/BeaconOfHopePower.cs
++++ MegaCrit/Sts2/Core/Models/Powers/BeaconOfHopePower.cs
+@@ -7,47 +7,47 @@
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Powers;
+ 
+ public sealed class BeaconOfHopePower : PowerModel
+ {
+ 	private bool _hasAlreadyBeenGivenBlock;
+ 
+ 	public override PowerType Type => PowerType.Buff;
+ 
+-	public override PowerStackType StackType => PowerStackType.Counter;
++	public override PowerStackType StackType => PowerStackType.Single;
+ 
+ 	private bool HasAlreadyBeenGivenBlock
+ 	{
+ 		get
+ 		{
+ 			return _hasAlreadyBeenGivenBlock;
+ 		}
+ 		set
+ 		{
+ 			AssertMutable();
+ 			_hasAlreadyBeenGivenBlock = value;
+ 		}
+ 	}
+ 
+ 	public override async Task AfterBlockGained(Creature creature, decimal amount, ValueProp props, CardModel? cardSource)
+ 	{
+ 		if (amount < 1m || creature != base.Owner || base.CombatState.CurrentSide != base.Owner.Side || HasAlreadyBeenGivenBlock)
+ 		{
+ 			return;
+ 		}
+-		IEnumerable<Creature> enumerable = from c in base.CombatState.GetTeammatesOf(base.Owner)
+-			where c != null && c.IsAlive && c.IsPlayer && c.Player.Creature != base.Owner
+-			select c;
+-		decimal amountToGive = amount * 0.5m * (decimal)base.Amount;
++		decimal amountToGive = amount * 0.5m;
+ 		if (amountToGive < 1m)
+ 		{
+ 			return;
+ 		}
++		IEnumerable<Creature> enumerable = from c in base.CombatState.GetTeammatesOf(base.Owner)
++			where c != null && c.IsAlive && c.IsPlayer && c.Player.Creature != base.Owner
++			select c;
+ 		HasAlreadyBeenGivenBlock = true;
+ 		foreach (Creature item in enumerable)
+ 		{
+ 			await CreatureCmd.GainBlock(item, amountToGive, ValueProp.Unpowered, null);
+ 		}
+ 		HasAlreadyBeenGivenBlock = false;
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/BladeOfInkPower.cs MegaCrit/Sts2/Core/Models/Powers/BladeOfInkPower.cs
+--- MegaCrit/Sts2/Core/Models/Powers/BladeOfInkPower.cs
++++ MegaCrit/Sts2/Core/Models/Powers/BladeOfInkPower.cs
+@@ -1,44 +0,0 @@
+-using System.Collections.Generic;
+-using System.Threading.Tasks;
+-using MegaCrit.Sts2.Core.Combat;
+-using MegaCrit.Sts2.Core.Commands;
+-using MegaCrit.Sts2.Core.Entities.Cards;
+-using MegaCrit.Sts2.Core.Entities.Powers;
+-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+-using MegaCrit.Sts2.Core.HoverTips;
+-using MegaCrit.Sts2.Core.Localization.DynamicVars;
+-
+-namespace MegaCrit.Sts2.Core.Models.Powers;
+-
+-public sealed class BladeOfInkPower : PowerModel
+-{
+-	private const string _strengthAppliedKey = "StrengthApplied";
+-
+-	public override PowerType Type => PowerType.Buff;
+-
+-	public override PowerStackType StackType => PowerStackType.Counter;
+-
+-	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromPower<StrengthPower>());
+-
+-	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new DynamicVar("StrengthApplied", 0m));
+-
+-	public override async Task AfterCardPlayed(PlayerChoiceContext context, CardPlay cardPlay)
+-	{
+-		if (cardPlay.Card.Owner == base.Owner.Player && cardPlay.Card.Type == CardType.Attack)
+-		{
+-			Flash();
+-			await PowerCmd.Apply<StrengthPower>(base.Owner, base.Amount, base.Owner, null, silent: true);
+-			base.DynamicVars["StrengthApplied"].BaseValue += (decimal)base.Amount;
+-			InvokeDisplayAmountChanged();
+-		}
+-	}
+-
+-	public override async Task AfterTurnEnd(PlayerChoiceContext choiceContext, CombatSide side)
+-	{
+-		if (side == base.Owner.Side)
+-		{
+-			await PowerCmd.Apply<StrengthPower>(base.Owner, -base.DynamicVars["StrengthApplied"].BaseValue, base.Owner, null, silent: true);
+-			await PowerCmd.Remove(this);
+-		}
+-	}
+-}
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/BorrowedTimePower.cs MegaCrit/Sts2/Core/Models/Powers/BorrowedTimePower.cs
+--- MegaCrit/Sts2/Core/Models/Powers/BorrowedTimePower.cs
++++ MegaCrit/Sts2/Core/Models/Powers/BorrowedTimePower.cs
+@@ -0,0 +1,37 @@
++using System.Collections.Generic;
++using System.Threading.Tasks;
++using MegaCrit.Sts2.Core.Combat;
++using MegaCrit.Sts2.Core.Commands;
++using MegaCrit.Sts2.Core.Entities.Powers;
++using MegaCrit.Sts2.Core.GameActions.Multiplayer;
++using MegaCrit.Sts2.Core.HoverTips;
++
++namespace MegaCrit.Sts2.Core.Models.Powers;
++
++public sealed class BorrowedTimePower : PowerModel
++{
++	public override PowerType Type => PowerType.Debuff;
++
++	public override PowerStackType StackType => PowerStackType.Counter;
++
++	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.ForEnergy(this));
++
++	public override bool TryModifyEnergyCostInCombat(CardModel card, decimal originalCost, out decimal modifiedCost)
++	{
++		modifiedCost = originalCost;
++		if (card.Owner.Creature != base.Owner)
++		{
++			return false;
++		}
++		modifiedCost = originalCost + (decimal)base.Amount;
++		return true;
++	}
++
++	public override async Task AfterTurnEnd(PlayerChoiceContext choiceContext, CombatSide side)
++	{
++		if (side == base.Owner.Side)
++		{
++			await PowerCmd.Remove(this);
++		}
++	}
++}
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/BurrowedPower.cs MegaCrit/Sts2/Core/Models/Powers/BurrowedPower.cs
+--- MegaCrit/Sts2/Core/Models/Powers/BurrowedPower.cs
++++ MegaCrit/Sts2/Core/Models/Powers/BurrowedPower.cs
+@@ -25,13 +25,13 @@
+ 		if (creature == base.Owner)
+ 		{
+ 			await CreatureCmd.TriggerAnim(base.Owner, "UnburrowAttack", 0.25f);
+ 			await CreatureCmd.Stun(base.Owner, "BITE_MOVE");
+ 			await PowerCmd.Remove<BurrowedPower>(base.Owner);
+ 		}
+ 	}
+ 
+ 	public override async Task AfterRemoved(Creature oldOwner)
+ 	{
+-		await CreatureCmd.LoseBlock(oldOwner, 999m);
++		await CreatureCmd.LoseBlock(oldOwner, 999999999m);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/CrabRagePower.cs MegaCrit/Sts2/Core/Models/Powers/CrabRagePower.cs
+--- MegaCrit/Sts2/Core/Models/Powers/CrabRagePower.cs
++++ MegaCrit/Sts2/Core/Models/Powers/CrabRagePower.cs
+@@ -17,21 +17,21 @@
+ 	public override PowerStackType StackType => PowerStackType.Single;
+ 
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlyArray<IHoverTip>(new IHoverTip[2]
+ 	{
+ 		HoverTipFactory.FromPower<StrengthPower>(),
+ 		HoverTipFactory.Static(StaticHoverTip.Block)
+ 	});
+ 
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
+ 	{
+-		new PowerVar<StrengthPower>(5m),
++		new PowerVar<StrengthPower>(6m),
+ 		new BlockVar(99m, ValueProp.Unpowered)
+ 	});
+ 
+ 	public override async Task AfterDeath(PlayerChoiceContext choiceContext, Creature creature, bool wasRemovalPrevented, float deathAnimLength)
+ 	{
+ 		if (creature != base.Owner && creature.Side == base.Owner.Side)
+ 		{
+ 			Flash();
+ 			await PowerCmd.Apply<StrengthPower>(base.Owner, base.DynamicVars.Strength.IntValue, base.Owner, null);
+ 			await CreatureCmd.GainBlock(base.Owner, base.DynamicVars.Block, null);
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/DoomPower.cs MegaCrit/Sts2/Core/Models/Powers/DoomPower.cs
+--- MegaCrit/Sts2/Core/Models/Powers/DoomPower.cs
++++ MegaCrit/Sts2/Core/Models/Powers/DoomPower.cs
+@@ -44,21 +44,21 @@
+ 		return creatures.Where((Creature c) => c.GetPower<DoomPower>()?.IsOwnerDoomed() ?? false).ToList();
+ 	}
+ 
+ 	public bool IsOwnerDoomed()
+ 	{
+ 		return base.Owner.CurrentHp <= base.Amount;
+ 	}
+ 
+ 	public override async Task BeforeTurnEnd(PlayerChoiceContext choiceContext, CombatSide side)
+ 	{
+-		if (side == base.Owner.Side && !base.Owner.IsDead && IsOwnerDoomed())
++		if (!CombatManager.Instance.IsOverOrEnding && side == base.Owner.Side && !base.Owner.IsDead && IsOwnerDoomed())
+ 		{
+ 			IReadOnlyList<Creature> doomedCreatures = GetDoomedCreatures(base.Owner.CombatState.GetCreaturesOnSide(side));
+ 			if (doomedCreatures.First() == base.Owner)
+ 			{
+ 				await DoomKill(doomedCreatures);
+ 			}
+ 		}
+ 	}
+ 
+ 	private static async Task PlayVfx(Creature creature)
+@@ -97,29 +97,28 @@
+ 
+ 	private static void StartDoomAnim(NCreature creature, bool shouldDie)
+ 	{
+ 		Task task = null;
+ 		if (shouldDie)
+ 		{
+ 			creature.Entity.Monster?.OnDieToDoom();
+ 			Tween tween = creature.AnimDisableUi();
+ 			tween.TweenCallback(Callable.From(creature.QueueFreeSafely));
+ 			task = WaitForTween(tween);
+-			if (creature.HasSpineAnimation)
++			if (creature.SpineAnimation.IsValid)
+ 			{
+ 				creature.SetAnimationTrigger("Hit");
+-				if (creature.SpineController.GetAnimationState().GetCurrent(0).GetAnimation()
+-					.GetName() == "hurt")
++				MegaTrackEntry currentTrack = creature.SpineAnimation.GetCurrentTrack();
++				if (currentTrack?.GetAnimation().GetName() == "hurt")
+ 				{
+-					MegaTrackEntry current = creature.SpineController.GetAnimationState().GetCurrent(0);
+-					current.SetTrackTime(0.1f);
+-					current.SetTimeScale(0f);
++					currentTrack.SetTrackTime(0.1f);
++					currentTrack.SetTimeScale(0f);
+ 				}
+ 			}
+ 			NCombatRoom.Instance?.RemoveCreatureNode(creature);
+ 		}
+ 		NDoomVfx nDoomVfx = NDoomVfx.Create(creature.Visuals, creature.Hitbox.GlobalPosition, creature.Hitbox.Size, shouldDie);
+ 		NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(nDoomVfx);
+ 		if (shouldDie)
+ 		{
+ 			global::_003C_003Ey__InlineArray2<Task> buffer = default(global::_003C_003Ey__InlineArray2<Task>);
+ 			buffer[0] = task;
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/DoorRevivalPower.cs MegaCrit/Sts2/Core/Models/Powers/DoorRevivalPower.cs
+--- MegaCrit/Sts2/Core/Models/Powers/DoorRevivalPower.cs
++++ MegaCrit/Sts2/Core/Models/Powers/DoorRevivalPower.cs
+@@ -1,112 +0,0 @@
+-using System.Collections.Generic;
+-using System.Threading.Tasks;
+-using MegaCrit.Sts2.Core.Commands;
+-using MegaCrit.Sts2.Core.Entities.Creatures;
+-using MegaCrit.Sts2.Core.Entities.Players;
+-using MegaCrit.Sts2.Core.Entities.Powers;
+-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+-using MegaCrit.Sts2.Core.Models.Monsters;
+-
+-namespace MegaCrit.Sts2.Core.Models.Powers;
+-
+-public sealed class DoorRevivalPower : PowerModel
+-{
+-	private class Data
+-	{
+-		public bool isHalfDead;
+-	}
+-
+-	public override PowerType Type => PowerType.Buff;
+-
+-	public override PowerStackType StackType => PowerStackType.Single;
+-
+-	protected override bool IsVisibleInternal => false;
+-
+-	public bool IsHalfDead => GetInternalData<Data>().isHalfDead;
+-
+-	protected override object InitInternalData()
+-	{
+-		return new Data();
+-	}
+-
+-	public override Task BeforeDeath(Creature creature)
+-	{
+-		if (creature != base.Owner)
+-		{
+-			return Task.CompletedTask;
+-		}
+-		GetInternalData<Data>().isHalfDead = true;
+-		return Task.CompletedTask;
+-	}
+-
+-	public override async Task AfterDeath(PlayerChoiceContext choiceContext, Creature creature, bool wasRemovalPrevented, float deathAnimLength)
+-	{
+-		if (creature == base.Owner)
+-		{
+-			if (wasRemovalPrevented)
+-			{
+-				GetInternalData<Data>().isHalfDead = false;
+-				return;
+-			}
+-			Door door = (Door)base.Owner.Monster;
+-			door.PrepareForDeath();
+-			door.SetMoveImmediate(door.DeadState);
+-			door.Open();
+-			await CreatureCmd.Add(door.Doormaker);
+-			Doormaker doormaker = (Doormaker)door.Doormaker.Monster;
+-			await doormaker.AnimIn();
+-		}
+-	}
+-
+-	public async Task DoRevive()
+-	{
+-		GetInternalData<Data>().isHalfDead = false;
+-		Door door = (Door)base.Owner.Monster;
+-		IReadOnlyList<Player> players = base.CombatState.Players;
+-		int count = players.Count;
+-		int currentActIndex = base.CombatState.RunState.CurrentActIndex;
+-		decimal amount = Creature.ScaleHpForMultiplayer(base.Owner.Monster.MinInitialHp, base.CombatState.Encounter, count, currentActIndex);
+-		await CreatureCmd.SetMaxHp(base.Owner, amount);
+-		await CreatureCmd.Heal(base.Owner, base.Owner.MaxHp);
+-		door.PrepareForRevival();
+-		door.Close();
+-	}
+-
+-	public override bool ShouldAllowHitting(Creature creature)
+-	{
+-		if (creature != base.Owner)
+-		{
+-			return true;
+-		}
+-		return !IsHalfDead;
+-	}
+-
+-	public override bool ShouldStopCombatFromEnding()
+-	{
+-		if (!IsHalfDead)
+-		{
+-			return false;
+-		}
+-		Door door = (Door)base.Owner.Monster;
+-		return door.Doormaker.IsAlive;
+-	}
+-
+-	public override bool ShouldCreatureBeRemovedFromCombatAfterDeath(Creature creature)
+-	{
+-		if (creature == base.Owner)
+-		{
+-			return false;
+-		}
+-		Door door = (Door)base.Owner.Monster;
+-		if (creature == door.Doormaker && !base.Owner.CombatState.ContainsCreature(creature))
+-		{
+-			return false;
+-		}
+-		return true;
+-	}
+-
+-	public override bool ShouldPowerBeRemovedAfterOwnerDeath()
+-	{
+-		return false;
+-	}
+-}
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/GrapplePower.cs MegaCrit/Sts2/Core/Models/Powers/GrapplePower.cs
+--- MegaCrit/Sts2/Core/Models/Powers/GrapplePower.cs
++++ MegaCrit/Sts2/Core/Models/Powers/GrapplePower.cs
+@@ -1,32 +0,0 @@
+-using System.Threading.Tasks;
+-using MegaCrit.Sts2.Core.Combat;
+-using MegaCrit.Sts2.Core.Commands;
+-using MegaCrit.Sts2.Core.Entities.Creatures;
+-using MegaCrit.Sts2.Core.Entities.Powers;
+-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+-using MegaCrit.Sts2.Core.ValueProps;
+-
+-namespace MegaCrit.Sts2.Core.Models.Powers;
+-
+-public sealed class GrapplePower : PowerModel
+-{
+-	public override PowerType Type => PowerType.Debuff;
+-
+-	public override PowerStackType StackType => PowerStackType.Counter;
+-
+-	public override bool IsInstanced => true;
+-
+-	public override async Task AfterBlockGained(Creature creature, decimal amount, ValueProp props, CardModel? cardSource)
+-	{
+-		if (!(amount <= 0m) && creature == base.Applier)
+-		{
+-			Flash();
+-			await CreatureCmd.Damage(new ThrowingPlayerChoiceContext(), base.Owner, base.Amount, ValueProp.Unpowered, base.Owner, null);
+-		}
+-	}
+-
+-	public override async Task AfterTurnEnd(PlayerChoiceContext choiceContext, CombatSide side)
+-	{
+-		await PowerCmd.Remove(this);
+-	}
+-}
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/GraspPower.cs MegaCrit/Sts2/Core/Models/Powers/GraspPower.cs
+--- MegaCrit/Sts2/Core/Models/Powers/GraspPower.cs
++++ MegaCrit/Sts2/Core/Models/Powers/GraspPower.cs
+@@ -0,0 +1,72 @@
++using System.Collections.Generic;
++using System.Linq;
++using System.Threading.Tasks;
++using MegaCrit.Sts2.Core.Commands;
++using MegaCrit.Sts2.Core.Entities.Creatures;
++using MegaCrit.Sts2.Core.Entities.Powers;
++using MegaCrit.Sts2.Core.HoverTips;
++using MegaCrit.Sts2.Core.Models.Afflictions;
++
++namespace MegaCrit.Sts2.Core.Models.Powers;
++
++public sealed class GraspPower : PowerModel
++{
++	public override PowerType Type => PowerType.Buff;
++
++	public override PowerStackType StackType => PowerStackType.Single;
++
++	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.ForEnergy(this));
++
++	public override async Task AfterApplied(Creature? applier, CardModel? cardSource)
++	{
++		foreach (Creature item in base.Owner.CombatState.Allies.ToList())
++		{
++			if (!item.IsPlayer)
++			{
++				continue;
++			}
++			List<CardModel> list = item.Player.PlayerCombatState.AllCards.ToList();
++			foreach (CardModel item2 in list)
++			{
++				await Afflict(item2);
++			}
++		}
++	}
++
++	public override async Task AfterCardEnteredCombat(CardModel card)
++	{
++		if (card.Affliction == null)
++		{
++			await Afflict(card);
++		}
++	}
++
++	public override Task AfterRemoved(Creature oldOwner)
++	{
++		if (oldOwner.CombatState == null)
++		{
++			return Task.CompletedTask;
++		}
++		foreach (Creature item in oldOwner.CombatState.Allies.ToList())
++		{
++			if (!item.IsPlayer)
++			{
++				continue;
++			}
++			List<CardModel> list = item.Player.PlayerCombatState.AllCards.Where((CardModel c) => c.Affliction is Weighted).ToList();
++			foreach (CardModel item2 in list)
++			{
++				CardCmd.ClearAffliction(item2);
++			}
++		}
++		return Task.CompletedTask;
++	}
++
++	private async Task Afflict(CardModel card)
++	{
++		if (card.Affliction == null)
++		{
++			await CardCmd.Afflict<Weighted>(card, base.Amount);
++		}
++	}
++}
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/HauntPower.cs MegaCrit/Sts2/Core/Models/Powers/HauntPower.cs
+--- MegaCrit/Sts2/Core/Models/Powers/HauntPower.cs
++++ MegaCrit/Sts2/Core/Models/Powers/HauntPower.cs
+@@ -11,21 +11,21 @@
+ namespace MegaCrit.Sts2.Core.Models.Powers;
+ 
+ public sealed class HauntPower : PowerModel
+ {
+ 	public override PowerType Type => PowerType.Buff;
+ 
+ 	public override PowerStackType StackType => PowerStackType.Counter;
+ 
+ 	public override async Task AfterCardPlayed(PlayerChoiceContext context, CardPlay cardPlay)
+ 	{
+-		if (cardPlay.Card is Soul)
++		if (cardPlay.Card is Soul && cardPlay.Card.Owner.Creature == base.Owner)
+ 		{
+ 			IReadOnlyList<Creature> hittableEnemies = base.CombatState.HittableEnemies;
+ 			if (hittableEnemies.Count != 0)
+ 			{
+ 				Creature item = base.Owner.Player.RunState.Rng.CombatTargets.NextItem(hittableEnemies);
+ 				await CreatureCmd.Damage(context, new global::_003C_003Ez__ReadOnlySingleElementList<Creature>(item), base.Amount, ValueProp.Unblockable | ValueProp.Unpowered, null, null);
+ 			}
+ 		}
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/HungerPower.cs MegaCrit/Sts2/Core/Models/Powers/HungerPower.cs
+--- MegaCrit/Sts2/Core/Models/Powers/HungerPower.cs
++++ MegaCrit/Sts2/Core/Models/Powers/HungerPower.cs
+@@ -0,0 +1,90 @@
++using System.Collections.Generic;
++using System.Linq;
++using System.Threading.Tasks;
++using MegaCrit.Sts2.Core.Commands;
++using MegaCrit.Sts2.Core.Entities.Cards;
++using MegaCrit.Sts2.Core.Entities.Creatures;
++using MegaCrit.Sts2.Core.Entities.Powers;
++using MegaCrit.Sts2.Core.HoverTips;
++using MegaCrit.Sts2.Core.Models.Afflictions;
++
++namespace MegaCrit.Sts2.Core.Models.Powers;
++
++public sealed class HungerPower : PowerModel
++{
++	public override PowerType Type => PowerType.Buff;
++
++	public override PowerStackType StackType => PowerStackType.Single;
++
++	protected override IEnumerable<IHoverTip> ExtraHoverTips => HoverTipFactory.FromAffliction<Devoured>(base.Amount);
++
++	public override async Task AfterApplied(Creature? applier, CardModel? cardSource)
++	{
++		foreach (Creature item in base.Owner.CombatState.Allies.ToList())
++		{
++			if (!item.IsPlayer)
++			{
++				continue;
++			}
++			List<CardModel> list = item.Player.PlayerCombatState.AllCards.Where(delegate(CardModel c)
++			{
++				CardType type = c.Type;
++				return (uint)(type - 1) <= 1u;
++			}).ToList();
++			foreach (CardModel item2 in list)
++			{
++				await Afflict(item2);
++			}
++		}
++	}
++
++	public override async Task AfterCardEnteredCombat(CardModel card)
++	{
++		if (card.Affliction == null)
++		{
++			CardType type = card.Type;
++			if ((uint)(type - 1) <= 1u)
++			{
++				await Afflict(card);
++			}
++		}
++	}
++
++	public override Task AfterRemoved(Creature oldOwner)
++	{
++		if (oldOwner.CombatState == null)
++		{
++			return Task.CompletedTask;
++		}
++		foreach (Creature item in oldOwner.CombatState.Allies.ToList())
++		{
++			if (!item.IsPlayer)
++			{
++				continue;
++			}
++			List<CardModel> list = item.Player.PlayerCombatState.AllCards.Where((CardModel c) => c.Affliction is Devoured).ToList();
++			foreach (CardModel item2 in list)
++			{
++				if (((Devoured)item2.Affliction).AppliedExhaust)
++				{
++					CardCmd.RemoveKeyword(item2, CardKeyword.Exhaust);
++				}
++				CardCmd.ClearAffliction(item2);
++			}
++		}
++		return Task.CompletedTask;
++	}
++
++	private async Task Afflict(CardModel card)
++	{
++		if (card.Affliction == null)
++		{
++			Devoured devoured = await CardCmd.Afflict<Devoured>(card, base.Amount);
++			if (devoured != null && !card.Keywords.Contains(CardKeyword.Exhaust))
++			{
++				CardCmd.ApplyKeyword(card, CardKeyword.Exhaust);
++				devoured.AppliedExhaust = true;
++			}
++		}
++	}
++}
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/LethalityPower.cs MegaCrit/Sts2/Core/Models/Powers/LethalityPower.cs
+--- MegaCrit/Sts2/Core/Models/Powers/LethalityPower.cs
++++ MegaCrit/Sts2/Core/Models/Powers/LethalityPower.cs
+@@ -22,18 +22,19 @@
+ 		}
+ 		if (cardSource == null)
+ 		{
+ 			return 1m;
+ 		}
+ 		if (cardSource.Owner.Creature != base.Owner)
+ 		{
+ 			return 1m;
+ 		}
+ 		int num = CombatManager.Instance.History.CardPlaysStarted.Count((CardPlayStartedEntry e) => e.HappenedThisTurn(base.CombatState) && e.CardPlay.Card.Type == CardType.Attack && e.CardPlay.Card.Owner.Creature == base.Owner);
+-		int num2 = ((cardSource.Pile.Type == PileType.Play) ? 1 : 0);
++		CardPile pile = cardSource.Pile;
++		int num2 = ((pile != null && pile.Type == PileType.Play) ? 1 : 0);
+ 		if (num > num2)
+ 		{
+ 			return 1m;
+ 		}
+ 		return 1m + (decimal)base.Amount / 100m;
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/MayhemPower.cs MegaCrit/Sts2/Core/Models/Powers/MayhemPower.cs
+--- MegaCrit/Sts2/Core/Models/Powers/MayhemPower.cs
++++ MegaCrit/Sts2/Core/Models/Powers/MayhemPower.cs
+@@ -1,24 +1,23 @@
+ using System.Threading.Tasks;
+-using MegaCrit.Sts2.Core.Combat;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.Entities.Players;
+ using MegaCrit.Sts2.Core.Entities.Powers;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Powers;
+ 
+ public sealed class MayhemPower : PowerModel
+ {
+ 	public override PowerType Type => PowerType.Buff;
+ 
+ 	public override PowerStackType StackType => PowerStackType.Counter;
+ 
+-	public override async Task BeforeHandDrawLate(Player player, PlayerChoiceContext choiceContext, CombatState combatState)
++	public override async Task AfterPlayerTurnStart(PlayerChoiceContext choiceContext, Player player)
+ 	{
+ 		if (player == base.Owner.Player)
+ 		{
+ 			await CardPileCmd.AutoPlayFromDrawPile(choiceContext, base.Owner.Player, base.Amount, CardPilePosition.Top, forceExhaust: false);
+ 		}
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/Mocks/MockRemoveDrawnCardsFromCombatPower.cs MegaCrit/Sts2/Core/Models/Powers/Mocks/MockRemoveDrawnCardsFromCombatPower.cs
+--- MegaCrit/Sts2/Core/Models/Powers/Mocks/MockRemoveDrawnCardsFromCombatPower.cs
++++ MegaCrit/Sts2/Core/Models/Powers/Mocks/MockRemoveDrawnCardsFromCombatPower.cs
+@@ -0,0 +1,18 @@
++using System.Threading.Tasks;
++using MegaCrit.Sts2.Core.Commands;
++using MegaCrit.Sts2.Core.Entities.Powers;
++using MegaCrit.Sts2.Core.GameActions.Multiplayer;
++
++namespace MegaCrit.Sts2.Core.Models.Powers.Mocks;
++
++public sealed class MockRemoveDrawnCardsFromCombatPower : PowerModel
++{
++	public override PowerType Type => PowerType.Debuff;
++
++	public override PowerStackType StackType => PowerStackType.Single;
++
++	public override async Task AfterCardDrawn(PlayerChoiceContext choiceContext, CardModel card, bool fromHandDraw)
++	{
++		await CardPileCmd.RemoveFromCombat(card, skipVisuals: true);
++	}
++}
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/NoEnergyGainPower.cs MegaCrit/Sts2/Core/Models/Powers/NoEnergyGainPower.cs
+--- MegaCrit/Sts2/Core/Models/Powers/NoEnergyGainPower.cs
++++ MegaCrit/Sts2/Core/Models/Powers/NoEnergyGainPower.cs
+@@ -0,0 +1,35 @@
++using System.Threading.Tasks;
++using MegaCrit.Sts2.Core.Combat;
++using MegaCrit.Sts2.Core.Commands;
++using MegaCrit.Sts2.Core.Entities.Players;
++using MegaCrit.Sts2.Core.Entities.Powers;
++using MegaCrit.Sts2.Core.GameActions.Multiplayer;
++
++namespace MegaCrit.Sts2.Core.Models.Powers;
++
++public sealed class NoEnergyGainPower : PowerModel
++{
++	public override PowerType Type => PowerType.Debuff;
++
++	public override PowerStackType StackType => PowerStackType.Single;
++
++	public override decimal ModifyEnergyGain(Player player, decimal amount)
++	{
++		if (player != base.Owner.Player)
++		{
++			return amount;
++		}
++		return 0m;
++	}
++
++	public override Task AfterModifyingEnergyGain()
++	{
++		Flash();
++		return Task.CompletedTask;
++	}
++
++	public override async Task AfterTurnEnd(PlayerChoiceContext choiceContext, CombatSide side)
++	{
++		await PowerCmd.Remove(this);
++	}
++}
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/RollingBoulderPower.cs MegaCrit/Sts2/Core/Models/Powers/RollingBoulderPower.cs
+--- MegaCrit/Sts2/Core/Models/Powers/RollingBoulderPower.cs
++++ MegaCrit/Sts2/Core/Models/Powers/RollingBoulderPower.cs
+@@ -50,19 +50,18 @@
+ 			{
+ 				NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(vfx);
+ 				if (!vfx.IsInsideTree())
+ 				{
+ 					throw new InvalidOperationException("VFX is not inside tree after adding it to combat room!");
+ 				}
+ 			}).CallDeferred();
+ 			await vfx.ToSignal(vfx, Node.SignalName.TreeExiting);
+ 			await Task.WhenAll(damageTasks);
+ 		}
+-		base.Amount += base.DynamicVars.Damage.IntValue;
+-		InvokeDisplayAmountChanged();
++		SetAmount(base.Amount + base.DynamicVars.Damage.IntValue);
+ 	}
+ 
+ 	private Task<IEnumerable<DamageResult>> DoDamage(PlayerChoiceContext choiceContext, IEnumerable<Creature> targets)
+ 	{
+ 		return CreatureCmd.Damage(choiceContext, targets, base.Amount, ValueProp.Unpowered, base.Owner);
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/SandpitPower.cs MegaCrit/Sts2/Core/Models/Powers/SandpitPower.cs
+--- MegaCrit/Sts2/Core/Models/Powers/SandpitPower.cs
++++ MegaCrit/Sts2/Core/Models/Powers/SandpitPower.cs
+@@ -59,21 +59,21 @@
+ 		if (TestMode.IsOn)
+ 		{
+ 			return Task.CompletedTask;
+ 		}
+ 		NCreature creatureNode = NCombatRoom.Instance.GetCreatureNode(base.Target);
+ 		_initialAmount = base.Amount;
+ 		_initialTargetPosition = creatureNode.GlobalPosition.X;
+ 		return Task.CompletedTask;
+ 	}
+ 
+-	public override async Task AfterSideTurnStart(CombatSide side, CombatState combatState)
++	public override async Task AfterSideTurnStartLate(CombatSide side, CombatState combatState)
+ 	{
+ 		if (side == CombatSide.Enemy)
+ 		{
+ 			await PowerCmd.Decrement(this);
+ 		}
+ 	}
+ 
+ 	public override async Task AfterPowerAmountChanged(PowerModel power, decimal _, Creature? __, CardModel? cardSource)
+ 	{
+ 		if (!TestMode.IsOn && power == this)
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/ScrutinyPower.cs MegaCrit/Sts2/Core/Models/Powers/ScrutinyPower.cs
+--- MegaCrit/Sts2/Core/Models/Powers/ScrutinyPower.cs
++++ MegaCrit/Sts2/Core/Models/Powers/ScrutinyPower.cs
+@@ -0,0 +1,21 @@
++using MegaCrit.Sts2.Core.Entities.Players;
++using MegaCrit.Sts2.Core.Entities.Powers;
++
++namespace MegaCrit.Sts2.Core.Models.Powers;
++
++public sealed class ScrutinyPower : PowerModel
++{
++	public override PowerType Type => PowerType.Buff;
++
++	public override PowerStackType StackType => PowerStackType.Single;
++
++	public override bool ShouldDraw(Player player, bool fromHandDraw)
++	{
++		if (fromHandDraw)
++		{
++			return true;
++		}
++		Flash();
++		return false;
++	}
++}
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/SmokestackPower.cs MegaCrit/Sts2/Core/Models/Powers/SmokestackPower.cs
+--- MegaCrit/Sts2/Core/Models/Powers/SmokestackPower.cs
++++ MegaCrit/Sts2/Core/Models/Powers/SmokestackPower.cs
+@@ -8,17 +8,17 @@
+ namespace MegaCrit.Sts2.Core.Models.Powers;
+ 
+ public sealed class SmokestackPower : PowerModel
+ {
+ 	public override PowerType Type => PowerType.Buff;
+ 
+ 	public override PowerStackType StackType => PowerStackType.Counter;
+ 
+ 	public override async Task AfterCardGeneratedForCombat(CardModel card, bool addedByPlayer)
+ 	{
+-		if (addedByPlayer && card.Type == CardType.Status)
++		if (addedByPlayer && card.Type == CardType.Status && card.Owner.Creature == base.Owner)
+ 		{
+ 			Flash();
+ 			await CreatureCmd.Damage(new ThrowingPlayerChoiceContext(), base.CombatState.HittableEnemies, base.Amount, ValueProp.Unpowered, base.Owner, null);
+ 		}
+ 	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/StampedePower.cs MegaCrit/Sts2/Core/Models/Powers/StampedePower.cs
+--- MegaCrit/Sts2/Core/Models/Powers/StampedePower.cs
++++ MegaCrit/Sts2/Core/Models/Powers/StampedePower.cs
+@@ -8,21 +8,21 @@
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Powers;
+ 
+ public sealed class StampedePower : PowerModel
+ {
+ 	public override PowerType Type => PowerType.Buff;
+ 
+ 	public override PowerStackType StackType => PowerStackType.Counter;
+ 
+-	public override async Task BeforeTurnEnd(PlayerChoiceContext choiceContext, CombatSide side)
++	public override async Task BeforeTurnEndEarly(PlayerChoiceContext choiceContext, CombatSide side)
+ 	{
+ 		if (side != base.Owner.Side)
+ 		{
+ 			return;
+ 		}
+ 		CardPile hand = PileType.Hand.GetPile(base.Owner.Player);
+ 		for (int i = 0; i < base.Amount; i++)
+ 		{
+ 			List<CardModel> items = hand.Cards.Where((CardModel c) => c.Type == CardType.Attack && !c.Keywords.Contains(CardKeyword.Unplayable)).ToList();
+ 			CardModel cardModel = base.Owner.Player.RunState.Rng.Shuffle.NextItem(items);
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/SwordSagePower.cs MegaCrit/Sts2/Core/Models/Powers/SwordSagePower.cs
+--- MegaCrit/Sts2/Core/Models/Powers/SwordSagePower.cs
++++ MegaCrit/Sts2/Core/Models/Powers/SwordSagePower.cs
+@@ -56,26 +56,11 @@
+ 		IEnumerable<CardModel> enumerable = oldOwner.Player?.PlayerCombatState?.AllCards ?? Array.Empty<CardModel>();
+ 		foreach (CardModel item in enumerable)
+ 		{
+ 			if (item is SovereignBlade sovereignBlade)
+ 			{
+ 				sovereignBlade.SetRepeats(1m);
+ 			}
+ 		}
+ 		return Task.CompletedTask;
+ 	}
+-
+-	public override bool TryModifyEnergyCostInCombat(CardModel card, decimal originalCost, out decimal modifiedCost)
+-	{
+-		modifiedCost = originalCost;
+-		if (card.Owner.Creature != base.Owner)
+-		{
+-			return false;
+-		}
+-		if (!(card is SovereignBlade))
+-		{
+-			return false;
+-		}
+-		modifiedCost += (decimal)base.Amount;
+-		return true;
+-	}
+ }
+diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/TrashToTreasurePower.cs MegaCrit/Sts2/Core/Models/Powers/TrashToTreasurePower.cs
+--- MegaCrit/Sts2/Core/Models/Powers/TrashToTreasurePower.cs
++++ MegaCrit/Sts2/Core/Models/Powers/TrashToTreasurePower.cs
+@@ -7,21 +7,21 @@
+ namespace MegaCrit.Sts2.Core.Models.Powers;
+ 
+ public sealed class TrashToTreasurePower : PowerModel
+ {
+ 	public override PowerType Type => PowerType.Buff;
+ 
+ 	public override PowerStackType StackType => PowerStackType.Counter;
+ 
+ 	public override async Task AfterCardGeneratedForCombat(CardModel card, bool addedByPlayer)
+ 	{
+-		if (addedByPlayer && card.Type == CardType.Status)
++		if (addedByPlayer && card.Type == CardType.Status && card.Owner.Creature == base.Owner)
+ 		{
+ 			Flash();
+ 			for (int i = 0; i < base.Amount; i++)
+ 			{
+ 				OrbModel orb = OrbModel.GetRandomOrb(base.Owner.Player.RunState.Rng.CombatOrbGeneration).ToMutable();
+ 				await OrbCmd.Channel(new ThrowingPlayerChoiceContext(), orb, base.Owner.Player);
+ 			}
+ 		}
+ 	}
+ }
