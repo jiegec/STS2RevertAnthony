@@ -14,7 +14,7 @@ A mod for Slay the Spire 2 that allows you to individually revert cards to older
 
 ## Installation
 
-1. Download the latest release from [GitHub releases](https://github.com/jiegec/STS2RevertAnthony/releases) or [Nexus mods](https://www.nexusmods.com/slaythespire2/mods/...)
+1. Download the latest release from [GitHub releases](https://github.com/jiegec/STS2RevertAnthony/releases) or [Nexus mods](https://www.nexusmods.com/slaythespire2/mods/577)
 2. Extract the mod files to your Slay the Spire 2 mods folder (`mods` folder should reside in the same folder as the game executable):
    - **Windows**: `C:\Program Files (x86)\Steam\steamapps\common\Slay the Spire 2\mods\`
    - **macOS**: `~/Library/Application\ Support/Steam/steamapps/common/Slay\ the\ Spire\ 2/SlayTheSpire2.app/Contents/MacOS/mods/`
