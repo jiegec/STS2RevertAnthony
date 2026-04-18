@@ -28,14 +28,14 @@ public class SupportedCard
 {
     public string Slug { get; set; }
     public string DisplayName { get; set; }
-    public string Category { get; set; }
+    public string Character { get; set; }
     public List<string> OldVersions { get; set; }
 
-    public SupportedCard(string slug, string displayName, params string[] oldVersions)
+    public SupportedCard(string slug, string displayName, string character, params string[] oldVersions)
     {
         Slug = slug;
         DisplayName = displayName;
-        Category = "Cards";
+        Character = character;
         OldVersions = new List<string>(oldVersions);
     }
 }
@@ -52,10 +52,10 @@ public static class RevertAnthony
 
     public static readonly List<SupportedCard> SupportedCards = new()
     {
-        new SupportedCard("borrowed-time", "Borrowed Time", "v0.99.1"),
-        new SupportedCard("hemokinesis", "Hemokinesis", "v0.99.1"),
-        new SupportedCard("acrobatics", "Acrobatics", "v0.99.1"),
-        new SupportedCard("skewer", "Skewer", "v0.99.1"),
+        new SupportedCard("borrowed-time", "Borrowed Time", "NECROBINDER", "v0.99.1"),
+        new SupportedCard("hemokinesis", "Hemokinesis", "IRONCLAD", "v0.99.1"),
+        new SupportedCard("acrobatics", "Acrobatics", "SILENT", "v0.99.1"),
+        new SupportedCard("skewer", "Skewer", "SILENT", "v0.99.1"),
     };
 
     public static string SlugToLocKey(string slug) => slug.Replace("-", "_").ToUpperInvariant();
@@ -177,49 +177,57 @@ public static class RevertAnthony
 
             object GetConfigType(string name) => Enum.Parse(configType, name);
 
-            entries.Add(MakeEntry("", "Card Versions", GetConfigType("Header"),
-                descriptions: new()
-                {
-                    { "en", "Select which version to use for each card" },
-                    { "zhs", "为每张卡牌选择要使用的版本" }
-                },
-                labels: new() { { "zhs", "卡牌版本" } }));
+            // Group cards by character
+            var cardsByCharacter = SupportedCards
+                .GroupBy(c => c.Character)
+                .OrderBy(g => g.Key);
 
-            foreach (var card in SupportedCards)
+            foreach (var group in cardsByCharacter)
             {
-                var slug = card.Slug;
-                var options = new List<string> { Latest };
-                options.AddRange(card.OldVersions);
-                var versionList = string.Join(", ", card.OldVersions);
+                var characterKey = group.Key;
+                var charLoc = new LocString("characters", characterKey + ".title");
+                var characterLabel = charLoc.Exists() ? charLoc.GetFormattedText() : charLoc.GetRawText();
 
-                // Use the game's built-in localization for card names
-                string locKey = SlugToLocKey(slug);
-                var titleLoc = new LocString("cards", locKey + ".title");
-                string cardLabel = titleLoc.Exists() ? titleLoc.GetFormattedText() : card.DisplayName;
+                // Add character header
+                entries.Add(MakeEntry("", characterLabel, GetConfigType("Header"),
+                    ));
 
-                entries.Add(MakeEntry($"card_{slug}_version", card.DisplayName,
-                    GetConfigType("Dropdown"),
-                    defaultValue: CardVersions.GetValueOrDefault(slug, Latest),
-                    options: options.ToArray(),
-                    labels: new()
-                    {
-                        { "zhs", cardLabel }
-                    },
-                    descriptions: new()
-                    {
-                        { "en", $"Use {Latest} (current) or {versionList} (old) version of {card.DisplayName}" },
-                        { "zhs", $"使用 {Latest}（当前）或 {versionList}（旧版）版本的 {cardLabel}" }
-                    },
-                    onChanged: (value) =>
-                    {
-                        var version = (string)value;
-                        CardVersions[slug] = version;
-                        SaveConfig();
-                        if (card.OldVersions.Contains(version))
+                foreach (var card in group)
+                {
+                    var slug = card.Slug;
+                    var options = new List<string> { Latest };
+                    options.AddRange(card.OldVersions);
+                    var versionList = string.Join(", ", card.OldVersions);
+
+                    // Use the game's built-in localization for card names
+                    string locKey = SlugToLocKey(slug);
+                    var titleLoc = new LocString("cards", locKey + ".title");
+                    string cardLabel = titleLoc.Exists() ? titleLoc.GetFormattedText() : card.DisplayName;
+
+                    entries.Add(MakeEntry($"card_{slug}_version", card.DisplayName,
+                        GetConfigType("Dropdown"),
+                        defaultValue: CardVersions.GetValueOrDefault(slug, Latest),
+                        options: options.ToArray(),
+                        labels: new()
                         {
-                            ClearCanonicalCache(slug);
-                        }
-                    }));
+                            { "zhs", cardLabel }
+                        },
+                        descriptions: new()
+                        {
+                            { "en", $"Use {Latest} (current) or {versionList} (old) version of {card.DisplayName}" },
+                            { "zhs", $"使用 {Latest}（当前）或 {versionList}（旧版）版本的 {cardLabel}" }
+                        },
+                        onChanged: (value) =>
+                        {
+                            var version = (string)value;
+                            CardVersions[slug] = version;
+                            SaveConfig();
+                            if (card.OldVersions.Contains(version))
+                            {
+                                ClearCanonicalCache(slug);
+                            }
+                        }));
+                }
             }
 
             var entriesArray = Array.CreateInstance(entryType, entries.Count);
@@ -245,6 +253,12 @@ public static class RevertAnthony
         string executablePath = OS.GetExecutablePath();
         string directoryName = Path.GetDirectoryName(executablePath);
         string modsPath = Path.Combine(directoryName, "mods");
+        string modsConfigPath = Path.Combine(modsPath, "RevertAnthonyConfig.json");
+
+        if (File.Exists(modsConfigPath))
+        {
+            return modsConfigPath;
+        }
 
         if (Directory.Exists(modsPath))
         {
