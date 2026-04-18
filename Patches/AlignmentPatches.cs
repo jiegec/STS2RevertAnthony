@@ -6,11 +6,9 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace RevertAnthony;
 
-// ============================================
-// Alignment - v0.99.1 vs v0.103.2
-// Old: Cost 2 stars
-// New: Cost 3 stars
-// ============================================
+// Alignment v0.99.1 vs current
+// v0.99.1: Star Cost 2
+// Current:  Star Cost 3
 
 [HarmonyPatch(typeof(Alignment), "get_CanonicalStarCost")]
 static class Alignment_CanonicalStarCost_Patch

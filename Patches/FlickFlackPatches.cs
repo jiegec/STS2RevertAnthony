@@ -6,20 +6,20 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace RevertAnthony;
 
-// Hemokinesis v0.99.1 vs current
-// v0.99.1: Damage 14 (current: Damage 15)
+// FlickFlack v0.99.1 vs current
+// v0.99.1: Damage 7
+// Current:  Damage 6
 
-[HarmonyPatch(typeof(Hemokinesis), "get_CanonicalVars")]
-static class Hemokinesis_CanonicalVars_Patch
+[HarmonyPatch(typeof(FlickFlack), "get_CanonicalVars")]
+static class FlickFlack_CanonicalVars_Patch
 {
     static bool Prefix(ref IEnumerable<DynamicVar> __result)
     {
-        if (RevertAnthony.IsVersion("hemokinesis", "v0.99.1"))
+        if (RevertAnthony.IsVersion("flick-flack", "v0.99.1"))
         {
             __result = new DynamicVar[]
             {
-                new HpLossVar(2m),
-                new DamageVar(14m, ValueProp.Move),
+                new DamageVar(7m, ValueProp.Move),
             };
             return false;
         }

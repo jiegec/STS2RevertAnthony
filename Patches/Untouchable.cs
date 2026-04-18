@@ -1,22 +1,14 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using HarmonyLib;
-using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Cards;
-using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace RevertAnthony;
 
-// ============================================
-// Untouchable - v0.99.1 vs v0.103.2
-// Old: Sly. Gain 9(12) Block.
-// New: Sly. Gain 6(8) Block.
-// ============================================
+// Untouchable v0.99.1 vs current
+// v0.99.1: Block 9(12), OnUpgrade → +3 block
+// Current:  Block 6(8), OnUpgrade → +2 block
 
 [HarmonyPatch(typeof(Untouchable), "get_CanonicalVars")]
 static class Untouchable_CanonicalVars_Patch
@@ -42,6 +34,7 @@ static class Untouchable_OnUpgrade_Patch
     {
         if (RevertAnthony.IsVersion("untouchable", "v0.99.1"))
         {
+            // v0.99.1: +3 block (current: +2)
             __instance.DynamicVars.Block.UpgradeValueBy(3m);
             return false;
         }

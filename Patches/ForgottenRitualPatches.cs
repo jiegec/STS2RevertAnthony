@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HarmonyLib;
@@ -6,19 +7,19 @@ using MegaCrit.Sts2.Core.Models.Cards;
 
 namespace RevertAnthony;
 
-// Dirge v0.99.1 vs current
+// ForgottenRitual v0.99.1 vs current
 // v0.99.1: Keywords = (none)
 // Current:  Keywords = Exhaust
 
-[HarmonyPatch(typeof(Dirge), "get_CanonicalKeywords")]
-static class Dirge_CanonicalKeywords_Patch
+[HarmonyPatch(typeof(ForgottenRitual), "get_CanonicalKeywords")]
+static class ForgottenRitual_CanonicalKeywords_Patch
 {
     static bool Prefix(ref IEnumerable<CardKeyword> __result)
     {
-        if (RevertAnthony.IsVersion("dirge", "v0.99.1"))
+        if (RevertAnthony.IsVersion("forgotten-ritual", "v0.99.1"))
         {
-            // v0.99.1: no Exhaust (current: has Exhaust)
-            __result = new CardKeyword[] { };
+            // v0.99.1: no Exhaust keyword (current adds Exhaust)
+            __result = Array.Empty<CardKeyword>();
             return false;
         }
         return true;

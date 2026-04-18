@@ -6,20 +6,22 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace RevertAnthony;
 
-// Hemokinesis v0.99.1 vs current
-// v0.99.1: Damage 14 (current: Damage 15)
+// WroughtInWar v0.99.1 vs current
+// v0.99.1: Damage 7, Forge 5
+// Current:  Damage 7, Forge 7
 
-[HarmonyPatch(typeof(Hemokinesis), "get_CanonicalVars")]
-static class Hemokinesis_CanonicalVars_Patch
+[HarmonyPatch(typeof(WroughtInWar), "get_CanonicalVars")]
+static class WroughtInWar_CanonicalVars_Patch
 {
     static bool Prefix(ref IEnumerable<DynamicVar> __result)
     {
-        if (RevertAnthony.IsVersion("hemokinesis", "v0.99.1"))
+        if (RevertAnthony.IsVersion("wrought-in-war", "v0.99.1"))
         {
+            // v0.99.1: Forge 5 (current: Forge 7)
             __result = new DynamicVar[]
             {
-                new HpLossVar(2m),
-                new DamageVar(14m, ValueProp.Move),
+                new DamageVar(7m, ValueProp.Move),
+                new ForgeVar(5),
             };
             return false;
         }

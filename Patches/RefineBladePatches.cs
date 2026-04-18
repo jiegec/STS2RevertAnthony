@@ -2,24 +2,24 @@ using System.Collections.Generic;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Cards;
-using MegaCrit.Sts2.Core.ValueProps;
 
 namespace RevertAnthony;
 
-// Hemokinesis v0.99.1 vs current
-// v0.99.1: Damage 14 (current: Damage 15)
+// RefineBlade v0.99.1 vs current
+// v0.99.1: Forge 6, Energy 1
+// Current:  Forge 9, Energy 1
 
-[HarmonyPatch(typeof(Hemokinesis), "get_CanonicalVars")]
-static class Hemokinesis_CanonicalVars_Patch
+[HarmonyPatch(typeof(RefineBlade), "get_CanonicalVars")]
+static class RefineBlade_CanonicalVars_Patch
 {
     static bool Prefix(ref IEnumerable<DynamicVar> __result)
     {
-        if (RevertAnthony.IsVersion("hemokinesis", "v0.99.1"))
+        if (RevertAnthony.IsVersion("refine-blade", "v0.99.1"))
         {
             __result = new DynamicVar[]
             {
-                new HpLossVar(2m),
-                new DamageVar(14m, ValueProp.Move),
+                new ForgeVar(6),
+                new EnergyVar(1),
             };
             return false;
         }

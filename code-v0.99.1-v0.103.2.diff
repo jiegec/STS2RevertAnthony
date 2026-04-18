@@ -1,6 +1,6 @@
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Acrobatics.cs MegaCrit/Sts2/Core/Models/Cards/Acrobatics.cs
---- MegaCrit/Sts2/Core/Models/Cards/Acrobatics.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Acrobatics.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Acrobatics.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Acrobatics.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Acrobatics.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Acrobatics.cs
 @@ -7,21 +7,21 @@
  using MegaCrit.Sts2.Core.GameActions.Multiplayer;
  using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -24,9 +24,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Acrobatics.cs MegaCrit/Sts2/Core
  		if (cardModel != null)
  		{
  			await CardCmd.Discard(choiceContext, cardModel);
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Alignment.cs MegaCrit/Sts2/Core/Models/Cards/Alignment.cs
---- MegaCrit/Sts2/Core/Models/Cards/Alignment.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Alignment.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Alignment.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Alignment.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Alignment.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Alignment.cs
 @@ -3,21 +3,21 @@
  using MegaCrit.Sts2.Core.Commands;
  using MegaCrit.Sts2.Core.Entities.Cards;
@@ -50,9 +50,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Alignment.cs MegaCrit/Sts2/Core/
  	{
  	}
  
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Anticipate.cs MegaCrit/Sts2/Core/Models/Cards/Anticipate.cs
---- MegaCrit/Sts2/Core/Models/Cards/Anticipate.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Anticipate.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Anticipate.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Anticipate.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Anticipate.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Anticipate.cs
 @@ -4,30 +4,30 @@
  using MegaCrit.Sts2.Core.Entities.Cards;
  using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -86,9 +86,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Anticipate.cs MegaCrit/Sts2/Core
 +		base.DynamicVars.Dexterity.UpgradeValueBy(1m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Arsenal.cs MegaCrit/Sts2/Core/Models/Cards/Arsenal.cs
---- MegaCrit/Sts2/Core/Models/Cards/Arsenal.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Arsenal.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Arsenal.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Arsenal.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Arsenal.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Arsenal.cs
 @@ -21,13 +21,13 @@
  	}
  
@@ -104,9 +104,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Arsenal.cs MegaCrit/Sts2/Core/Mo
 +		AddKeyword(CardKeyword.Innate);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/BansheesCry.cs MegaCrit/Sts2/Core/Models/Cards/BansheesCry.cs
---- MegaCrit/Sts2/Core/Models/Cards/BansheesCry.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/BansheesCry.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/BansheesCry.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/BansheesCry.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/BansheesCry.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/BansheesCry.cs
 @@ -16,34 +16,34 @@
  {
  	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromKeyword(CardKeyword.Ethereal));
@@ -144,9 +144,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/BansheesCry.cs MegaCrit/Sts2/Cor
  		}
  		if (base.IsClone)
  		{
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Begone.cs MegaCrit/Sts2/Core/Models/Cards/Begone.cs
---- MegaCrit/Sts2/Core/Models/Cards/Begone.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Begone.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Begone.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Begone.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Begone.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Begone.cs
 @@ -1,48 +1,34 @@
 -using System;
  using System.Collections.Generic;
@@ -199,9 +199,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Begone.cs MegaCrit/Sts2/Core/Mod
 -		base.DynamicVars.Damage.UpgradeValueBy(1m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/BelieveInYou.cs MegaCrit/Sts2/Core/Models/Cards/BelieveInYou.cs
---- MegaCrit/Sts2/Core/Models/Cards/BelieveInYou.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/BelieveInYou.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/BelieveInYou.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/BelieveInYou.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/BelieveInYou.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/BelieveInYou.cs
 @@ -8,21 +8,21 @@
  using MegaCrit.Sts2.Core.Localization.DynamicVars;
  
@@ -225,9 +225,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/BelieveInYou.cs MegaCrit/Sts2/Co
  	{
  		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
  		await PlayerCmd.GainEnergy(base.DynamicVars.Energy.IntValue, cardPlay.Target.Player);
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/BladeOfInk.cs MegaCrit/Sts2/Core/Models/Cards/BladeOfInk.cs
---- MegaCrit/Sts2/Core/Models/Cards/BladeOfInk.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/BladeOfInk.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/BladeOfInk.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/BladeOfInk.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/BladeOfInk.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/BladeOfInk.cs
 @@ -1,33 +1,44 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -279,9 +279,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/BladeOfInk.cs MegaCrit/Sts2/Core
 +		base.DynamicVars.Cards.UpgradeValueBy(1m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/BorrowedTime.cs MegaCrit/Sts2/Core/Models/Cards/BorrowedTime.cs
---- MegaCrit/Sts2/Core/Models/Cards/BorrowedTime.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/BorrowedTime.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/BorrowedTime.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/BorrowedTime.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/BorrowedTime.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/BorrowedTime.cs
 @@ -4,41 +4,37 @@
  using MegaCrit.Sts2.Core.Entities.Cards;
  using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -331,9 +331,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/BorrowedTime.cs MegaCrit/Sts2/Co
 +		base.DynamicVars.Energy.UpgradeValueBy(2m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Break.cs MegaCrit/Sts2/Core/Models/Cards/Break.cs
---- MegaCrit/Sts2/Core/Models/Cards/Break.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Break.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Break.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Break.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Break.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Break.cs
 @@ -15,29 +15,29 @@
  {
  	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromPower<VulnerablePower>());
@@ -366,9 +366,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Break.cs MegaCrit/Sts2/Core/Mode
  		base.DynamicVars.Vulnerable.UpgradeValueBy(2m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/BundleOfJoy.cs MegaCrit/Sts2/Core/Models/Cards/BundleOfJoy.cs
---- MegaCrit/Sts2/Core/Models/Cards/BundleOfJoy.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/BundleOfJoy.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/BundleOfJoy.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/BundleOfJoy.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/BundleOfJoy.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/BundleOfJoy.cs
 @@ -9,21 +9,21 @@
  
  namespace MegaCrit.Sts2.Core.Models.Cards;
@@ -392,9 +392,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/BundleOfJoy.cs MegaCrit/Sts2/Cor
  		{
  			await CardPileCmd.AddGeneratedCardToCombat(item, PileType.Hand, addedByPlayer: true);
  		}
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/CelestialMight.cs MegaCrit/Sts2/Core/Models/Cards/CelestialMight.cs
---- MegaCrit/Sts2/Core/Models/Cards/CelestialMight.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/CelestialMight.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/CelestialMight.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/CelestialMight.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/CelestialMight.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/CelestialMight.cs
 @@ -26,13 +26,13 @@
  	{
  		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
@@ -410,9 +410,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/CelestialMight.cs MegaCrit/Sts2/
 +		base.DynamicVars.Repeat.UpgradeValueBy(1m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Charge.cs MegaCrit/Sts2/Core/Models/Cards/Charge.cs
---- MegaCrit/Sts2/Core/Models/Cards/Charge.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Charge.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Charge.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Charge.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Charge.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Charge.cs
 @@ -5,36 +5,36 @@
  using MegaCrit.Sts2.Core.Commands;
  using MegaCrit.Sts2.Core.Entities.Cards;
@@ -452,9 +452,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Charge.cs MegaCrit/Sts2/Core/Mod
  		}
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Cinder.cs MegaCrit/Sts2/Core/Models/Cards/Cinder.cs
---- MegaCrit/Sts2/Core/Models/Cards/Cinder.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Cinder.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Cinder.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Cinder.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Cinder.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Cinder.cs
 @@ -1,55 +1,44 @@
  using System;
  using System.Collections.Generic;
@@ -517,9 +517,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Cinder.cs MegaCrit/Sts2/Core/Mod
 +		base.DynamicVars.Damage.UpgradeValueBy(6m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/CollisionCourse.cs MegaCrit/Sts2/Core/Models/Cards/CollisionCourse.cs
---- MegaCrit/Sts2/Core/Models/Cards/CollisionCourse.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/CollisionCourse.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/CollisionCourse.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/CollisionCourse.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/CollisionCourse.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/CollisionCourse.cs
 @@ -7,32 +7,32 @@
  using MegaCrit.Sts2.Core.HoverTips;
  using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -555,9 +555,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/CollisionCourse.cs MegaCrit/Sts2
 +		base.DynamicVars.Damage.UpgradeValueBy(4m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Colossus.cs MegaCrit/Sts2/Core/Models/Cards/Colossus.cs
---- MegaCrit/Sts2/Core/Models/Cards/Colossus.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Colossus.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Colossus.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Colossus.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Colossus.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Colossus.cs
 @@ -18,21 +18,21 @@
  
  	public override bool GainsBlock => true;
@@ -581,9 +581,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Colossus.cs MegaCrit/Sts2/Core/M
  		await PowerCmd.Apply<ColossusPower>(base.Owner.Creature, base.DynamicVars["Colossus"].BaseValue, base.Owner.Creature, this);
  	}
  
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/CorrosiveWave.cs MegaCrit/Sts2/Core/Models/Cards/CorrosiveWave.cs
---- MegaCrit/Sts2/Core/Models/Cards/CorrosiveWave.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/CorrosiveWave.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/CorrosiveWave.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/CorrosiveWave.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/CorrosiveWave.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/CorrosiveWave.cs
 @@ -6,21 +6,21 @@
  using MegaCrit.Sts2.Core.HoverTips;
  using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -607,9 +607,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/CorrosiveWave.cs MegaCrit/Sts2/C
  
  	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
  	{
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/DanseMacabre.cs MegaCrit/Sts2/Core/Models/Cards/DanseMacabre.cs
---- MegaCrit/Sts2/Core/Models/Cards/DanseMacabre.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/DanseMacabre.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/DanseMacabre.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/DanseMacabre.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/DanseMacabre.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/DanseMacabre.cs
 @@ -6,32 +6,32 @@
  using MegaCrit.Sts2.Core.HoverTips;
  using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -645,9 +645,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/DanseMacabre.cs MegaCrit/Sts2/Co
 +		base.DynamicVars["DanseMacabrePower"].UpgradeValueBy(2m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Debilitate.cs MegaCrit/Sts2/Core/Models/Cards/Debilitate.cs
---- MegaCrit/Sts2/Core/Models/Cards/Debilitate.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Debilitate.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Debilitate.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Debilitate.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Debilitate.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Debilitate.cs
 @@ -14,21 +14,21 @@
  public sealed class Debilitate : CardModel
  {
@@ -671,9 +671,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Debilitate.cs MegaCrit/Sts2/Core
  
  	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
  	{
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/DecisionsDecisions.cs MegaCrit/Sts2/Core/Models/Cards/DecisionsDecisions.cs
---- MegaCrit/Sts2/Core/Models/Cards/DecisionsDecisions.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/DecisionsDecisions.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/DecisionsDecisions.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/DecisionsDecisions.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/DecisionsDecisions.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/DecisionsDecisions.cs
 @@ -23,23 +23,24 @@
  
  	public DecisionsDecisions()
@@ -702,9 +702,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/DecisionsDecisions.cs MegaCrit/S
  		}
  	}
  
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Defy.cs MegaCrit/Sts2/Core/Models/Cards/Defy.cs
---- MegaCrit/Sts2/Core/Models/Cards/Defy.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Defy.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Defy.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Defy.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Defy.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Defy.cs
 @@ -33,14 +33,13 @@
  	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
  	{
@@ -721,9 +721,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Defy.cs MegaCrit/Sts2/Core/Model
 +		base.DynamicVars.Block.UpgradeValueBy(3m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/DeprecatedCard.cs MegaCrit/Sts2/Core/Models/Cards/DeprecatedCard.cs
---- MegaCrit/Sts2/Core/Models/Cards/DeprecatedCard.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/DeprecatedCard.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/DeprecatedCard.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/DeprecatedCard.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/DeprecatedCard.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/DeprecatedCard.cs
 @@ -1,16 +1,29 @@
  using System.Collections.Generic;
 +using System.Threading.Tasks;
@@ -756,9 +756,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/DeprecatedCard.cs MegaCrit/Sts2/
 +		}
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Dirge.cs MegaCrit/Sts2/Core/Models/Cards/Dirge.cs
---- MegaCrit/Sts2/Core/Models/Cards/Dirge.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Dirge.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Dirge.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Dirge.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Dirge.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Dirge.cs
 @@ -6,20 +6,22 @@
  using MegaCrit.Sts2.Core.GameActions.Multiplayer;
  using MegaCrit.Sts2.Core.HoverTips;
@@ -782,9 +782,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Dirge.cs MegaCrit/Sts2/Core/Mode
  
  	public Dirge()
  		: base(0, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Discovery.cs MegaCrit/Sts2/Core/Models/Cards/Discovery.cs
---- MegaCrit/Sts2/Core/Models/Cards/Discovery.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Discovery.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Discovery.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Discovery.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Discovery.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Discovery.cs
 @@ -26,21 +26,21 @@
  		{
  			List<CardModel> cards = CardFactory.GetDistinctForCombat(base.Owner, base.Owner.Character.CardPool.GetUnlockedCards(base.Owner.UnlockState, base.Owner.RunState.CardMultiplayerConstraint), 3, base.Owner.RunState.Rng.CombatCardGeneration).ToList();
@@ -808,9 +808,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Discovery.cs MegaCrit/Sts2/Core/
  	}
  
  	public void MockSelectedCard(CardModel card)
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Dominate.cs MegaCrit/Sts2/Core/Models/Cards/Dominate.cs
---- MegaCrit/Sts2/Core/Models/Cards/Dominate.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Dominate.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Dominate.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Dominate.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Dominate.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Dominate.cs
 @@ -1,48 +1,49 @@
  using System;
  using System.Collections.Generic;
@@ -869,9 +869,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Dominate.cs MegaCrit/Sts2/Core/M
 +		base.DynamicVars["VulnerablePower"].UpgradeValueBy(1m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/EternalArmor.cs MegaCrit/Sts2/Core/Models/Cards/EternalArmor.cs
---- MegaCrit/Sts2/Core/Models/Cards/EternalArmor.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/EternalArmor.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/EternalArmor.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/EternalArmor.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/EternalArmor.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/EternalArmor.cs
 @@ -10,27 +10,27 @@
  namespace MegaCrit.Sts2.Core.Models.Cards;
  
@@ -902,9 +902,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/EternalArmor.cs MegaCrit/Sts2/Co
 +		base.DynamicVars["PlatingPower"].UpgradeValueBy(3m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/ExpectAFight.cs MegaCrit/Sts2/Core/Models/Cards/ExpectAFight.cs
---- MegaCrit/Sts2/Core/Models/Cards/ExpectAFight.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/ExpectAFight.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/ExpectAFight.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/ExpectAFight.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/ExpectAFight.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/ExpectAFight.cs
 @@ -1,42 +1,44 @@
  using System.Collections.Generic;
  using System.Linq;
@@ -952,9 +952,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/ExpectAFight.cs MegaCrit/Sts2/Co
  		base.EnergyCost.UpgradeBy(-1);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/FallingStar.cs MegaCrit/Sts2/Core/Models/Cards/FallingStar.cs
---- MegaCrit/Sts2/Core/Models/Cards/FallingStar.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/FallingStar.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/FallingStar.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/FallingStar.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/FallingStar.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/FallingStar.cs
 @@ -10,21 +10,21 @@
  using MegaCrit.Sts2.Core.ValueProps;
  
@@ -978,9 +978,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/FallingStar.cs MegaCrit/Sts2/Cor
  		HoverTipFactory.FromPower<VulnerablePower>()
  	});
  
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/FightMe.cs MegaCrit/Sts2/Core/Models/Cards/FightMe.cs
---- MegaCrit/Sts2/Core/Models/Cards/FightMe.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/FightMe.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/FightMe.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/FightMe.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/FightMe.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/FightMe.cs
 @@ -14,21 +14,21 @@
  public sealed class FightMe : CardModel
  {
@@ -1004,9 +1004,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/FightMe.cs MegaCrit/Sts2/Core/Mo
  
  	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
  	{
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/FlickFlack.cs MegaCrit/Sts2/Core/Models/Cards/FlickFlack.cs
---- MegaCrit/Sts2/Core/Models/Cards/FlickFlack.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/FlickFlack.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/FlickFlack.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/FlickFlack.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/FlickFlack.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/FlickFlack.cs
 @@ -3,21 +3,21 @@
  using MegaCrit.Sts2.Core.Commands;
  using MegaCrit.Sts2.Core.Entities.Cards;
@@ -1030,9 +1030,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/FlickFlack.cs MegaCrit/Sts2/Core
  
  	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
  	{
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/FollowThrough.cs MegaCrit/Sts2/Core/Models/Cards/FollowThrough.cs
---- MegaCrit/Sts2/Core/Models/Cards/FollowThrough.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/FollowThrough.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/FollowThrough.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/FollowThrough.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/FollowThrough.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/FollowThrough.cs
 @@ -1,62 +1,53 @@
 +using System;
  using System.Collections.Generic;
@@ -1113,9 +1113,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/FollowThrough.cs MegaCrit/Sts2/C
 -		base.DynamicVars.Weak.UpgradeValueBy(1m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Folly.cs MegaCrit/Sts2/Core/Models/Cards/Folly.cs
---- MegaCrit/Sts2/Core/Models/Cards/Folly.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Folly.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Folly.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Folly.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Folly.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Folly.cs
 @@ -2,22 +2,23 @@
  using MegaCrit.Sts2.Core.Entities.Cards;
  
@@ -1142,9 +1142,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Folly.cs MegaCrit/Sts2/Core/Mode
  	{
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/ForgottenRitual.cs MegaCrit/Sts2/Core/Models/Cards/ForgottenRitual.cs
---- MegaCrit/Sts2/Core/Models/Cards/ForgottenRitual.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/ForgottenRitual.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/ForgottenRitual.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/ForgottenRitual.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/ForgottenRitual.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/ForgottenRitual.cs
 @@ -11,20 +11,22 @@
  using MegaCrit.Sts2.Core.Localization.DynamicVars;
  using MegaCrit.Sts2.Core.Nodes.Rooms;
@@ -1168,9 +1168,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/ForgottenRitual.cs MegaCrit/Sts2
  
  	protected override IEnumerable<string> ExtraRunAssetPaths => NGroundFireVfx.AssetPaths;
  
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/GatherLight.cs MegaCrit/Sts2/Core/Models/Cards/GatherLight.cs
---- MegaCrit/Sts2/Core/Models/Cards/GatherLight.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/GatherLight.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/GatherLight.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/GatherLight.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/GatherLight.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/GatherLight.cs
 @@ -7,21 +7,21 @@
  using MegaCrit.Sts2.Core.ValueProps;
  
@@ -1194,9 +1194,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/GatherLight.cs MegaCrit/Sts2/Cor
  
  	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
  	{
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Glitterstream.cs MegaCrit/Sts2/Core/Models/Cards/Glitterstream.cs
---- MegaCrit/Sts2/Core/Models/Cards/Glitterstream.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Glitterstream.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Glitterstream.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Glitterstream.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Glitterstream.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Glitterstream.cs
 @@ -12,21 +12,21 @@
  
  public sealed class Glitterstream : CardModel
@@ -1220,9 +1220,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Glitterstream.cs MegaCrit/Sts2/C
  	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
  	{
  		await CreatureCmd.TriggerAnim(base.Owner.Creature, "Cast", base.Owner.Character.CastAnimDelay);
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Glow.cs MegaCrit/Sts2/Core/Models/Cards/Glow.cs
---- MegaCrit/Sts2/Core/Models/Cards/Glow.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Glow.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Glow.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Glow.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Glow.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Glow.cs
 @@ -1,34 +1,36 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -1261,9 +1261,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Glow.cs MegaCrit/Sts2/Core/Model
  		base.DynamicVars.Stars.UpgradeValueBy(1m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/GrandFinale.cs MegaCrit/Sts2/Core/Models/Cards/GrandFinale.cs
---- MegaCrit/Sts2/Core/Models/Cards/GrandFinale.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/GrandFinale.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/GrandFinale.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/GrandFinale.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/GrandFinale.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/GrandFinale.cs
 @@ -5,31 +5,31 @@
  using MegaCrit.Sts2.Core.GameActions.Multiplayer;
  using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -1298,9 +1298,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/GrandFinale.cs MegaCrit/Sts2/Cor
 +		base.DynamicVars.Damage.UpgradeValueBy(15m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Grapple.cs MegaCrit/Sts2/Core/Models/Cards/Grapple.cs
---- MegaCrit/Sts2/Core/Models/Cards/Grapple.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Grapple.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Grapple.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Grapple.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Grapple.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Grapple.cs
 @@ -1,40 +0,0 @@
 -using System;
 -using System.Collections.Generic;
@@ -1342,9 +1342,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Grapple.cs MegaCrit/Sts2/Core/Mo
 -		base.DynamicVars["GrapplePower"].UpgradeValueBy(2m);
 -	}
 -}
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/GraveWarden.cs MegaCrit/Sts2/Core/Models/Cards/GraveWarden.cs
---- MegaCrit/Sts2/Core/Models/Cards/GraveWarden.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/GraveWarden.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/GraveWarden.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/GraveWarden.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/GraveWarden.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/GraveWarden.cs
 @@ -1,49 +1,40 @@
  using System.Collections.Generic;
 -using System.Linq;
@@ -1398,9 +1398,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/GraveWarden.cs MegaCrit/Sts2/Cor
 +		base.DynamicVars.Block.UpgradeValueBy(3m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Guards.cs MegaCrit/Sts2/Core/Models/Cards/Guards.cs
---- MegaCrit/Sts2/Core/Models/Cards/Guards.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Guards.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Guards.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Guards.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Guards.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Guards.cs
 @@ -16,21 +16,21 @@
  	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromCard<MinionSacrifice>(base.IsUpgraded));
  
@@ -1424,9 +1424,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Guards.cs MegaCrit/Sts2/Core/Mod
  			await CardCmd.Transform(item, cardModel);
  		}
  	}
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/GuidingStar.cs MegaCrit/Sts2/Core/Models/Cards/GuidingStar.cs
---- MegaCrit/Sts2/Core/Models/Cards/GuidingStar.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/GuidingStar.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/GuidingStar.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/GuidingStar.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/GuidingStar.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/GuidingStar.cs
 @@ -1,20 +1,19 @@
  using System;
  using System.Collections.Generic;
@@ -1469,9 +1469,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/GuidingStar.cs MegaCrit/Sts2/Cor
  		base.DynamicVars.Cards.UpgradeValueBy(1m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Hang.cs MegaCrit/Sts2/Core/Models/Cards/Hang.cs
---- MegaCrit/Sts2/Core/Models/Cards/Hang.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Hang.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Hang.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Hang.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Hang.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Hang.cs
 @@ -20,22 +20,22 @@
  	}
  
@@ -1497,9 +1497,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Hang.cs MegaCrit/Sts2/Core/Model
  		base.DynamicVars.Damage.UpgradeValueBy(3m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/HeirloomHammer.cs MegaCrit/Sts2/Core/Models/Cards/HeirloomHammer.cs
---- MegaCrit/Sts2/Core/Models/Cards/HeirloomHammer.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/HeirloomHammer.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/HeirloomHammer.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/HeirloomHammer.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/HeirloomHammer.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/HeirloomHammer.cs
 @@ -8,21 +8,21 @@
  using MegaCrit.Sts2.Core.GameActions.Multiplayer;
  using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -1523,9 +1523,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/HeirloomHammer.cs MegaCrit/Sts2/
  
  	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
  	{
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Hemokinesis.cs MegaCrit/Sts2/Core/Models/Cards/Hemokinesis.cs
---- MegaCrit/Sts2/Core/Models/Cards/Hemokinesis.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Hemokinesis.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Hemokinesis.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Hemokinesis.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Hemokinesis.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Hemokinesis.cs
 @@ -7,21 +7,21 @@
  using MegaCrit.Sts2.Core.Localization.DynamicVars;
  using MegaCrit.Sts2.Core.ValueProps;
@@ -1549,9 +1549,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Hemokinesis.cs MegaCrit/Sts2/Cor
  	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
  	{
  		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/HiddenGem.cs MegaCrit/Sts2/Core/Models/Cards/HiddenGem.cs
---- MegaCrit/Sts2/Core/Models/Cards/HiddenGem.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/HiddenGem.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/HiddenGem.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/HiddenGem.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/HiddenGem.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/HiddenGem.cs
 @@ -6,20 +6,22 @@
  using MegaCrit.Sts2.Core.GameActions.Multiplayer;
  using MegaCrit.Sts2.Core.HoverTips;
@@ -1598,9 +1598,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/HiddenGem.cs MegaCrit/Sts2/Core/
  		CardModel cardModel = base.Owner.RunState.Rng.CombatCardSelection.NextItem(items);
  		if (cardModel != null)
  		{
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Hotfix.cs MegaCrit/Sts2/Core/Models/Cards/Hotfix.cs
---- MegaCrit/Sts2/Core/Models/Cards/Hotfix.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Hotfix.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Hotfix.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Hotfix.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Hotfix.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Hotfix.cs
 @@ -6,28 +6,30 @@
  using MegaCrit.Sts2.Core.HoverTips;
  using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -1633,9 +1633,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Hotfix.cs MegaCrit/Sts2/Core/Mod
 +		RemoveKeyword(CardKeyword.Exhaust);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/HuddleUp.cs MegaCrit/Sts2/Core/Models/Cards/HuddleUp.cs
---- MegaCrit/Sts2/Core/Models/Cards/HuddleUp.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/HuddleUp.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/HuddleUp.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/HuddleUp.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/HuddleUp.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/HuddleUp.cs
 @@ -8,20 +8,22 @@
  using MegaCrit.Sts2.Core.Localization.DynamicVars;
  
@@ -1659,9 +1659,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/HuddleUp.cs MegaCrit/Sts2/Core/M
  		IEnumerable<Creature> enumerable = from c in base.CombatState.GetTeammatesOf(base.Owner.Creature)
  			where c != null && c.IsAlive && c.IsPlayer
  			select c;
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/IAmInvincible.cs MegaCrit/Sts2/Core/Models/Cards/IAmInvincible.cs
---- MegaCrit/Sts2/Core/Models/Cards/IAmInvincible.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/IAmInvincible.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/IAmInvincible.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/IAmInvincible.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/IAmInvincible.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/IAmInvincible.cs
 @@ -7,21 +7,21 @@
  using MegaCrit.Sts2.Core.GameActions.Multiplayer;
  using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -1685,9 +1685,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/IAmInvincible.cs MegaCrit/Sts2/C
  	{
  		await CreatureCmd.GainBlock(base.Owner.Creature, base.DynamicVars.Block, cardPlay);
  	}
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/KinglyKick.cs MegaCrit/Sts2/Core/Models/Cards/KinglyKick.cs
---- MegaCrit/Sts2/Core/Models/Cards/KinglyKick.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/KinglyKick.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/KinglyKick.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/KinglyKick.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/KinglyKick.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/KinglyKick.cs
 @@ -4,38 +4,38 @@
  using MegaCrit.Sts2.Core.Commands;
  using MegaCrit.Sts2.Core.Entities.Cards;
@@ -1729,9 +1729,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/KinglyKick.cs MegaCrit/Sts2/Core
  		}
  		base.EnergyCost.AddThisCombat(-1);
  		return Task.CompletedTask;
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/KinglyPunch.cs MegaCrit/Sts2/Core/Models/Cards/KinglyPunch.cs
---- MegaCrit/Sts2/Core/Models/Cards/KinglyPunch.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/KinglyPunch.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/KinglyPunch.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/KinglyPunch.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/KinglyPunch.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/KinglyPunch.cs
 @@ -24,21 +24,21 @@
  		set
  		{
@@ -1776,9 +1776,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/KinglyPunch.cs MegaCrit/Sts2/Cor
  		base.DynamicVars.Damage.BaseValue += ExtraDamage;
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/LeadingStrike.cs MegaCrit/Sts2/Core/Models/Cards/LeadingStrike.cs
---- MegaCrit/Sts2/Core/Models/Cards/LeadingStrike.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/LeadingStrike.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/LeadingStrike.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/LeadingStrike.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/LeadingStrike.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/LeadingStrike.cs
 @@ -11,22 +11,22 @@
  namespace MegaCrit.Sts2.Core.Models.Cards;
  
@@ -1804,9 +1804,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/LeadingStrike.cs MegaCrit/Sts2/C
  	}
  
  	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/MadScience.cs MegaCrit/Sts2/Core/Models/Cards/MadScience.cs
---- MegaCrit/Sts2/Core/Models/Cards/MadScience.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/MadScience.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/MadScience.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/MadScience.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/MadScience.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/MadScience.cs
 @@ -273,21 +273,21 @@
  			break;
  		case TinkerTime.RiderEffect.Energized:
@@ -1830,9 +1830,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/MadScience.cs MegaCrit/Sts2/Core
  
  	public void MockChaosCard(CardModel card)
  	{
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/MementoMori.cs MegaCrit/Sts2/Core/Models/Cards/MementoMori.cs
---- MegaCrit/Sts2/Core/Models/Cards/MementoMori.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/MementoMori.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/MementoMori.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/MementoMori.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/MementoMori.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/MementoMori.cs
 @@ -10,21 +10,21 @@
  using MegaCrit.Sts2.Core.GameActions.Multiplayer;
  using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -1856,9 +1856,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/MementoMori.cs MegaCrit/Sts2/Cor
  	}
  
  	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/MinionDiveBomb.cs MegaCrit/Sts2/Core/Models/Cards/MinionDiveBomb.cs
---- MegaCrit/Sts2/Core/Models/Cards/MinionDiveBomb.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/MinionDiveBomb.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/MinionDiveBomb.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/MinionDiveBomb.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/MinionDiveBomb.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/MinionDiveBomb.cs
 @@ -12,21 +12,21 @@
  
  public sealed class MinionDiveBomb : CardModel
@@ -1882,9 +1882,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/MinionDiveBomb.cs MegaCrit/Sts2/
  			.Targeting(cardPlay.Target)
  			.WithAttackerFx(() => NMinionDiveBombVfx.Create(base.Owner.Creature, cardPlay.Target))
  			.Execute(choiceContext);
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/MinionStrike.cs MegaCrit/Sts2/Core/Models/Cards/MinionStrike.cs
---- MegaCrit/Sts2/Core/Models/Cards/MinionStrike.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/MinionStrike.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/MinionStrike.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/MinionStrike.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/MinionStrike.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/MinionStrike.cs
 @@ -14,21 +14,21 @@
  	protected override HashSet<CardTag> CanonicalTags => new HashSet<CardTag>
  	{
@@ -1908,9 +1908,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/MinionStrike.cs MegaCrit/Sts2/Co
  
  	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
  	{
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Mocks/MockSkillCard.cs MegaCrit/Sts2/Core/Models/Cards/Mocks/MockSkillCard.cs
---- MegaCrit/Sts2/Core/Models/Cards/Mocks/MockSkillCard.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Mocks/MockSkillCard.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Mocks/MockSkillCard.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Mocks/MockSkillCard.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Mocks/MockSkillCard.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Mocks/MockSkillCard.cs
 @@ -17,48 +17,59 @@
  {
  	private struct PowerApplication
@@ -2087,9 +2087,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Mocks/MockSkillCard.cs MegaCrit/
  
  	protected override void OnUpgrade()
  	{
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/NeowsFury.cs MegaCrit/Sts2/Core/Models/Cards/NeowsFury.cs
---- MegaCrit/Sts2/Core/Models/Cards/NeowsFury.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/NeowsFury.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/NeowsFury.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/NeowsFury.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/NeowsFury.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/NeowsFury.cs
 @@ -36,12 +36,13 @@
  		IEnumerable<CardModel> enumerable = PileType.Discard.GetPile(base.Owner).Cards.TakeRandom(base.DynamicVars.Cards.IntValue, base.Owner.RunState.Rng.CombatCardSelection);
  		foreach (CardModel item in enumerable)
@@ -2104,9 +2104,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/NeowsFury.cs MegaCrit/Sts2/Core/
 +		base.DynamicVars.Cards.UpgradeValueBy(1m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/NotYet.cs MegaCrit/Sts2/Core/Models/Cards/NotYet.cs
---- MegaCrit/Sts2/Core/Models/Cards/NotYet.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/NotYet.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/NotYet.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/NotYet.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/NotYet.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/NotYet.cs
 @@ -0,0 +1,33 @@
 +using System.Collections.Generic;
 +using System.Threading.Tasks;
@@ -2141,9 +2141,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/NotYet.cs MegaCrit/Sts2/Core/Mod
 +		base.DynamicVars.Heal.UpgradeValueBy(3m);
 +	}
 +}
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Parry.cs MegaCrit/Sts2/Core/Models/Cards/Parry.cs
---- MegaCrit/Sts2/Core/Models/Cards/Parry.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Parry.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Parry.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Parry.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Parry.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Parry.cs
 @@ -10,28 +10,28 @@
  namespace MegaCrit.Sts2.Core.Models.Cards;
  
@@ -2175,9 +2175,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Parry.cs MegaCrit/Sts2/Core/Mode
 +		base.DynamicVars["ParryPower"].UpgradeValueBy(4m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Patter.cs MegaCrit/Sts2/Core/Models/Cards/Patter.cs
---- MegaCrit/Sts2/Core/Models/Cards/Patter.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Patter.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Patter.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Patter.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Patter.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Patter.cs
 @@ -9,21 +9,21 @@
  using MegaCrit.Sts2.Core.ValueProps;
  
@@ -2201,9 +2201,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Patter.cs MegaCrit/Sts2/Core/Mod
  	{
  	}
  
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Pinpoint.cs MegaCrit/Sts2/Core/Models/Cards/Pinpoint.cs
---- MegaCrit/Sts2/Core/Models/Cards/Pinpoint.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Pinpoint.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Pinpoint.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Pinpoint.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Pinpoint.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Pinpoint.cs
 @@ -7,38 +7,38 @@
  using MegaCrit.Sts2.Core.Commands;
  using MegaCrit.Sts2.Core.Entities.Cards;
@@ -2245,9 +2245,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Pinpoint.cs MegaCrit/Sts2/Core/M
  		}
  		if (base.IsClone)
  		{
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Production.cs MegaCrit/Sts2/Core/Models/Cards/Production.cs
---- MegaCrit/Sts2/Core/Models/Cards/Production.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Production.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Production.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Production.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Production.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Production.cs
 @@ -21,13 +21,13 @@
  	{
  	}
@@ -2263,9 +2263,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Production.cs MegaCrit/Sts2/Core
 +		base.DynamicVars.Energy.UpgradeValueBy(1m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Radiate.cs MegaCrit/Sts2/Core/Models/Cards/Radiate.cs
---- MegaCrit/Sts2/Core/Models/Cards/Radiate.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Radiate.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Radiate.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Radiate.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Radiate.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Radiate.cs
 @@ -16,21 +16,21 @@
  {
  	private const string _calculatedHitsKey = "CalculatedHits";
@@ -2289,9 +2289,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Radiate.cs MegaCrit/Sts2/Core/Mo
  
  	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
  	{
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/RefineBlade.cs MegaCrit/Sts2/Core/Models/Cards/RefineBlade.cs
---- MegaCrit/Sts2/Core/Models/Cards/RefineBlade.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/RefineBlade.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/RefineBlade.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/RefineBlade.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/RefineBlade.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/RefineBlade.cs
 @@ -6,21 +6,21 @@
  using MegaCrit.Sts2.Core.HoverTips;
  using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -2315,9 +2315,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/RefineBlade.cs MegaCrit/Sts2/Cor
  	{
  	}
  
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/RipAndTear.cs MegaCrit/Sts2/Core/Models/Cards/RipAndTear.cs
---- MegaCrit/Sts2/Core/Models/Cards/RipAndTear.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/RipAndTear.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/RipAndTear.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/RipAndTear.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/RipAndTear.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/RipAndTear.cs
 @@ -11,21 +11,21 @@
  
  namespace MegaCrit.Sts2.Core.Models.Cards;
@@ -2341,9 +2341,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/RipAndTear.cs MegaCrit/Sts2/Core
  			.WithHitVfxNode((Creature t) => NScratchVfx.Create(t, goingRight: true))
  			.Execute(choiceContext);
  	}
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/RocketPunch.cs MegaCrit/Sts2/Core/Models/Cards/RocketPunch.cs
---- MegaCrit/Sts2/Core/Models/Cards/RocketPunch.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/RocketPunch.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/RocketPunch.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/RocketPunch.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/RocketPunch.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/RocketPunch.cs
 @@ -26,28 +26,32 @@
  	{
  		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
@@ -2378,9 +2378,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/RocketPunch.cs MegaCrit/Sts2/Cor
  		base.DynamicVars.Cards.UpgradeValueBy(1m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/SculptingStrike.cs MegaCrit/Sts2/Core/Models/Cards/SculptingStrike.cs
---- MegaCrit/Sts2/Core/Models/Cards/SculptingStrike.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/SculptingStrike.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/SculptingStrike.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/SculptingStrike.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/SculptingStrike.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/SculptingStrike.cs
 @@ -11,21 +11,21 @@
  using MegaCrit.Sts2.Core.ValueProps;
  
@@ -2404,9 +2404,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/SculptingStrike.cs MegaCrit/Sts2
  	{
  		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
  		await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).FromCard(this).Targeting(cardPlay.Target)
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Seance.cs MegaCrit/Sts2/Core/Models/Cards/Seance.cs
---- MegaCrit/Sts2/Core/Models/Cards/Seance.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Seance.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Seance.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Seance.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Seance.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Seance.cs
 @@ -9,34 +9,35 @@
  using MegaCrit.Sts2.Core.Localization.DynamicVars;
  
@@ -2450,9 +2450,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Seance.cs MegaCrit/Sts2/Core/Mod
 +		base.EnergyCost.UpgradeBy(-1);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/SeekerStrike.cs MegaCrit/Sts2/Core/Models/Cards/SeekerStrike.cs
---- MegaCrit/Sts2/Core/Models/Cards/SeekerStrike.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/SeekerStrike.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/SeekerStrike.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/SeekerStrike.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/SeekerStrike.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/SeekerStrike.cs
 @@ -11,21 +11,21 @@
  using MegaCrit.Sts2.Core.ValueProps;
  
@@ -2476,9 +2476,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/SeekerStrike.cs MegaCrit/Sts2/Co
  
  	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
  	{
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/SeekingEdge.cs MegaCrit/Sts2/Core/Models/Cards/SeekingEdge.cs
---- MegaCrit/Sts2/Core/Models/Cards/SeekingEdge.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/SeekingEdge.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/SeekingEdge.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/SeekingEdge.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/SeekingEdge.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/SeekingEdge.cs
 @@ -16,19 +16,19 @@
  	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new ForgeVar(7));
  
@@ -2500,9 +2500,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/SeekingEdge.cs MegaCrit/Sts2/Cor
  		base.DynamicVars.Forge.UpgradeValueBy(4m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/SerpentForm.cs MegaCrit/Sts2/Core/Models/Cards/SerpentForm.cs
---- MegaCrit/Sts2/Core/Models/Cards/SerpentForm.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/SerpentForm.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/SerpentForm.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/SerpentForm.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/SerpentForm.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/SerpentForm.cs
 @@ -18,13 +18,13 @@
  	}
  
@@ -2518,9 +2518,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/SerpentForm.cs MegaCrit/Sts2/Cor
 +		base.DynamicVars["SerpentFormPower"].UpgradeValueBy(2m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Shiv.cs MegaCrit/Sts2/Core/Models/Cards/Shiv.cs
---- MegaCrit/Sts2/Core/Models/Cards/Shiv.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Shiv.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Shiv.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Shiv.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Shiv.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Shiv.cs
 @@ -27,35 +27,29 @@
  			if (!HasFanOfKnives)
  			{
@@ -2559,9 +2559,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Shiv.cs MegaCrit/Sts2/Core/Model
  	public Shiv()
  		: base(0, CardType.Attack, CardRarity.Token, TargetType.AnyEnemy)
  	{
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Skewer.cs MegaCrit/Sts2/Core/Models/Cards/Skewer.cs
---- MegaCrit/Sts2/Core/Models/Cards/Skewer.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Skewer.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Skewer.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Skewer.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Skewer.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Skewer.cs
 @@ -8,21 +8,21 @@
  using MegaCrit.Sts2.Core.Localization.DynamicVars;
  using MegaCrit.Sts2.Core.Nodes.Vfx;
@@ -2585,9 +2585,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Skewer.cs MegaCrit/Sts2/Core/Mod
  	{
  		ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
  		await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue).WithHitCount(ResolveEnergyXValue()).FromCard(this)
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/SolarStrike.cs MegaCrit/Sts2/Core/Models/Cards/SolarStrike.cs
---- MegaCrit/Sts2/Core/Models/Cards/SolarStrike.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/SolarStrike.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/SolarStrike.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/SolarStrike.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/SolarStrike.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/SolarStrike.cs
 @@ -8,21 +8,21 @@
  using MegaCrit.Sts2.Core.ValueProps;
  
@@ -2611,9 +2611,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/SolarStrike.cs MegaCrit/Sts2/Cor
  
  	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
  	{
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/SovereignBlade.cs MegaCrit/Sts2/Core/Models/Cards/SovereignBlade.cs
---- MegaCrit/Sts2/Core/Models/Cards/SovereignBlade.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/SovereignBlade.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/SovereignBlade.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/SovereignBlade.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/SovereignBlade.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/SovereignBlade.cs
 @@ -1,15 +1,14 @@
  using System;
  using System.Collections.Generic;
@@ -2653,9 +2653,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/SovereignBlade.cs MegaCrit/Sts2/
  	public SovereignBlade()
  		: base(2, CardType.Attack, CardRarity.Token, TargetType.AnyEnemy)
  	{
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Speedster.cs MegaCrit/Sts2/Core/Models/Cards/Speedster.cs
---- MegaCrit/Sts2/Core/Models/Cards/Speedster.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Speedster.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Speedster.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Speedster.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Speedster.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Speedster.cs
 @@ -17,13 +17,13 @@
  	{
  	}
@@ -2671,9 +2671,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Speedster.cs MegaCrit/Sts2/Core/
 +		AddKeyword(CardKeyword.Innate);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Spite.cs MegaCrit/Sts2/Core/Models/Cards/Spite.cs
---- MegaCrit/Sts2/Core/Models/Cards/Spite.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Spite.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Spite.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Spite.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Spite.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Spite.cs
 @@ -1,48 +1,50 @@
  using System;
  using System.Collections.Generic;
@@ -2736,9 +2736,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Spite.cs MegaCrit/Sts2/Core/Mode
 +		return CombatManager.Instance.History.Entries.OfType<DamageReceivedEntry>().Any((DamageReceivedEntry e) => e.HappenedThisTurn(creature.CombatState) && e.Receiver == creature && e.Result.UnblockedDamage > 0);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/SpoilsOfBattle.cs MegaCrit/Sts2/Core/Models/Cards/SpoilsOfBattle.cs
---- MegaCrit/Sts2/Core/Models/Cards/SpoilsOfBattle.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/SpoilsOfBattle.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/SpoilsOfBattle.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/SpoilsOfBattle.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/SpoilsOfBattle.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/SpoilsOfBattle.cs
 @@ -3,29 +3,34 @@
  using MegaCrit.Sts2.Core.Commands;
  using MegaCrit.Sts2.Core.Entities.Cards;
@@ -2776,9 +2776,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/SpoilsOfBattle.cs MegaCrit/Sts2/
 +		base.DynamicVars.Forge.UpgradeValueBy(3m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Stoke.cs MegaCrit/Sts2/Core/Models/Cards/Stoke.cs
---- MegaCrit/Sts2/Core/Models/Cards/Stoke.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Stoke.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Stoke.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Stoke.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Stoke.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Stoke.cs
 @@ -1,35 +1,35 @@
  using System.Collections.Generic;
  using System.Linq;
@@ -2824,9 +2824,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Stoke.cs MegaCrit/Sts2/Core/Mode
 +		await CardPileCmd.AddGeneratedCardsToCombat(cards, PileType.Hand, addedByPlayer: true);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Tremble.cs MegaCrit/Sts2/Core/Models/Cards/Tremble.cs
---- MegaCrit/Sts2/Core/Models/Cards/Tremble.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Tremble.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Tremble.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Tremble.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Tremble.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Tremble.cs
 @@ -5,21 +5,23 @@
  using MegaCrit.Sts2.Core.Entities.Cards;
  using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -2852,9 +2852,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Tremble.cs MegaCrit/Sts2/Core/Mo
  
  	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
  	{
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Untouchable.cs MegaCrit/Sts2/Core/Models/Cards/Untouchable.cs
---- MegaCrit/Sts2/Core/Models/Cards/Untouchable.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Untouchable.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Untouchable.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Untouchable.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Untouchable.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Untouchable.cs
 @@ -5,29 +5,29 @@
  using MegaCrit.Sts2.Core.GameActions.Multiplayer;
  using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -2887,9 +2887,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Untouchable.cs MegaCrit/Sts2/Cor
 +		base.DynamicVars.Block.UpgradeValueBy(2m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/VoidForm.cs MegaCrit/Sts2/Core/Models/Cards/VoidForm.cs
---- MegaCrit/Sts2/Core/Models/Cards/VoidForm.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/VoidForm.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/VoidForm.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/VoidForm.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/VoidForm.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/VoidForm.cs
 @@ -3,29 +3,31 @@
  using MegaCrit.Sts2.Core.Commands;
  using MegaCrit.Sts2.Core.Entities.Cards;
@@ -2923,9 +2923,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/VoidForm.cs MegaCrit/Sts2/Core/M
 +		RemoveKeyword(CardKeyword.Ethereal);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Voltaic.cs MegaCrit/Sts2/Core/Models/Cards/Voltaic.cs
---- MegaCrit/Sts2/Core/Models/Cards/Voltaic.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/Voltaic.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Voltaic.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Voltaic.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/Voltaic.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/Voltaic.cs
 @@ -26,21 +26,21 @@
  	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[3]
  	{
@@ -2949,9 +2949,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/Voltaic.cs MegaCrit/Sts2/Core/Mo
  		for (int i = 0; i < lightningChanneledCount; i++)
  		{
  			await OrbCmd.Channel<LightningOrb>(choiceContext, base.Owner);
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/WroughtInWar.cs MegaCrit/Sts2/Core/Models/Cards/WroughtInWar.cs
---- MegaCrit/Sts2/Core/Models/Cards/WroughtInWar.cs
-+++ MegaCrit/Sts2/Core/Models/Cards/WroughtInWar.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Cards/WroughtInWar.cs v0.103.2/MegaCrit/Sts2/Core/Models/Cards/WroughtInWar.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Cards/WroughtInWar.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Cards/WroughtInWar.cs
 @@ -8,21 +8,21 @@
  using MegaCrit.Sts2.Core.Localization.DynamicVars;
  using MegaCrit.Sts2.Core.ValueProps;
@@ -2975,9 +2975,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Cards/WroughtInWar.cs MegaCrit/Sts2/Co
  	}
  
  	protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/ArsenalPower.cs MegaCrit/Sts2/Core/Models/Powers/ArsenalPower.cs
---- MegaCrit/Sts2/Core/Models/Powers/ArsenalPower.cs
-+++ MegaCrit/Sts2/Core/Models/Powers/ArsenalPower.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/ArsenalPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/Powers/ArsenalPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/ArsenalPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Powers/ArsenalPower.cs
 @@ -1,27 +1,25 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -3008,9 +3008,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/ArsenalPower.cs MegaCrit/Sts2/C
  		}
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/BeaconOfHopePower.cs MegaCrit/Sts2/Core/Models/Powers/BeaconOfHopePower.cs
---- MegaCrit/Sts2/Core/Models/Powers/BeaconOfHopePower.cs
-+++ MegaCrit/Sts2/Core/Models/Powers/BeaconOfHopePower.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/BeaconOfHopePower.cs v0.103.2/MegaCrit/Sts2/Core/Models/Powers/BeaconOfHopePower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/BeaconOfHopePower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Powers/BeaconOfHopePower.cs
 @@ -7,47 +7,47 @@
  using MegaCrit.Sts2.Core.ValueProps;
  
@@ -3064,9 +3064,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/BeaconOfHopePower.cs MegaCrit/S
  		HasAlreadyBeenGivenBlock = false;
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/BladeOfInkPower.cs MegaCrit/Sts2/Core/Models/Powers/BladeOfInkPower.cs
---- MegaCrit/Sts2/Core/Models/Powers/BladeOfInkPower.cs
-+++ MegaCrit/Sts2/Core/Models/Powers/BladeOfInkPower.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/BladeOfInkPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/Powers/BladeOfInkPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/BladeOfInkPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Powers/BladeOfInkPower.cs
 @@ -1,44 +0,0 @@
 -using System.Collections.Generic;
 -using System.Threading.Tasks;
@@ -3112,9 +3112,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/BladeOfInkPower.cs MegaCrit/Sts
 -		}
 -	}
 -}
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/BorrowedTimePower.cs MegaCrit/Sts2/Core/Models/Powers/BorrowedTimePower.cs
---- MegaCrit/Sts2/Core/Models/Powers/BorrowedTimePower.cs
-+++ MegaCrit/Sts2/Core/Models/Powers/BorrowedTimePower.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/BorrowedTimePower.cs v0.103.2/MegaCrit/Sts2/Core/Models/Powers/BorrowedTimePower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/BorrowedTimePower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Powers/BorrowedTimePower.cs
 @@ -0,0 +1,37 @@
 +using System.Collections.Generic;
 +using System.Threading.Tasks;
@@ -3153,9 +3153,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/BorrowedTimePower.cs MegaCrit/S
 +		}
 +	}
 +}
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/BurrowedPower.cs MegaCrit/Sts2/Core/Models/Powers/BurrowedPower.cs
---- MegaCrit/Sts2/Core/Models/Powers/BurrowedPower.cs
-+++ MegaCrit/Sts2/Core/Models/Powers/BurrowedPower.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/BurrowedPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/Powers/BurrowedPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/BurrowedPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Powers/BurrowedPower.cs
 @@ -25,13 +25,13 @@
  		if (creature == base.Owner)
  		{
@@ -3171,9 +3171,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/BurrowedPower.cs MegaCrit/Sts2/
 +		await CreatureCmd.LoseBlock(oldOwner, 999999999m);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/CrabRagePower.cs MegaCrit/Sts2/Core/Models/Powers/CrabRagePower.cs
---- MegaCrit/Sts2/Core/Models/Powers/CrabRagePower.cs
-+++ MegaCrit/Sts2/Core/Models/Powers/CrabRagePower.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/CrabRagePower.cs v0.103.2/MegaCrit/Sts2/Core/Models/Powers/CrabRagePower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/CrabRagePower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Powers/CrabRagePower.cs
 @@ -17,21 +17,21 @@
  	public override PowerStackType StackType => PowerStackType.Single;
  
@@ -3197,9 +3197,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/CrabRagePower.cs MegaCrit/Sts2/
  			Flash();
  			await PowerCmd.Apply<StrengthPower>(base.Owner, base.DynamicVars.Strength.IntValue, base.Owner, null);
  			await CreatureCmd.GainBlock(base.Owner, base.DynamicVars.Block, null);
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/DoomPower.cs MegaCrit/Sts2/Core/Models/Powers/DoomPower.cs
---- MegaCrit/Sts2/Core/Models/Powers/DoomPower.cs
-+++ MegaCrit/Sts2/Core/Models/Powers/DoomPower.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/DoomPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/Powers/DoomPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/DoomPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Powers/DoomPower.cs
 @@ -44,21 +44,21 @@
  		return creatures.Where((Creature c) => c.GetPower<DoomPower>()?.IsOwnerDoomed() ?? false).ToList();
  	}
@@ -3258,9 +3258,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/DoomPower.cs MegaCrit/Sts2/Core
  		{
  			global::_003C_003Ey__InlineArray2<Task> buffer = default(global::_003C_003Ey__InlineArray2<Task>);
  			buffer[0] = task;
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/DoorRevivalPower.cs MegaCrit/Sts2/Core/Models/Powers/DoorRevivalPower.cs
---- MegaCrit/Sts2/Core/Models/Powers/DoorRevivalPower.cs
-+++ MegaCrit/Sts2/Core/Models/Powers/DoorRevivalPower.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/DoorRevivalPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/Powers/DoorRevivalPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/DoorRevivalPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Powers/DoorRevivalPower.cs
 @@ -1,112 +0,0 @@
 -using System.Collections.Generic;
 -using System.Threading.Tasks;
@@ -3374,9 +3374,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/DoorRevivalPower.cs MegaCrit/St
 -		return false;
 -	}
 -}
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/GrapplePower.cs MegaCrit/Sts2/Core/Models/Powers/GrapplePower.cs
---- MegaCrit/Sts2/Core/Models/Powers/GrapplePower.cs
-+++ MegaCrit/Sts2/Core/Models/Powers/GrapplePower.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/GrapplePower.cs v0.103.2/MegaCrit/Sts2/Core/Models/Powers/GrapplePower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/GrapplePower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Powers/GrapplePower.cs
 @@ -1,32 +0,0 @@
 -using System.Threading.Tasks;
 -using MegaCrit.Sts2.Core.Combat;
@@ -3410,9 +3410,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/GrapplePower.cs MegaCrit/Sts2/C
 -		await PowerCmd.Remove(this);
 -	}
 -}
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/GraspPower.cs MegaCrit/Sts2/Core/Models/Powers/GraspPower.cs
---- MegaCrit/Sts2/Core/Models/Powers/GraspPower.cs
-+++ MegaCrit/Sts2/Core/Models/Powers/GraspPower.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/GraspPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/Powers/GraspPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/GraspPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Powers/GraspPower.cs
 @@ -0,0 +1,72 @@
 +using System.Collections.Generic;
 +using System.Linq;
@@ -3486,9 +3486,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/GraspPower.cs MegaCrit/Sts2/Cor
 +		}
 +	}
 +}
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/HauntPower.cs MegaCrit/Sts2/Core/Models/Powers/HauntPower.cs
---- MegaCrit/Sts2/Core/Models/Powers/HauntPower.cs
-+++ MegaCrit/Sts2/Core/Models/Powers/HauntPower.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/HauntPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/Powers/HauntPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/HauntPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Powers/HauntPower.cs
 @@ -11,21 +11,21 @@
  namespace MegaCrit.Sts2.Core.Models.Powers;
  
@@ -3512,9 +3512,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/HauntPower.cs MegaCrit/Sts2/Cor
  		}
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/HungerPower.cs MegaCrit/Sts2/Core/Models/Powers/HungerPower.cs
---- MegaCrit/Sts2/Core/Models/Powers/HungerPower.cs
-+++ MegaCrit/Sts2/Core/Models/Powers/HungerPower.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/HungerPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/Powers/HungerPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/HungerPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Powers/HungerPower.cs
 @@ -0,0 +1,90 @@
 +using System.Collections.Generic;
 +using System.Linq;
@@ -3606,9 +3606,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/HungerPower.cs MegaCrit/Sts2/Co
 +		}
 +	}
 +}
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/LethalityPower.cs MegaCrit/Sts2/Core/Models/Powers/LethalityPower.cs
---- MegaCrit/Sts2/Core/Models/Powers/LethalityPower.cs
-+++ MegaCrit/Sts2/Core/Models/Powers/LethalityPower.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/LethalityPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/Powers/LethalityPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/LethalityPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Powers/LethalityPower.cs
 @@ -22,18 +22,19 @@
  		}
  		if (cardSource == null)
@@ -3630,9 +3630,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/LethalityPower.cs MegaCrit/Sts2
  		return 1m + (decimal)base.Amount / 100m;
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/MayhemPower.cs MegaCrit/Sts2/Core/Models/Powers/MayhemPower.cs
---- MegaCrit/Sts2/Core/Models/Powers/MayhemPower.cs
-+++ MegaCrit/Sts2/Core/Models/Powers/MayhemPower.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/MayhemPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/Powers/MayhemPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/MayhemPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Powers/MayhemPower.cs
 @@ -1,24 +1,23 @@
  using System.Threading.Tasks;
 -using MegaCrit.Sts2.Core.Combat;
@@ -3659,9 +3659,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/MayhemPower.cs MegaCrit/Sts2/Co
  		}
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/Mocks/MockRemoveDrawnCardsFromCombatPower.cs MegaCrit/Sts2/Core/Models/Powers/Mocks/MockRemoveDrawnCardsFromCombatPower.cs
---- MegaCrit/Sts2/Core/Models/Powers/Mocks/MockRemoveDrawnCardsFromCombatPower.cs
-+++ MegaCrit/Sts2/Core/Models/Powers/Mocks/MockRemoveDrawnCardsFromCombatPower.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/Mocks/MockRemoveDrawnCardsFromCombatPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/Powers/Mocks/MockRemoveDrawnCardsFromCombatPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/Mocks/MockRemoveDrawnCardsFromCombatPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Powers/Mocks/MockRemoveDrawnCardsFromCombatPower.cs
 @@ -0,0 +1,18 @@
 +using System.Threading.Tasks;
 +using MegaCrit.Sts2.Core.Commands;
@@ -3681,9 +3681,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/Mocks/MockRemoveDrawnCardsFromC
 +		await CardPileCmd.RemoveFromCombat(card, skipVisuals: true);
 +	}
 +}
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/NoEnergyGainPower.cs MegaCrit/Sts2/Core/Models/Powers/NoEnergyGainPower.cs
---- MegaCrit/Sts2/Core/Models/Powers/NoEnergyGainPower.cs
-+++ MegaCrit/Sts2/Core/Models/Powers/NoEnergyGainPower.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/NoEnergyGainPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/Powers/NoEnergyGainPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/NoEnergyGainPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Powers/NoEnergyGainPower.cs
 @@ -0,0 +1,35 @@
 +using System.Threading.Tasks;
 +using MegaCrit.Sts2.Core.Combat;
@@ -3720,9 +3720,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/NoEnergyGainPower.cs MegaCrit/S
 +		await PowerCmd.Remove(this);
 +	}
 +}
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/RollingBoulderPower.cs MegaCrit/Sts2/Core/Models/Powers/RollingBoulderPower.cs
---- MegaCrit/Sts2/Core/Models/Powers/RollingBoulderPower.cs
-+++ MegaCrit/Sts2/Core/Models/Powers/RollingBoulderPower.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/RollingBoulderPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/Powers/RollingBoulderPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/RollingBoulderPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Powers/RollingBoulderPower.cs
 @@ -50,19 +50,18 @@
  			{
  				NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(vfx);
@@ -3744,9 +3744,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/RollingBoulderPower.cs MegaCrit
  		return CreatureCmd.Damage(choiceContext, targets, base.Amount, ValueProp.Unpowered, base.Owner);
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/SandpitPower.cs MegaCrit/Sts2/Core/Models/Powers/SandpitPower.cs
---- MegaCrit/Sts2/Core/Models/Powers/SandpitPower.cs
-+++ MegaCrit/Sts2/Core/Models/Powers/SandpitPower.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/SandpitPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/Powers/SandpitPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/SandpitPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Powers/SandpitPower.cs
 @@ -59,21 +59,21 @@
  		if (TestMode.IsOn)
  		{
@@ -3770,9 +3770,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/SandpitPower.cs MegaCrit/Sts2/C
  	public override async Task AfterPowerAmountChanged(PowerModel power, decimal _, Creature? __, CardModel? cardSource)
  	{
  		if (!TestMode.IsOn && power == this)
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/ScrutinyPower.cs MegaCrit/Sts2/Core/Models/Powers/ScrutinyPower.cs
---- MegaCrit/Sts2/Core/Models/Powers/ScrutinyPower.cs
-+++ MegaCrit/Sts2/Core/Models/Powers/ScrutinyPower.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/ScrutinyPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/Powers/ScrutinyPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/ScrutinyPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Powers/ScrutinyPower.cs
 @@ -0,0 +1,21 @@
 +using MegaCrit.Sts2.Core.Entities.Players;
 +using MegaCrit.Sts2.Core.Entities.Powers;
@@ -3795,9 +3795,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/ScrutinyPower.cs MegaCrit/Sts2/
 +		return false;
 +	}
 +}
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/SmokestackPower.cs MegaCrit/Sts2/Core/Models/Powers/SmokestackPower.cs
---- MegaCrit/Sts2/Core/Models/Powers/SmokestackPower.cs
-+++ MegaCrit/Sts2/Core/Models/Powers/SmokestackPower.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/SmokestackPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/Powers/SmokestackPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/SmokestackPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Powers/SmokestackPower.cs
 @@ -8,17 +8,17 @@
  namespace MegaCrit.Sts2.Core.Models.Powers;
  
@@ -3817,9 +3817,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/SmokestackPower.cs MegaCrit/Sts
  		}
  	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/StampedePower.cs MegaCrit/Sts2/Core/Models/Powers/StampedePower.cs
---- MegaCrit/Sts2/Core/Models/Powers/StampedePower.cs
-+++ MegaCrit/Sts2/Core/Models/Powers/StampedePower.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/StampedePower.cs v0.103.2/MegaCrit/Sts2/Core/Models/Powers/StampedePower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/StampedePower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Powers/StampedePower.cs
 @@ -8,21 +8,21 @@
  using MegaCrit.Sts2.Core.GameActions.Multiplayer;
  
@@ -3843,9 +3843,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/StampedePower.cs MegaCrit/Sts2/
  		{
  			List<CardModel> items = hand.Cards.Where((CardModel c) => c.Type == CardType.Attack && !c.Keywords.Contains(CardKeyword.Unplayable)).ToList();
  			CardModel cardModel = base.Owner.Player.RunState.Rng.Shuffle.NextItem(items);
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/SwordSagePower.cs MegaCrit/Sts2/Core/Models/Powers/SwordSagePower.cs
---- MegaCrit/Sts2/Core/Models/Powers/SwordSagePower.cs
-+++ MegaCrit/Sts2/Core/Models/Powers/SwordSagePower.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/SwordSagePower.cs v0.103.2/MegaCrit/Sts2/Core/Models/Powers/SwordSagePower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/SwordSagePower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Powers/SwordSagePower.cs
 @@ -56,26 +56,11 @@
  		IEnumerable<CardModel> enumerable = oldOwner.Player?.PlayerCombatState?.AllCards ?? Array.Empty<CardModel>();
  		foreach (CardModel item in enumerable)
@@ -3873,9 +3873,9 @@ diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/SwordSagePower.cs MegaCrit/Sts2
 -		return true;
 -	}
  }
-diff -u10 -r -N MegaCrit/Sts2/Core/Models/Powers/TrashToTreasurePower.cs MegaCrit/Sts2/Core/Models/Powers/TrashToTreasurePower.cs
---- MegaCrit/Sts2/Core/Models/Powers/TrashToTreasurePower.cs
-+++ MegaCrit/Sts2/Core/Models/Powers/TrashToTreasurePower.cs
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/TrashToTreasurePower.cs v0.103.2/MegaCrit/Sts2/Core/Models/Powers/TrashToTreasurePower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/TrashToTreasurePower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/Powers/TrashToTreasurePower.cs
 @@ -7,21 +7,21 @@
  namespace MegaCrit.Sts2.Core.Models.Powers;
  

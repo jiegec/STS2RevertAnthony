@@ -11,11 +11,13 @@ using MegaCrit.Sts2.Core.Models.Powers;
 
 namespace RevertAnthony;
 
-// ============================================
-// Borrowed Time - v0.99.1 vs v0.103.2
-// Old: Cost 0, Gain 1(2) Energy, Apply 3 Doom
-// New: Cost 1, Gain 4(6) Energy, Apply BorrowedTimePower (+1 cost)
-// ============================================
+// BorrowedTime v0.99.1 vs current — complete rework
+// v0.99.1: Cost 0, Gain 1(2) Energy, Apply 3 Doom
+//          ExtraHoverTips → DoomPower + Energy, OnUpgrade → +1 Energy
+// Current:  Cost 1, Gain 4(6) Energy, Apply BorrowedTimePower (+1 cost)
+//          ExtraHoverTips → Energy only, OnUpgrade → +2 Energy
+// (Energy cost patch is in BaseCardModelPatches.cs)
+// (Description patch is in BaseCardModelPatches.cs)
 
 [HarmonyPatch(typeof(BorrowedTime), "get_CanonicalVars")]
 static class BorrowedTime_CanonicalVars_Patch
@@ -24,6 +26,7 @@ static class BorrowedTime_CanonicalVars_Patch
     {
         if (RevertAnthony.IsVersion("borrowed-time", "v0.99.1"))
         {
+            // v0.99.1: Doom 3 + Energy 1 (current: Energy 4 + ExtraCost 1)
             __result = new DynamicVar[]
             {
                 new PowerVar<DoomPower>(3m),
@@ -42,6 +45,7 @@ static class BorrowedTime_ExtraHoverTips_Patch
     {
         if (RevertAnthony.IsVersion("borrowed-time", "v0.99.1"))
         {
+            // v0.99.1: DoomPower + Energy tips (current: Energy tip only)
             __result = new IHoverTip[]
             {
                 HoverTipFactory.FromPower<DoomPower>(),
@@ -65,6 +69,8 @@ static class BorrowedTime_OnPlay_Patch
         return false;
     }
 
+    // v0.99.1: apply Doom, then gain Energy
+    // Current:  gain Energy, then apply BorrowedTimePower
     static async Task OldOnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay, BorrowedTime instance)
     {
         await CreatureCmd.TriggerAnim(instance.Owner.Creature, "Cast", instance.Owner.Character.CastAnimDelay);
@@ -80,6 +86,7 @@ static class BorrowedTime_OnUpgrade_Patch
     {
         if (RevertAnthony.IsVersion("borrowed-time", "v0.99.1"))
         {
+            // v0.99.1: +1 Energy (current: +2 Energy)
             __instance.DynamicVars.Energy.UpgradeValueBy(1m);
             return false;
         }

@@ -6,11 +6,8 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace RevertAnthony;
 
-// ============================================
-// Skewer - v0.99.1 vs v0.103.2
-// Old: Deal 7 damage per hit
-// New: Deal 8 damage per hit
-// ============================================
+// Skewer v0.99.1 vs current
+// v0.99.1: Damage 7 per hit (current: Damage 8)
 
 [HarmonyPatch(typeof(Skewer), "get_CanonicalVars")]
 static class Skewer_CanonicalVars_Patch

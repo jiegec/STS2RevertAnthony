@@ -6,20 +6,21 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace RevertAnthony;
 
-// Hemokinesis v0.99.1 vs current
-// v0.99.1: Damage 14 (current: Damage 15)
+// Glitterstream v0.99.1 vs current
+// v0.99.1: Block 11, BlockNextTurn 4
+// Current:  Block 11, BlockNextTurn 5
 
-[HarmonyPatch(typeof(Hemokinesis), "get_CanonicalVars")]
-static class Hemokinesis_CanonicalVars_Patch
+[HarmonyPatch(typeof(Glitterstream), "get_CanonicalVars")]
+static class Glitterstream_CanonicalVars_Patch
 {
     static bool Prefix(ref IEnumerable<DynamicVar> __result)
     {
-        if (RevertAnthony.IsVersion("hemokinesis", "v0.99.1"))
+        if (RevertAnthony.IsVersion("glitterstream", "v0.99.1"))
         {
             __result = new DynamicVar[]
             {
-                new HpLossVar(2m),
-                new DamageVar(14m, ValueProp.Move),
+                new BlockVar(11m, ValueProp.Move),
+                new BlockVar("BlockNextTurn", 4m, ValueProp.Move),
             };
             return false;
         }

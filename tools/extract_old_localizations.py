@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
 """
-Extract old card descriptions from a game version's PCK and save them for RevertAnthony mod.
+Extract old card descriptions from game version PCK files and save them for RevertAnthony mod.
+Compares descriptions across multiple versions and only saves ones that differ.
 
 Usage:
-    python3 extract_old_localizations.py <path_to_old_game_pck> [--output-dir <path>] [--version <version_name>]
+    python3 extract_old_localizations.py <path_to_pck1> [<path_to_pck2> ...] [--output-dir <path>]
 
 Example:
-    python3 extract_old_localizations.py "/path/to/Slay the Spire 2.pck" --output-dir ../RevertAnthony/localization --version v0.99.1
+    python3 extract_old_localizations.py "/path/to/v0.99.1.pck" "/path/to/v0.103.2.pck" --output-dir ../RevertAnthony/localization
 """
 
 import argparse
 import json
+import re
 import struct
 import sys
 from pathlib import Path
@@ -84,103 +86,170 @@ def extract_localizations(pck_path, languages=None):
     return result
 
 
-def filter_card_descriptions(localizations, card_slugs, version_label):
-    """Extract only card descriptions for specified card slugs, renaming keys."""
-    result = {}
+def detect_version(pck_path):
+    """Auto-detect version from release_info.json next to PCK."""
+    release_info_path = pck_path.parent / "release_info.json"
+    if release_info_path.exists():
+        try:
+            with open(release_info_path, "r", encoding="utf-8") as f:
+                release_info = json.load(f)
+                detected_version = release_info.get("version", "")
+                if detected_version:
+                    # Convert "v0.99.1" → "V0991"
+                    version_label = "V" + detected_version.lstrip("vV").replace(".", "")
+                    return detected_version, version_label
+        except (json.JSONDecodeError, OSError) as e:
+            print(f"Warning: Could not read release_info.json: {e}", file=sys.stderr)
     
-    for card_slug in card_slugs:
-        # Convert slug to uppercase key format: borrowed-time -> BORROWED_TIME
-        loc_key = card_slug.replace("-", "_").upper()
-        desc_key = f"{loc_key}.description"
-        new_key = f"{loc_key}_{version_label}.description"
-        
-        for lang, tables in localizations.items():
-            if "cards" not in tables:
-                continue
-            if desc_key in tables["cards"]:
-                if lang not in result:
-                    result[lang] = {}
-                result[lang][new_key] = tables["cards"][desc_key]
+    # Fallback: use PCK filename
+    stem = pck_path.stem
+    # Try to extract version from filename like "v0.99.1.pck"
+    match = re.search(r'v(\d+\.\d+\.\d+)', stem)
+    if match:
+        version = match.group(0)
+        label = "V" + version.lstrip("vV").replace(".", "")
+        return version, label
     
-    return result
+    return None, None
+
+
+def find_supported_cards():
+    """Find all supported card slugs from RevertAnthony.cs."""
+    revert_anthony_path = Path(__file__).parent.parent / "RevertAnthony.cs"
+    if not revert_anthony_path.exists():
+        print(f"Warning: Could not find {revert_anthony_path}, using default cards", file=sys.stderr)
+        return ["borrowed-time"]
+    
+    slugs = []
+    with open(revert_anthony_path, "r", encoding="utf-8") as f:
+        content = f.read()
+    
+    # Find all lines like: new SupportedCard("slug", "CHARACTER", "v0.99.1"),
+    pattern = r'new SupportedCard\("([^"]+)"'
+    slugs = re.findall(pattern, content)
+    
+    if not slugs:
+        print("Warning: No SupportedCard entries found in RevertAnthony.cs", file=sys.stderr)
+        return ["borrowed-time"]
+    
+    print(f"Auto-detected {len(slugs)} cards from RevertAnthony.cs")
+    return slugs
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Extract old card descriptions from a game version and save them for RevertAnthony mod"
+        description="Extract old card descriptions from game version PCK files. Compares across versions and only saves descriptions that differ."
     )
-    parser.add_argument("pck_path", help="Path to the game's .pck file")
+    parser.add_argument("pck_paths", nargs="+", help="Path(s) to the game's .pck file(s)")
     parser.add_argument("--output-dir", "-o", default="RevertAnthony/localization", 
                         help="Output directory for localization files")
-    parser.add_argument("--version", "-v", default=None, 
-                        help="Version label for keys (auto-detected if not provided)")
     parser.add_argument("--cards", "-c", nargs="+", 
-                        default=["borrowed-time"],
-                        help="Card slugs to extract (default: borrowed-time hemokinesis acrobatics skewer)")
+                        default=None,
+                        help="Card slugs to extract (default: auto-detect from RevertAnthony.cs)")
     parser.add_argument("--languages", "-l", nargs="+", 
                         default=["eng", "zhs"],
                         help="Languages to extract (default: eng zhs)")
     
     args = parser.parse_args()
     
-    pck_path = Path(args.pck_path)
-    if not pck_path.exists():
-        print(f"Error: PCK file not found: {pck_path}", file=sys.stderr)
-        return 1
-    
-    # Auto-detect version from release_info.json
-    version_label = args.version
-    if version_label is None:
-        release_info_path = pck_path.parent / "release_info.json"
-        if release_info_path.exists():
-            try:
-                with open(release_info_path, "r", encoding="utf-8") as f:
-                    release_info = json.load(f)
-                    detected_version = release_info.get("version", "")
-                    if detected_version:
-                        # Convert "v0.99.1" → "V0991"
-                        version_label = "V" + detected_version.lstrip("vV").replace(".", "")
-                        print(f"Auto-detected version: {detected_version} → slug: {version_label}")
-            except (json.JSONDecodeError, OSError) as e:
-                print(f"Warning: Could not read release_info.json: {e}", file=sys.stderr)
-        
-        if version_label is None:
-            version_label = "OLD"
-            print(f"Warning: Could not auto-detect version, using default: {version_label}", file=sys.stderr)
-    
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     
-    print(f"Extracting localizations from {pck_path}...")
-    localizations = extract_localizations(pck_path, args.languages)
+    # Auto-detect cards if not provided
+    card_slugs = args.cards
+    if card_slugs is None:
+        card_slugs = find_supported_cards()
     
-    print(f"Filtering {len(args.cards)} cards...")
-    filtered = filter_card_descriptions(localizations, args.cards, version_label)
+    # Extract localizations from all PCK files
+    all_version_data = {}  # version_label -> {lang: {table: {key: value}}}
     
-    if not filtered:
-        print("Warning: No card descriptions found for the specified cards", file=sys.stderr)
-        return 1
+    for pck_path in args.pck_paths:
+        pck_path = Path(pck_path)
+        if not pck_path.exists():
+            print(f"Error: PCK file not found: {pck_path}", file=sys.stderr)
+            return 1
+        
+        version_str, version_label = detect_version(pck_path)
+        if version_label is None:
+            version_label = f"V{pck_path.stem}"
+            version_str = pck_path.stem
+            print(f"Warning: Could not auto-detect version for {pck_path}, using: {version_label}", file=sys.stderr)
+        else:
+            print(f"Detected version: {version_str} → slug: {version_label}")
+        
+        print(f"Extracting localizations from {pck_path}...")
+        localizations = extract_localizations(pck_path, args.languages)
+        all_version_data[version_label] = localizations
+    
+    # Collect descriptions for each card across all versions
+    # card_slug -> lang -> version_label -> description_text
+    card_descriptions = {}
+    
+    for version_label, localizations in all_version_data.items():
+        for card_slug in card_slugs:
+            loc_key = card_slug.replace("-", "_").upper()
+            desc_key = f"{loc_key}.description"
+            
+            if card_slug not in card_descriptions:
+                card_descriptions[card_slug] = {}
+            
+            for lang, tables in localizations.items():
+                if lang not in card_descriptions[card_slug]:
+                    card_descriptions[card_slug][lang] = {}
+                
+                if "cards" in tables and desc_key in tables["cards"]:
+                    card_descriptions[card_slug][lang][version_label] = tables["cards"][desc_key]
+    
+    # Find which descriptions differ across versions
+    # We keep descriptions for a version only if they differ from at least one other version
+    changed_descriptions = {}  # lang -> {new_key: description_text}
+    
+    for card_slug, lang_data in card_descriptions.items():
+        loc_key = card_slug.replace("-", "_").upper()
+        
+        for lang, version_data in lang_data.items():
+            if len(version_data) < 2:
+                # Can't compare with less than 2 versions
+                continue
+            
+            # Check if any version differs from another
+            descriptions = list(version_data.values())
+            all_same = all(d == descriptions[0] for d in descriptions)
+            
+            if all_same:
+                # Descriptions are identical across all versions - don't save any
+                continue
+            
+            # Descriptions differ - save all versions
+            if lang not in changed_descriptions:
+                changed_descriptions[lang] = {}
+            
+            for version_label, desc_text in version_data.items():
+                new_key = f"{loc_key}_{version_label}.description"
+                changed_descriptions[lang][new_key] = desc_text
+    
+    if not changed_descriptions:
+        print("No description differences found across versions. Nothing to save.")
+        return 0
     
     # Write localization files
-    for lang, entries in filtered.items():
+    total_saved = 0
+    for lang, entries in changed_descriptions.items():
         if not entries:
             continue
         
         lang_dir = output_dir / lang
         lang_dir.mkdir(exist_ok=True)
         
-        # Merge existing entries
         output_path = lang_dir / "cards.json"
-        if output_path.exists():
-            existing = json.load(open(output_path, "r", encoding="utf-8"))
-            existing.update(entries)
-            entries = existing
-
-        with open(output_path, "w", encoding="utf-8") as f:
-            json.dump(entries, f, ensure_ascii=False, indent=2)
         
-        print(f"Wrote {len(entries)} entries to {output_path}")
+        with open(output_path, "w", encoding="utf-8") as f:
+            json.dump(entries, f, ensure_ascii=False, indent=2, sort_keys=True)
+        
+        print(f"Wrote {len(entries)} changed descriptions to {output_path}")
+        total_saved += len(entries)
     
+    print(f"\nTotal: {total_saved} changed descriptions saved across {len(changed_descriptions)} languages")
     return 0
 
 

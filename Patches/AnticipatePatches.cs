@@ -1,21 +1,14 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using HarmonyLib;
-using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Powers;
 
 namespace RevertAnthony;
 
-// ============================================
-// Anticipate - v0.99.1 vs v0.103.2
-// Old: Gain 3(5) Dexterity this turn
-// New: Gain 2(3) Dexterity this turn
-// ============================================
+// Anticipate v0.99.1 vs current
+// v0.99.1: Dexterity 3(5), OnUpgrade → +2 dexterity
+// Current:  Dexterity 2(3), OnUpgrade → +1 dexterity
 
 [HarmonyPatch(typeof(Anticipate), "get_CanonicalVars")]
 static class Anticipate_CanonicalVars_Patch
@@ -24,6 +17,7 @@ static class Anticipate_CanonicalVars_Patch
     {
         if (RevertAnthony.IsVersion("anticipate", "v0.99.1"))
         {
+            // v0.99.1: 3 dexterity (current: 2)
             __result = new DynamicVar[]
             {
                 new PowerVar<DexterityPower>(3m),
@@ -41,6 +35,7 @@ static class Anticipate_OnUpgrade_Patch
     {
         if (RevertAnthony.IsVersion("anticipate", "v0.99.1"))
         {
+            // v0.99.1: +2 dexterity (current: +1)
             __instance.DynamicVars.Dexterity.UpgradeValueBy(2m);
             return false;
         }
