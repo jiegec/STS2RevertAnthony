@@ -88,6 +88,7 @@ public static class RevertAnthony
         new SupportedCard("guiding-star", "REGENT", "v0.99.1"),
         new SupportedCard("heirloom-hammer", "REGENT", "v0.99.1"),
         new SupportedCard("hemokinesis", "IRONCLAD", "v0.99.1"),
+        new SupportedCard("hidden-gem", "COLORLESS", "v0.99.1"),
         new SupportedCard("hotfix", "DEFECT", "v0.99.1"),
         new SupportedCard("huddle-up", "COLORLESS", "v0.99.1"),
         new SupportedCard("i-am-invincible", "REGENT", "v0.99.1"),

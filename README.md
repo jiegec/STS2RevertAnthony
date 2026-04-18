@@ -61,6 +61,7 @@ All cards listed below can be reverted to their v0.99.1 versions. Descriptions a
 |------|----------|---------|---------|
 | **Believe In You** | Energy | 2(3) | **3(4)** |
 | **Eternal Armor** | Plating / Upgrade | 9(+3) | **7(+2)** |
+| **Hidden Gem** | OnPlay / Generation | Excludes enchanted replay / Combat only | **No filter / Anywhere** |
 | **Huddle Up** | Keywords | Exhaust | **None** |
 | **Production** | Upgrade | +1 Energy | **Remove Exhaust** |
 | **Seeker Strike** | Damage / Cards | 9 / 3 | **6 / 3** |
