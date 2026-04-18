@@ -126,18 +126,15 @@ static class Begone_CanonicalVars_Patch
     }
 }
 
-[HarmonyPatch(typeof(Begone), "OnUpgrade")]
+[HarmonyPatch(typeof(CardModel), "OnUpgrade")]
 static class Begone_OnUpgrade_Patch
 {
-    static bool Prefix(Begone __instance)
+    static void Postfix(CardModel __instance)
     {
-        if (RevertAnthony.IsVersion("begone", "v0.99.1"))
+        if (__instance is Begone && RevertAnthony.IsVersion("begone", "v0.99.1"))
         {
-            // v0.99.1: +1 damage
-            // Current: no override (no upgrade effect)
+            // v0.99.1: +1 damage (current: no upgrade effect)
             __instance.DynamicVars.Damage.UpgradeValueBy(1m);
-            return false;
         }
-        return true;
     }
 }

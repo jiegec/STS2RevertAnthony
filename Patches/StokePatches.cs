@@ -61,18 +61,16 @@ static class Stoke_OnPlay_Patch
     }
 }
 
-[HarmonyPatch(typeof(Stoke), "OnUpgrade")]
+[HarmonyPatch(typeof(CardModel), "OnUpgrade")]
 static class Stoke_OnUpgrade_Patch
 {
-    static bool Prefix(Stoke __instance)
+    static void Postfix(CardModel __instance)
     {
-        if (RevertAnthony.IsVersion("stoke", "v0.99.1"))
+        if (__instance is Stoke && RevertAnthony.IsVersion("stoke", "v0.99.1"))
         {
             // v0.99.1: -1 cost (current: no upgrade effect)
             __instance.EnergyCost.UpgradeBy(-1);
-            return false;
         }
-        return true;
     }
 }
 
