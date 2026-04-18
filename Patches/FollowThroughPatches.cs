@@ -68,25 +68,21 @@ static class FollowThrough_CanonicalVars_Patch
     }
 }
 
-[HarmonyPatch(typeof(FollowThrough), "get_ExtraHoverTips")]
+[HarmonyPatch(typeof(CardModel), "ExtraHoverTips", MethodType.Getter)]
 static class FollowThrough_ExtraHoverTips_Patch
 {
-    static bool Prefix(ref IEnumerable<IHoverTip> __result)
+    static void Postfix(CardModel __instance, ref IEnumerable<IHoverTip> __result)
     {
-        if (RevertAnthony.IsVersion("follow-through", "v0.99.1"))
+        if (__instance is FollowThrough && RevertAnthony.IsVersion("follow-through", "v0.99.1"))
         {
             // v0.99.1: show WeakPower tooltip (current: no extra hover tips)
             __result = new IHoverTip[]
             {
                 HoverTipFactory.FromPower<WeakPower>(),
             };
-            return false;
         }
-        return true;
     }
 }
-
-// TargetType and Rarity patches are in BaseCardModelPatches.cs
 
 [HarmonyPatch(typeof(FollowThrough), "OnPlay")]
 static class FollowThrough_OnPlay_Patch

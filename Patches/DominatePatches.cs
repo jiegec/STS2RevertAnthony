@@ -23,18 +23,16 @@ namespace RevertAnthony;
 // Current:  Exhaust keyword, Vars = Vulnerable 1 + StrengthPerVulnerable 1
 //          ShouldGlow: same check. OnUpgrade → +1 Vulnerable. OnPlay: apply 1 Vulnerable, then gain Strength
 
-[HarmonyPatch(typeof(Dominate), "get_ShouldGlowGoldInternal")]
+[HarmonyPatch(typeof(CardModel), "ShouldGlowGoldInternal", MethodType.Getter)]
 static class Dominate_ShouldGlowGoldInternal_Patch
 {
-    static bool Prefix(Dominate __instance, ref bool __result)
+    static void Postfix(CardModel __instance, ref bool __result)
     {
-        if (RevertAnthony.IsVersion("dominate", "v0.99.1"))
+        if (__instance is Dominate && RevertAnthony.IsVersion("dominate", "v0.99.1"))
         {
             // v0.99.1: glow if any hittable enemy has Vulnerable
             __result = __instance.CombatState?.HittableEnemies.Any((Creature e) => e.HasPower<VulnerablePower>()) ?? false;
-            return false;
         }
-        return true;
     }
 }
 

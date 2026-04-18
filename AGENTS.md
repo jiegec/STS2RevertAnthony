@@ -8,7 +8,7 @@ This mod allows users to select which version of each card to use (current game 
 
 - **`RevertAnthony.cs`** - Main mod entry point. Loads/saves JSON config, integrates with ModConfig GUI, manages version state.
 - **`SupportedCard`** (defined in `RevertAnthony.cs`) - Declares each supported card with its slug, display name, and available old versions.
-- **`Patches/*.cs`** - One file per card (or shared base class patches). Contains Harmony patches.
+- **`Patches/*.cs`** - One file per card. Contains Harmony patches.
 - **`RevertAnthonyConfig.json`** - User configuration file storing per-card version choices.
 
 ## How to Add a New Card
@@ -31,27 +31,24 @@ Look for differences in:
 Add to `SupportedCards` list in `RevertAnthony.cs`:
 
 ```csharp
-new SupportedCard("card-slug", "Display Name", "v0.99.1"),
-// For multiple old versions:
-new SupportedCard("card-slug", "Display Name", "v0.99.1", "v0.103.1"),
+new SupportedCard("card-slug", "CHARACTER", "v0.99.1"),
 ```
 
 The slug must match the card's ModelId (e.g., `borrowed-time`, `hemokinesis`).
 
 ### 3. Create Patch File
 
-Create `Patches/{CardName}Patches.cs`:
+Create `Patches/{CardName}Patches.cs`.
 
-#### Pattern A: Overridden Properties/Methods (Patch Derived Class)
+**CRITICAL RULE**: Check if the property/method is **overridden** in the current version:
+- **OVERRIDDEN**: Patch the derived class with `Prefix(returning false)`
+- **NOT OVERRIDDEN**: Patch `CardModel` with `Postfix` + `if (__instance is CardName)`
 
-Use when the card overrides the property/method in its own class:
+#### Overridden Properties/Methods
+
+Use when the card overrides in its own class (e.g., `CanonicalVars`, `OnPlay`, `ExtraHoverTips`):
 
 ```csharp
-using HarmonyLib;
-using MegaCrit.Sts2.Core.Models.Cards;
-
-namespace RevertAnthony;
-
 [HarmonyPatch(typeof(CardClassName), "MethodName")]
 static class CardClassName_MethodName_Patch
 {
@@ -62,30 +59,43 @@ static class CardClassName_MethodName_Patch
             __result = oldValue;
             return false; // Skip original method
         }
-        return true; // Run original method
+        return true;
     }
 }
 ```
 
-#### Pattern B: Non-Overridden Properties (Patch Base Class)
+#### Non-Overridden Properties
 
-Use when the property is inherited from `CardModel` and NOT overridden:
+Use when inherited from `CardModel` and NOT overridden (e.g., `Rarity`, `CanonicalEnergyCost`, `TargetType`, `Type`, `Description`, `ShouldGlowGoldInternal`):
 
 ```csharp
-using HarmonyLib;
-using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Models.Cards;
-
-namespace RevertAnthony;
-
 [HarmonyPatch(typeof(CardModel), "PropertyName", MethodType.Getter)]
-static class CardModel_PropertyName_Patch
+static class CardName_PropertyName_Patch
 {
     static void Postfix(CardModel __instance, ref ReturnType __result)
     {
-        if (__instance is TargetCardClass && RevertAnthony.IsVersion("card-slug", "v0.99.1"))
+        if (__instance is CardClassName && RevertAnthony.IsVersion("card-slug", "v0.99.1"))
         {
             __result = oldValue;
+        }
+    }
+}
+```
+
+#### Special Case: Methods Removed in Current Version
+
+If a method was **removed** from the derived class in current version (e.g., `Begone.OnUpgrade`, `Dominate.ShouldGlowGoldInternal`), patch the **base class** instead:
+
+```csharp
+[HarmonyPatch(typeof(CardModel), "OnUpgrade")]
+static class CardName_OnUpgrade_Patch
+{
+    static void Postfix(CardModel __instance)
+    {
+        if (__instance is CardClassName && RevertAnthony.IsVersion("card-slug", "v0.99.1"))
+        {
+            // Old behavior
+            __instance.DynamicVars.Damage.UpgradeValueBy(1m);
         }
     }
 }
@@ -95,7 +105,7 @@ static class CardModel_PropertyName_Patch
 
 ### 4. Common Patch Types
 
-#### Changing CanonicalVars (overridden)
+#### CanonicalVars (overridden)
 
 ```csharp
 [HarmonyPatch(typeof(CardClassName), "CanonicalVars", MethodType.Getter)]
@@ -117,7 +127,7 @@ static class CardClassName_CanonicalVars_Patch
 }
 ```
 
-#### Changing OnPlay Behavior
+#### OnPlay (overridden)
 
 ```csharp
 [HarmonyPatch(typeof(CardClassName), "OnPlay")]
@@ -143,17 +153,97 @@ static class CardClassName_OnPlay_Patch
 }
 ```
 
-#### Changing Rarity (NOT overridden - patch base class)
+#### Energy Cost (NOT overridden - patch base class)
+
+```csharp
+[HarmonyPatch(typeof(CardModel), "CanonicalEnergyCost", MethodType.Getter)]
+static class CardName_EnergyCost_Patch
+{
+    static void Postfix(CardModel __instance, ref int __result)
+    {
+        if (__instance is CardClassName && RevertAnthony.IsVersion("card-slug", "v0.99.1"))
+        {
+            __result = 0; // Old cost
+        }
+    }
+}
+```
+
+#### Rarity (NOT overridden - patch base class)
 
 ```csharp
 [HarmonyPatch(typeof(CardModel), "Rarity", MethodType.Getter)]
-static class CardModel_Rarity_Patch
+static class CardName_Rarity_Patch
 {
     static void Postfix(CardModel __instance, ref CardRarity __result)
     {
-        if (__instance is TargetCardClass && RevertAnthony.IsVersion("card-slug", "v0.99.1"))
+        if (__instance is CardClassName && RevertAnthony.IsVersion("card-slug", "v0.99.1"))
         {
             __result = CardRarity.Common;
+        }
+    }
+}
+```
+
+#### Target Type (NOT overridden - patch base class)
+
+```csharp
+[HarmonyPatch(typeof(CardModel), "TargetType", MethodType.Getter)]
+static class CardName_TargetType_Patch
+{
+    static void Postfix(CardModel __instance, ref TargetType __result)
+    {
+        if (__instance is CardClassName && RevertAnthony.IsVersion("card-slug", "v0.99.1"))
+        {
+            __result = TargetType.AnyEnemy;
+        }
+    }
+}
+```
+
+#### Card Type (NOT overridden - patch base class)
+
+```csharp
+[HarmonyPatch(typeof(CardModel), "Type", MethodType.Getter)]
+static class CardName_CardType_Patch
+{
+    static void Postfix(CardModel __instance, ref CardType __result)
+    {
+        if (__instance is CardClassName && RevertAnthony.IsVersion("card-slug", "v0.99.1"))
+        {
+            __result = CardType.Attack;
+        }
+    }
+}
+```
+
+#### Description (NOT overridden - patch base class)
+
+```csharp
+[HarmonyPatch(typeof(CardModel), "Description", MethodType.Getter)]
+static class CardName_Description_Patch
+{
+    static void Postfix(CardModel __instance, ref LocString __result)
+    {
+        if (__instance is CardClassName && RevertAnthony.IsVersion("card-slug", "v0.99.1"))
+        {
+            __result = new LocString("cards", "CARD_NAME_V0991.description");
+        }
+    }
+}
+```
+
+#### ShouldGlowGoldInternal (NOT overridden - patch base class)
+
+```csharp
+[HarmonyPatch(typeof(CardModel), "ShouldGlowGoldInternal", MethodType.Getter)]
+static class CardName_ShouldGlowGoldInternal_Patch
+{
+    static void Postfix(CardModel __instance, ref bool __result)
+    {
+        if (__instance is CardClassName && RevertAnthony.IsVersion("card-slug", "v0.99.1"))
+        {
+            __result = true; // Old glow condition
         }
     }
 }
@@ -163,16 +253,18 @@ static class CardModel_Rarity_Patch
 
 1. **One file per card** - Keep patches organized in separate files.
 2. **Use `IsVersion(slug, version)`** - Never hardcode version checks.
-3. **Prefix vs Postfix**:
-   - Use `Prefix(returning false)` for overridden methods to skip original
-   - Use `Postfix` on base class methods to modify results
-4. **Protected members** - Use string literals (e.g., `"CanonicalEnergyCost"`) instead of `nameof()`
-5. **Clear canonical cache** - When a user switches versions, `ClearCanonicalCache()` resets the canonical instance so new mutable clones pick up patched values
-6. **ModConfig types** - Available types: `Header`, `Dropdown`, `Toggle`, `TextInput`, `Slider`, `Button`, `Separator`, `ColorPicker`. There is NO `Description` type.
+3. **Always check if overridden** - Use `grep` on the decompiled source to verify if a property/method is overridden in current version.
+4. **Prefix vs Postfix**:
+   - Use `Prefix(returning false)` for **overridden** methods to skip original
+   - Use `Postfix` for **non-overridden** base class properties/methods
+5. **Methods removed in current version** - If a method was removed from the derived class, patch the base class with `Postfix` + instance check
+6. **Protected members** - Use string literals (e.g., `"Rarity"`, `"CanonicalEnergyCost"`) instead of `nameof()`
+7. **Clear canonical cache** - When a user switches versions, `ClearCanonicalCache()` resets the canonical instance so new mutable clones pick up patched values
+8. **ModConfig types** - Available types: `Header`, `Dropdown`, `Toggle`, `TextInput`, `Slider`, `Button`, `Separator`, `ColorPicker`. There is NO `Description` type.
 
 ## Localization (Card Descriptions)
 
-When a card's **description changes** between versions (like BorrowedTime), you must provide the old description text so the game displays it correctly.
+When a card's **description changes** between versions, you must provide the old description text.
 
 ### Extract Old Descriptions
 
@@ -191,26 +283,6 @@ This:
 4. Saves them to `RevertAnthony/localization/{lang}/cards.json`
 
 The game's mod loader automatically loads these as override localization tables.
-
-### Patch Description Property
-
-In your patch file, override `Description`:
-
-```csharp
-[HarmonyPatch(typeof(CardModel), "Description", MethodType.Getter)]
-static class CardModel_Description_Patch
-{
-    static void Postfix(CardModel __instance, ref LocString __result)
-    {
-        if (__instance is BorrowedTime && RevertAnthony.IsVersion("borrowed-time", "v0.99.1"))
-        {
-            __result = new LocString("cards", "BORROWED_TIME_V0991.description");
-        }
-    }
-}
-```
-
-The key format is `{CARD_KEY}_{VERSION_SLUG}.description` (e.g., `BORROWED_TIME_V0991.description`).
 
 ### Export Localization Files
 

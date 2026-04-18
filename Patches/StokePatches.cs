@@ -17,21 +17,19 @@ namespace RevertAnthony;
 // Current:  No keywords. OnPlay: exhaust all cards in hand, generate new random cards (upgrade if upgraded).
 //          No OnUpgrade
 
-[HarmonyPatch(typeof(Stoke), "get_CanonicalKeywords")]
+[HarmonyPatch(typeof(CardModel), "CanonicalKeywords", MethodType.Getter)]
 static class Stoke_CanonicalKeywords_Patch
 {
-    static bool Prefix(ref IEnumerable<CardKeyword> __result)
+    static void Postfix(CardModel __instance, ref IEnumerable<CardKeyword> __result)
     {
-        if (RevertAnthony.IsVersion("stoke", "v0.99.1"))
+        if (__instance is Stoke && RevertAnthony.IsVersion("stoke", "v0.99.1"))
         {
             // v0.99.1: has Exhaust (current: no keywords)
             __result = new CardKeyword[]
             {
                 CardKeyword.Exhaust,
             };
-            return false;
         }
-        return true;
     }
 }
 
