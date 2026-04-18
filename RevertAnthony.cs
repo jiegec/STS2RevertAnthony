@@ -97,7 +97,7 @@ public static class RevertAnthony
         new SupportedCard("memento-mori", "SILENT", "v0.99.1"),
         new SupportedCard("minion-dive-bomb", "REGENT", "v0.99.1"),
         new SupportedCard("minion-strike", "REGENT", "v0.99.1"),
-        new SupportedCard("neows-fury", "EVENT", "v0.99.1"),
+        new SupportedCard("neows-fury", "ANCIENT", "v0.99.1"),
         new SupportedCard("parry", "REGENT", "v0.99.1"),
         new SupportedCard("patter", "REGENT", "v0.99.1"),
         new SupportedCard("pinpoint", "SILENT", "v0.99.1"),
@@ -125,6 +125,8 @@ public static class RevertAnthony
 
     public static bool IsVersion(string cardSlug, string version) =>
         CardVersions.TryGetValue(cardSlug, out var currentVersion) && currentVersion == version;
+
+    private static bool _batchOperationInProgress;
 
     public static void ModLoaded()
     {
@@ -268,6 +270,64 @@ public static class RevertAnthony
 
             object GetConfigType(string name) => Enum.Parse(configType, name);
 
+            // Collect all unique old versions for batch operations
+            var allVersions = SupportedCards.SelectMany(c => c.OldVersions).Distinct().ToList();
+            var batchOptions = new List<string> { "Unchanged", Latest };
+            batchOptions.AddRange(allVersions);
+            const string Unchanged = "Unchanged";
+
+            // Global batch operation
+            entries.Add(MakeEntry("", "Batch Operations", GetConfigType("Header")));
+            setValueMethod.Invoke(null, new object[] { "RevertAnthony", "batch_all_version", Unchanged });
+            entries.Add(MakeEntry("batch_all_version", "Set all cards to",
+                GetConfigType("Dropdown"),
+                defaultValue: Unchanged,
+                options: batchOptions.ToArray(),
+                labels: new()
+                {
+                    { "en", "Set all cards to" },
+                    { "zhs", "将所有卡牌设置为" }
+                },
+                descriptions: new()
+                {
+                    { "en", "Apply the selected version to ALL cards at once (only cards that support it)" },
+                    { "zhs", "将所选版本批量应用到所有卡牌（仅支持该版本的卡牌）" }
+                },
+                onChanged: (value) =>
+                {
+                    var version = (string)value;
+                    if (version == Unchanged) return;
+                    _batchOperationInProgress = true;
+                    try
+                    {
+                        foreach (var card in SupportedCards)
+                        {
+                            if (version != Latest && !card.OldVersions.Contains(version))
+                                continue;
+                            CardVersions[card.Slug] = version;
+                            setValueMethod.Invoke(null, new object[] { "RevertAnthony", $"card_{card.Slug}_version", version });
+                            if (card.OldVersions.Contains(version))
+                            {
+                                ClearCanonicalCache(card.Slug);
+                            }
+                        }
+                        SaveConfig();
+                    }
+                    finally
+                    {
+                        _batchOperationInProgress = false;
+                        var tree = (SceneTree)Engine.GetMainLoop();
+                        Action resetCallback = null;
+                        resetCallback = () =>
+                        {
+                            tree.ProcessFrame -= resetCallback;
+                            setValueMethod.Invoke(null, new object[] { "RevertAnthony", "batch_all_version", Unchanged });
+                        };
+                        tree.ProcessFrame += resetCallback;
+                    }
+                }));
+            entries.Add(MakeEntry("", "", GetConfigType("Separator")));
+
             // Group cards by character
             var cardsByCharacter = SupportedCards
                 .GroupBy(c => c.Character)
@@ -278,9 +338,61 @@ public static class RevertAnthony
                 var characterKey = group.Key;
                 var charLoc = LocString.GetIfExists("characters", characterKey + ".title");
                 var characterLabel = charLoc != null ? charLoc.GetFormattedText() : characterKey;
+                var capturedGroup = group.ToList();
 
                 // Add character header
                 entries.Add(MakeEntry("", characterLabel, GetConfigType("Header")));
+
+                // Per-character batch operation
+                setValueMethod.Invoke(null, new object[] { "RevertAnthony", $"batch_{characterKey}_version", Unchanged });
+                entries.Add(MakeEntry($"batch_{characterKey}_version", $"Set all {characterLabel} cards to",
+                    GetConfigType("Dropdown"),
+                    defaultValue: Unchanged,
+                    options: batchOptions.ToArray(),
+                    labels: new()
+                    {
+                        { "en", $"Set all {characterLabel} cards to" },
+                        { "zhs", $"将所有{characterLabel}卡牌设置为" }
+                    },
+                    descriptions: new()
+                    {
+                        { "en", $"Apply the selected version to all {characterLabel} cards at once (only cards that support it)" },
+                        { "zhs", $"将所选版本批量应用到所有{characterLabel}卡牌（仅支持该版本的卡牌）" }
+                    },
+                    onChanged: (value) =>
+                    {
+                        var version = (string)value;
+                        if (version == Unchanged) return;
+                        _batchOperationInProgress = true;
+                        try
+                        {
+                            foreach (var card in capturedGroup)
+                            {
+                                if (version != Latest && !card.OldVersions.Contains(version))
+                                    continue;
+                                CardVersions[card.Slug] = version;
+                                setValueMethod.Invoke(null, new object[] { "RevertAnthony", $"card_{card.Slug}_version", version });
+                                if (card.OldVersions.Contains(version))
+                                {
+                                    ClearCanonicalCache(card.Slug);
+                                }
+                            }
+                            SaveConfig();
+                        }
+                        finally
+                        {
+                            _batchOperationInProgress = false;
+                            var capturedCharacterKey = characterKey;
+                            var tree = (SceneTree)Engine.GetMainLoop();
+                            Action resetCallback = null;
+                            resetCallback = () =>
+                            {
+                                tree.ProcessFrame -= resetCallback;
+                                setValueMethod.Invoke(null, new object[] { "RevertAnthony", $"batch_{capturedCharacterKey}_version", Unchanged });
+                            };
+                            tree.ProcessFrame += resetCallback;
+                        }
+                    }));
 
                 foreach (var card in group)
                 {
@@ -305,6 +417,7 @@ public static class RevertAnthony
                         },
                         onChanged: (value) =>
                         {
+                            if (_batchOperationInProgress) return;
                             var version = (string)value;
                             CardVersions[slug] = version;
                             SaveConfig();

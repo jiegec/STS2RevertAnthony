@@ -14,8 +14,6 @@ All cards listed below also have their **descriptions reverted** to match the v0
 
 ### DEFECT
 
-### DEFECT
-
 | Card | Property | Current | v0.99.1 |
 |------|----------|---------|---------|
 | Hotfix | Keywords / Upgrade | Exhaust / Remove Exhaust | **None / +1 Focus** |
@@ -32,7 +30,7 @@ All cards listed below also have their **descriptions reverted** to match the v0
 | Production | Upgrade | +1 Energy | **Remove Exhaust** |
 | SeekerStrike | Damage / Cards | 9 / 3 | **6 / 3** |
 
-### EVENT
+### ANCIENT
 
 | Card | Property | Current | v0.99.1 |
 |------|----------|---------|---------|
@@ -117,6 +115,7 @@ All cards listed below also have their **descriptions reverted** to match the v0
 ## Configuration
 
 `RevertAnthonyConfig.json` stores per-card version choices:
+
 ```json
 {
     "schema_version": 1,
