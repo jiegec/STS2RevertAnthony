@@ -27,14 +27,12 @@ public class RevertAnthonyConfig
 public class SupportedCard
 {
     public string Slug { get; set; }
-    public string DisplayName { get; set; }
     public string Character { get; set; }
     public List<string> OldVersions { get; set; }
 
-    public SupportedCard(string slug, string displayName, string character, params string[] oldVersions)
+    public SupportedCard(string slug, string character, params string[] oldVersions)
     {
         Slug = slug;
-        DisplayName = displayName;
         Character = character;
         OldVersions = new List<string>(oldVersions);
     }
@@ -52,10 +50,12 @@ public static class RevertAnthony
 
     public static readonly List<SupportedCard> SupportedCards = new()
     {
-        new SupportedCard("borrowed-time", "Borrowed Time", "NECROBINDER", "v0.99.1"),
-        new SupportedCard("hemokinesis", "Hemokinesis", "IRONCLAD", "v0.99.1"),
-        new SupportedCard("acrobatics", "Acrobatics", "SILENT", "v0.99.1"),
-        new SupportedCard("skewer", "Skewer", "SILENT", "v0.99.1"),
+        new SupportedCard("acrobatics", "SILENT", "v0.99.1"),
+        new SupportedCard("alignment","REGENT", "v0.99.1"),
+        new SupportedCard("anticipate", "SILENT", "v0.99.1"),
+        new SupportedCard("borrowed-time", "NECROBINDER", "v0.99.1"),
+        new SupportedCard("hemokinesis", "IRONCLAD", "v0.99.1"),
+        new SupportedCard("skewer","SILENT", "v0.99.1"),
     };
 
     public static string SlugToLocKey(string slug) => slug.Replace("-", "_").ToUpperInvariant();
@@ -201,19 +201,15 @@ public static class RevertAnthony
                     // Use the game's built-in localization for card names
                     string locKey = SlugToLocKey(slug);
                     var titleLoc = new LocString("cards", locKey + ".title");
-                    string cardLabel = titleLoc.Exists() ? titleLoc.GetFormattedText() : card.DisplayName;
+                    string cardLabel = titleLoc.GetFormattedText();
 
-                    entries.Add(MakeEntry($"card_{slug}_version", card.DisplayName,
+                    entries.Add(MakeEntry($"card_{slug}_version", cardLabel,
                         GetConfigType("Dropdown"),
                         defaultValue: CardVersions.GetValueOrDefault(slug, Latest),
                         options: options.ToArray(),
-                        labels: new()
-                        {
-                            { "zhs", cardLabel }
-                        },
                         descriptions: new()
                         {
-                            { "en", $"Use {Latest} (current) or {versionList} (old) version of {card.DisplayName}" },
+                            { "en", $"Use {Latest} (current) or {versionList} (old) version of {cardLabel}" },
                             { "zhs", $"使用 {Latest}（当前）或 {versionList}（旧版）版本的 {cardLabel}" }
                         },
                         onChanged: (value) =>
