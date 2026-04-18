@@ -54,6 +54,8 @@ public static class RevertAnthony
         new SupportedCard("alignment","REGENT", "v0.99.1"),
         new SupportedCard("anticipate", "SILENT", "v0.99.1"),
         new SupportedCard("borrowed-time", "NECROBINDER", "v0.99.1"),
+        new SupportedCard("corrosive-wave", "SILENT", "v0.99.1"),
+        new SupportedCard("dirge", "NECROBINDER", "v0.99.1"),
         new SupportedCard("hemokinesis", "IRONCLAD", "v0.99.1"),
         new SupportedCard("skewer","SILENT", "v0.99.1"),
     };
