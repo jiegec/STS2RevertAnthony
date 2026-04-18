@@ -10,7 +10,7 @@ namespace RevertAnthony;
 // v0.99.1: Star Cost 2
 // Current:  Star Cost 3
 
-[HarmonyPatch(typeof(Alignment), "get_CanonicalStarCost")]
+[HarmonyPatch(typeof(Alignment), "CanonicalStarCost", MethodType.Getter)]
 static class Alignment_CanonicalStarCost_Patch
 {
     static bool Prefix(ref int __result)
