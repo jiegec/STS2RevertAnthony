@@ -1,0 +1,11 @@
+{
+    "id": "RevertAnthony",
+    "name": "RevertAnthony",
+    "author": "Jiajie Chen @jiegec <c@jia.je",
+    "description": "Revert Anthony's changes to previous game versions",
+    "version": "1.0.0",
+    "has_pck": true,
+    "has_dll": true,
+    "dependencies": [],
+    "affects_gameplay": true
+}
