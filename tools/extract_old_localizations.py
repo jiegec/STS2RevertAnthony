@@ -115,7 +115,7 @@ def main():
     parser.add_argument("--version", "-v", default=None, 
                         help="Version label for keys (auto-detected if not provided)")
     parser.add_argument("--cards", "-c", nargs="+", 
-                        default=["borrowed-time", "hemokinesis", "acrobatics", "skewer"],
+                        default=["borrowed-time"],
                         help="Card slugs to extract (default: borrowed-time hemokinesis acrobatics skewer)")
     parser.add_argument("--languages", "-l", nargs="+", 
                         default=["eng", "zhs"],
@@ -169,7 +169,13 @@ def main():
         lang_dir = output_dir / lang
         lang_dir.mkdir(exist_ok=True)
         
+        # Merge existing entries
         output_path = lang_dir / "cards.json"
+        if output_path.exists():
+            existing = json.load(open(output_path, "r", encoding="utf-8"))
+            existing.update(entries)
+            entries = existing
+
         with open(output_path, "w", encoding="utf-8") as f:
             json.dump(entries, f, ensure_ascii=False, indent=2)
         

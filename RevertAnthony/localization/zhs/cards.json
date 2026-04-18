@@ -1,6 +1,4 @@
 {
   "BORROWED_TIME_V0991.description": "给予自身{DoomPower:diff()}层[gold]灾厄[/gold]。\n获得{Energy:energyIcons()}。",
-  "HEMOKINESIS_V0991.description": "失去{HpLoss:diff()}点生命。\n造成{Damage:diff()}点伤害。",
-  "ACROBATICS_V0991.description": "抽{Cards:diff()}张牌。\n丢弃1张牌。",
-  "SKEWER_V0991.description": "造成{Damage:diff()}点伤害X次。"
+  "BORROWED_TIME_V01032.description": "获得{Energy:energyIcons()}。\n卡牌在本回合耗能增加{ExtraCost:energyIcons()}。"
 }
