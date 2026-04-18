@@ -1,0 +1,924 @@
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/ArsenalPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/powers/ArsenalPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/ArsenalPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/powers/ArsenalPower.cs
+@@ -1,27 +1,25 @@
+ using System.Collections.Generic;
+ using System.Threading.Tasks;
+ using MegaCrit.Sts2.Core.Commands;
+-using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.Entities.Powers;
+-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.HoverTips;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Powers;
+ 
+ public sealed class ArsenalPower : PowerModel
+ {
+ 	public override PowerType Type => PowerType.Buff;
+ 
+ 	public override PowerStackType StackType => PowerStackType.Counter;
+ 
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromPower<StrengthPower>());
+ 
+-	public override async Task AfterCardPlayed(PlayerChoiceContext context, CardPlay cardPlay)
++	public override async Task AfterCardGeneratedForCombat(CardModel card, bool addedByPlayer)
+ 	{
+-		if (cardPlay.Card.Owner == base.Owner.Player && cardPlay.Card.VisualCardPool.IsColorless)
++		if (card.Owner == base.Owner.Player && addedByPlayer)
+ 		{
+ 			Flash();
+ 			await PowerCmd.Apply<StrengthPower>(base.Owner, base.Amount, base.Owner, null);
+ 		}
+ 	}
+ }
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/BeaconOfHopePower.cs v0.103.2/MegaCrit/Sts2/Core/Models/powers/BeaconOfHopePower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/BeaconOfHopePower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/powers/BeaconOfHopePower.cs
+@@ -7,47 +7,47 @@
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Powers;
+ 
+ public sealed class BeaconOfHopePower : PowerModel
+ {
+ 	private bool _hasAlreadyBeenGivenBlock;
+ 
+ 	public override PowerType Type => PowerType.Buff;
+ 
+-	public override PowerStackType StackType => PowerStackType.Counter;
++	public override PowerStackType StackType => PowerStackType.Single;
+ 
+ 	private bool HasAlreadyBeenGivenBlock
+ 	{
+ 		get
+ 		{
+ 			return _hasAlreadyBeenGivenBlock;
+ 		}
+ 		set
+ 		{
+ 			AssertMutable();
+ 			_hasAlreadyBeenGivenBlock = value;
+ 		}
+ 	}
+ 
+ 	public override async Task AfterBlockGained(Creature creature, decimal amount, ValueProp props, CardModel? cardSource)
+ 	{
+ 		if (amount < 1m || creature != base.Owner || base.CombatState.CurrentSide != base.Owner.Side || HasAlreadyBeenGivenBlock)
+ 		{
+ 			return;
+ 		}
+-		IEnumerable<Creature> enumerable = from c in base.CombatState.GetTeammatesOf(base.Owner)
+-			where c != null && c.IsAlive && c.IsPlayer && c.Player.Creature != base.Owner
+-			select c;
+-		decimal amountToGive = amount * 0.5m * (decimal)base.Amount;
++		decimal amountToGive = amount * 0.5m;
+ 		if (amountToGive < 1m)
+ 		{
+ 			return;
+ 		}
++		IEnumerable<Creature> enumerable = from c in base.CombatState.GetTeammatesOf(base.Owner)
++			where c != null && c.IsAlive && c.IsPlayer && c.Player.Creature != base.Owner
++			select c;
+ 		HasAlreadyBeenGivenBlock = true;
+ 		foreach (Creature item in enumerable)
+ 		{
+ 			await CreatureCmd.GainBlock(item, amountToGive, ValueProp.Unpowered, null);
+ 		}
+ 		HasAlreadyBeenGivenBlock = false;
+ 	}
+ }
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/BladeOfInkPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/powers/BladeOfInkPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/BladeOfInkPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/powers/BladeOfInkPower.cs
+@@ -1,44 +0,0 @@
+-using System.Collections.Generic;
+-using System.Threading.Tasks;
+-using MegaCrit.Sts2.Core.Combat;
+-using MegaCrit.Sts2.Core.Commands;
+-using MegaCrit.Sts2.Core.Entities.Cards;
+-using MegaCrit.Sts2.Core.Entities.Powers;
+-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+-using MegaCrit.Sts2.Core.HoverTips;
+-using MegaCrit.Sts2.Core.Localization.DynamicVars;
+-
+-namespace MegaCrit.Sts2.Core.Models.Powers;
+-
+-public sealed class BladeOfInkPower : PowerModel
+-{
+-	private const string _strengthAppliedKey = "StrengthApplied";
+-
+-	public override PowerType Type => PowerType.Buff;
+-
+-	public override PowerStackType StackType => PowerStackType.Counter;
+-
+-	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.FromPower<StrengthPower>());
+-
+-	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlySingleElementList<DynamicVar>(new DynamicVar("StrengthApplied", 0m));
+-
+-	public override async Task AfterCardPlayed(PlayerChoiceContext context, CardPlay cardPlay)
+-	{
+-		if (cardPlay.Card.Owner == base.Owner.Player && cardPlay.Card.Type == CardType.Attack)
+-		{
+-			Flash();
+-			await PowerCmd.Apply<StrengthPower>(base.Owner, base.Amount, base.Owner, null, silent: true);
+-			base.DynamicVars["StrengthApplied"].BaseValue += (decimal)base.Amount;
+-			InvokeDisplayAmountChanged();
+-		}
+-	}
+-
+-	public override async Task AfterTurnEnd(PlayerChoiceContext choiceContext, CombatSide side)
+-	{
+-		if (side == base.Owner.Side)
+-		{
+-			await PowerCmd.Apply<StrengthPower>(base.Owner, -base.DynamicVars["StrengthApplied"].BaseValue, base.Owner, null, silent: true);
+-			await PowerCmd.Remove(this);
+-		}
+-	}
+-}
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/BorrowedTimePower.cs v0.103.2/MegaCrit/Sts2/Core/Models/powers/BorrowedTimePower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/BorrowedTimePower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/powers/BorrowedTimePower.cs
+@@ -0,0 +1,37 @@
++using System.Collections.Generic;
++using System.Threading.Tasks;
++using MegaCrit.Sts2.Core.Combat;
++using MegaCrit.Sts2.Core.Commands;
++using MegaCrit.Sts2.Core.Entities.Powers;
++using MegaCrit.Sts2.Core.GameActions.Multiplayer;
++using MegaCrit.Sts2.Core.HoverTips;
++
++namespace MegaCrit.Sts2.Core.Models.Powers;
++
++public sealed class BorrowedTimePower : PowerModel
++{
++	public override PowerType Type => PowerType.Debuff;
++
++	public override PowerStackType StackType => PowerStackType.Counter;
++
++	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.ForEnergy(this));
++
++	public override bool TryModifyEnergyCostInCombat(CardModel card, decimal originalCost, out decimal modifiedCost)
++	{
++		modifiedCost = originalCost;
++		if (card.Owner.Creature != base.Owner)
++		{
++			return false;
++		}
++		modifiedCost = originalCost + (decimal)base.Amount;
++		return true;
++	}
++
++	public override async Task AfterTurnEnd(PlayerChoiceContext choiceContext, CombatSide side)
++	{
++		if (side == base.Owner.Side)
++		{
++			await PowerCmd.Remove(this);
++		}
++	}
++}
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/BurrowedPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/powers/BurrowedPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/BurrowedPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/powers/BurrowedPower.cs
+@@ -25,13 +25,13 @@
+ 		if (creature == base.Owner)
+ 		{
+ 			await CreatureCmd.TriggerAnim(base.Owner, "UnburrowAttack", 0.25f);
+ 			await CreatureCmd.Stun(base.Owner, "BITE_MOVE");
+ 			await PowerCmd.Remove<BurrowedPower>(base.Owner);
+ 		}
+ 	}
+ 
+ 	public override async Task AfterRemoved(Creature oldOwner)
+ 	{
+-		await CreatureCmd.LoseBlock(oldOwner, 999m);
++		await CreatureCmd.LoseBlock(oldOwner, 999999999m);
+ 	}
+ }
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/CrabRagePower.cs v0.103.2/MegaCrit/Sts2/Core/Models/powers/CrabRagePower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/CrabRagePower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/powers/CrabRagePower.cs
+@@ -17,21 +17,21 @@
+ 	public override PowerStackType StackType => PowerStackType.Single;
+ 
+ 	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlyArray<IHoverTip>(new IHoverTip[2]
+ 	{
+ 		HoverTipFactory.FromPower<StrengthPower>(),
+ 		HoverTipFactory.Static(StaticHoverTip.Block)
+ 	});
+ 
+ 	protected override IEnumerable<DynamicVar> CanonicalVars => new global::_003C_003Ez__ReadOnlyArray<DynamicVar>(new DynamicVar[2]
+ 	{
+-		new PowerVar<StrengthPower>(5m),
++		new PowerVar<StrengthPower>(6m),
+ 		new BlockVar(99m, ValueProp.Unpowered)
+ 	});
+ 
+ 	public override async Task AfterDeath(PlayerChoiceContext choiceContext, Creature creature, bool wasRemovalPrevented, float deathAnimLength)
+ 	{
+ 		if (creature != base.Owner && creature.Side == base.Owner.Side)
+ 		{
+ 			Flash();
+ 			await PowerCmd.Apply<StrengthPower>(base.Owner, base.DynamicVars.Strength.IntValue, base.Owner, null);
+ 			await CreatureCmd.GainBlock(base.Owner, base.DynamicVars.Block, null);
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/DoomPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/powers/DoomPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/DoomPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/powers/DoomPower.cs
+@@ -44,21 +44,21 @@
+ 		return creatures.Where((Creature c) => c.GetPower<DoomPower>()?.IsOwnerDoomed() ?? false).ToList();
+ 	}
+ 
+ 	public bool IsOwnerDoomed()
+ 	{
+ 		return base.Owner.CurrentHp <= base.Amount;
+ 	}
+ 
+ 	public override async Task BeforeTurnEnd(PlayerChoiceContext choiceContext, CombatSide side)
+ 	{
+-		if (side == base.Owner.Side && !base.Owner.IsDead && IsOwnerDoomed())
++		if (!CombatManager.Instance.IsOverOrEnding && side == base.Owner.Side && !base.Owner.IsDead && IsOwnerDoomed())
+ 		{
+ 			IReadOnlyList<Creature> doomedCreatures = GetDoomedCreatures(base.Owner.CombatState.GetCreaturesOnSide(side));
+ 			if (doomedCreatures.First() == base.Owner)
+ 			{
+ 				await DoomKill(doomedCreatures);
+ 			}
+ 		}
+ 	}
+ 
+ 	private static async Task PlayVfx(Creature creature)
+@@ -97,29 +97,28 @@
+ 
+ 	private static void StartDoomAnim(NCreature creature, bool shouldDie)
+ 	{
+ 		Task task = null;
+ 		if (shouldDie)
+ 		{
+ 			creature.Entity.Monster?.OnDieToDoom();
+ 			Tween tween = creature.AnimDisableUi();
+ 			tween.TweenCallback(Callable.From(creature.QueueFreeSafely));
+ 			task = WaitForTween(tween);
+-			if (creature.HasSpineAnimation)
++			if (creature.SpineAnimation.IsValid)
+ 			{
+ 				creature.SetAnimationTrigger("Hit");
+-				if (creature.SpineController.GetAnimationState().GetCurrent(0).GetAnimation()
+-					.GetName() == "hurt")
++				MegaTrackEntry currentTrack = creature.SpineAnimation.GetCurrentTrack();
++				if (currentTrack?.GetAnimation().GetName() == "hurt")
+ 				{
+-					MegaTrackEntry current = creature.SpineController.GetAnimationState().GetCurrent(0);
+-					current.SetTrackTime(0.1f);
+-					current.SetTimeScale(0f);
++					currentTrack.SetTrackTime(0.1f);
++					currentTrack.SetTimeScale(0f);
+ 				}
+ 			}
+ 			NCombatRoom.Instance?.RemoveCreatureNode(creature);
+ 		}
+ 		NDoomVfx nDoomVfx = NDoomVfx.Create(creature.Visuals, creature.Hitbox.GlobalPosition, creature.Hitbox.Size, shouldDie);
+ 		NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(nDoomVfx);
+ 		if (shouldDie)
+ 		{
+ 			global::_003C_003Ey__InlineArray2<Task> buffer = default(global::_003C_003Ey__InlineArray2<Task>);
+ 			buffer[0] = task;
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/DoorRevivalPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/powers/DoorRevivalPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/DoorRevivalPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/powers/DoorRevivalPower.cs
+@@ -1,112 +0,0 @@
+-using System.Collections.Generic;
+-using System.Threading.Tasks;
+-using MegaCrit.Sts2.Core.Commands;
+-using MegaCrit.Sts2.Core.Entities.Creatures;
+-using MegaCrit.Sts2.Core.Entities.Players;
+-using MegaCrit.Sts2.Core.Entities.Powers;
+-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+-using MegaCrit.Sts2.Core.Models.Monsters;
+-
+-namespace MegaCrit.Sts2.Core.Models.Powers;
+-
+-public sealed class DoorRevivalPower : PowerModel
+-{
+-	private class Data
+-	{
+-		public bool isHalfDead;
+-	}
+-
+-	public override PowerType Type => PowerType.Buff;
+-
+-	public override PowerStackType StackType => PowerStackType.Single;
+-
+-	protected override bool IsVisibleInternal => false;
+-
+-	public bool IsHalfDead => GetInternalData<Data>().isHalfDead;
+-
+-	protected override object InitInternalData()
+-	{
+-		return new Data();
+-	}
+-
+-	public override Task BeforeDeath(Creature creature)
+-	{
+-		if (creature != base.Owner)
+-		{
+-			return Task.CompletedTask;
+-		}
+-		GetInternalData<Data>().isHalfDead = true;
+-		return Task.CompletedTask;
+-	}
+-
+-	public override async Task AfterDeath(PlayerChoiceContext choiceContext, Creature creature, bool wasRemovalPrevented, float deathAnimLength)
+-	{
+-		if (creature == base.Owner)
+-		{
+-			if (wasRemovalPrevented)
+-			{
+-				GetInternalData<Data>().isHalfDead = false;
+-				return;
+-			}
+-			Door door = (Door)base.Owner.Monster;
+-			door.PrepareForDeath();
+-			door.SetMoveImmediate(door.DeadState);
+-			door.Open();
+-			await CreatureCmd.Add(door.Doormaker);
+-			Doormaker doormaker = (Doormaker)door.Doormaker.Monster;
+-			await doormaker.AnimIn();
+-		}
+-	}
+-
+-	public async Task DoRevive()
+-	{
+-		GetInternalData<Data>().isHalfDead = false;
+-		Door door = (Door)base.Owner.Monster;
+-		IReadOnlyList<Player> players = base.CombatState.Players;
+-		int count = players.Count;
+-		int currentActIndex = base.CombatState.RunState.CurrentActIndex;
+-		decimal amount = Creature.ScaleHpForMultiplayer(base.Owner.Monster.MinInitialHp, base.CombatState.Encounter, count, currentActIndex);
+-		await CreatureCmd.SetMaxHp(base.Owner, amount);
+-		await CreatureCmd.Heal(base.Owner, base.Owner.MaxHp);
+-		door.PrepareForRevival();
+-		door.Close();
+-	}
+-
+-	public override bool ShouldAllowHitting(Creature creature)
+-	{
+-		if (creature != base.Owner)
+-		{
+-			return true;
+-		}
+-		return !IsHalfDead;
+-	}
+-
+-	public override bool ShouldStopCombatFromEnding()
+-	{
+-		if (!IsHalfDead)
+-		{
+-			return false;
+-		}
+-		Door door = (Door)base.Owner.Monster;
+-		return door.Doormaker.IsAlive;
+-	}
+-
+-	public override bool ShouldCreatureBeRemovedFromCombatAfterDeath(Creature creature)
+-	{
+-		if (creature == base.Owner)
+-		{
+-			return false;
+-		}
+-		Door door = (Door)base.Owner.Monster;
+-		if (creature == door.Doormaker && !base.Owner.CombatState.ContainsCreature(creature))
+-		{
+-			return false;
+-		}
+-		return true;
+-	}
+-
+-	public override bool ShouldPowerBeRemovedAfterOwnerDeath()
+-	{
+-		return false;
+-	}
+-}
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/GrapplePower.cs v0.103.2/MegaCrit/Sts2/Core/Models/powers/GrapplePower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/GrapplePower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/powers/GrapplePower.cs
+@@ -1,32 +0,0 @@
+-using System.Threading.Tasks;
+-using MegaCrit.Sts2.Core.Combat;
+-using MegaCrit.Sts2.Core.Commands;
+-using MegaCrit.Sts2.Core.Entities.Creatures;
+-using MegaCrit.Sts2.Core.Entities.Powers;
+-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+-using MegaCrit.Sts2.Core.ValueProps;
+-
+-namespace MegaCrit.Sts2.Core.Models.Powers;
+-
+-public sealed class GrapplePower : PowerModel
+-{
+-	public override PowerType Type => PowerType.Debuff;
+-
+-	public override PowerStackType StackType => PowerStackType.Counter;
+-
+-	public override bool IsInstanced => true;
+-
+-	public override async Task AfterBlockGained(Creature creature, decimal amount, ValueProp props, CardModel? cardSource)
+-	{
+-		if (!(amount <= 0m) && creature == base.Applier)
+-		{
+-			Flash();
+-			await CreatureCmd.Damage(new ThrowingPlayerChoiceContext(), base.Owner, base.Amount, ValueProp.Unpowered, base.Owner, null);
+-		}
+-	}
+-
+-	public override async Task AfterTurnEnd(PlayerChoiceContext choiceContext, CombatSide side)
+-	{
+-		await PowerCmd.Remove(this);
+-	}
+-}
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/GraspPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/powers/GraspPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/GraspPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/powers/GraspPower.cs
+@@ -0,0 +1,72 @@
++using System.Collections.Generic;
++using System.Linq;
++using System.Threading.Tasks;
++using MegaCrit.Sts2.Core.Commands;
++using MegaCrit.Sts2.Core.Entities.Creatures;
++using MegaCrit.Sts2.Core.Entities.Powers;
++using MegaCrit.Sts2.Core.HoverTips;
++using MegaCrit.Sts2.Core.Models.Afflictions;
++
++namespace MegaCrit.Sts2.Core.Models.Powers;
++
++public sealed class GraspPower : PowerModel
++{
++	public override PowerType Type => PowerType.Buff;
++
++	public override PowerStackType StackType => PowerStackType.Single;
++
++	protected override IEnumerable<IHoverTip> ExtraHoverTips => new global::_003C_003Ez__ReadOnlySingleElementList<IHoverTip>(HoverTipFactory.ForEnergy(this));
++
++	public override async Task AfterApplied(Creature? applier, CardModel? cardSource)
++	{
++		foreach (Creature item in base.Owner.CombatState.Allies.ToList())
++		{
++			if (!item.IsPlayer)
++			{
++				continue;
++			}
++			List<CardModel> list = item.Player.PlayerCombatState.AllCards.ToList();
++			foreach (CardModel item2 in list)
++			{
++				await Afflict(item2);
++			}
++		}
++	}
++
++	public override async Task AfterCardEnteredCombat(CardModel card)
++	{
++		if (card.Affliction == null)
++		{
++			await Afflict(card);
++		}
++	}
++
++	public override Task AfterRemoved(Creature oldOwner)
++	{
++		if (oldOwner.CombatState == null)
++		{
++			return Task.CompletedTask;
++		}
++		foreach (Creature item in oldOwner.CombatState.Allies.ToList())
++		{
++			if (!item.IsPlayer)
++			{
++				continue;
++			}
++			List<CardModel> list = item.Player.PlayerCombatState.AllCards.Where((CardModel c) => c.Affliction is Weighted).ToList();
++			foreach (CardModel item2 in list)
++			{
++				CardCmd.ClearAffliction(item2);
++			}
++		}
++		return Task.CompletedTask;
++	}
++
++	private async Task Afflict(CardModel card)
++	{
++		if (card.Affliction == null)
++		{
++			await CardCmd.Afflict<Weighted>(card, base.Amount);
++		}
++	}
++}
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/HauntPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/powers/HauntPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/HauntPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/powers/HauntPower.cs
+@@ -11,21 +11,21 @@
+ namespace MegaCrit.Sts2.Core.Models.Powers;
+ 
+ public sealed class HauntPower : PowerModel
+ {
+ 	public override PowerType Type => PowerType.Buff;
+ 
+ 	public override PowerStackType StackType => PowerStackType.Counter;
+ 
+ 	public override async Task AfterCardPlayed(PlayerChoiceContext context, CardPlay cardPlay)
+ 	{
+-		if (cardPlay.Card is Soul)
++		if (cardPlay.Card is Soul && cardPlay.Card.Owner.Creature == base.Owner)
+ 		{
+ 			IReadOnlyList<Creature> hittableEnemies = base.CombatState.HittableEnemies;
+ 			if (hittableEnemies.Count != 0)
+ 			{
+ 				Creature item = base.Owner.Player.RunState.Rng.CombatTargets.NextItem(hittableEnemies);
+ 				await CreatureCmd.Damage(context, new global::_003C_003Ez__ReadOnlySingleElementList<Creature>(item), base.Amount, ValueProp.Unblockable | ValueProp.Unpowered, null, null);
+ 			}
+ 		}
+ 	}
+ }
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/HungerPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/powers/HungerPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/HungerPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/powers/HungerPower.cs
+@@ -0,0 +1,90 @@
++using System.Collections.Generic;
++using System.Linq;
++using System.Threading.Tasks;
++using MegaCrit.Sts2.Core.Commands;
++using MegaCrit.Sts2.Core.Entities.Cards;
++using MegaCrit.Sts2.Core.Entities.Creatures;
++using MegaCrit.Sts2.Core.Entities.Powers;
++using MegaCrit.Sts2.Core.HoverTips;
++using MegaCrit.Sts2.Core.Models.Afflictions;
++
++namespace MegaCrit.Sts2.Core.Models.Powers;
++
++public sealed class HungerPower : PowerModel
++{
++	public override PowerType Type => PowerType.Buff;
++
++	public override PowerStackType StackType => PowerStackType.Single;
++
++	protected override IEnumerable<IHoverTip> ExtraHoverTips => HoverTipFactory.FromAffliction<Devoured>(base.Amount);
++
++	public override async Task AfterApplied(Creature? applier, CardModel? cardSource)
++	{
++		foreach (Creature item in base.Owner.CombatState.Allies.ToList())
++		{
++			if (!item.IsPlayer)
++			{
++				continue;
++			}
++			List<CardModel> list = item.Player.PlayerCombatState.AllCards.Where(delegate(CardModel c)
++			{
++				CardType type = c.Type;
++				return (uint)(type - 1) <= 1u;
++			}).ToList();
++			foreach (CardModel item2 in list)
++			{
++				await Afflict(item2);
++			}
++		}
++	}
++
++	public override async Task AfterCardEnteredCombat(CardModel card)
++	{
++		if (card.Affliction == null)
++		{
++			CardType type = card.Type;
++			if ((uint)(type - 1) <= 1u)
++			{
++				await Afflict(card);
++			}
++		}
++	}
++
++	public override Task AfterRemoved(Creature oldOwner)
++	{
++		if (oldOwner.CombatState == null)
++		{
++			return Task.CompletedTask;
++		}
++		foreach (Creature item in oldOwner.CombatState.Allies.ToList())
++		{
++			if (!item.IsPlayer)
++			{
++				continue;
++			}
++			List<CardModel> list = item.Player.PlayerCombatState.AllCards.Where((CardModel c) => c.Affliction is Devoured).ToList();
++			foreach (CardModel item2 in list)
++			{
++				if (((Devoured)item2.Affliction).AppliedExhaust)
++				{
++					CardCmd.RemoveKeyword(item2, CardKeyword.Exhaust);
++				}
++				CardCmd.ClearAffliction(item2);
++			}
++		}
++		return Task.CompletedTask;
++	}
++
++	private async Task Afflict(CardModel card)
++	{
++		if (card.Affliction == null)
++		{
++			Devoured devoured = await CardCmd.Afflict<Devoured>(card, base.Amount);
++			if (devoured != null && !card.Keywords.Contains(CardKeyword.Exhaust))
++			{
++				CardCmd.ApplyKeyword(card, CardKeyword.Exhaust);
++				devoured.AppliedExhaust = true;
++			}
++		}
++	}
++}
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/LethalityPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/powers/LethalityPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/LethalityPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/powers/LethalityPower.cs
+@@ -22,18 +22,19 @@
+ 		}
+ 		if (cardSource == null)
+ 		{
+ 			return 1m;
+ 		}
+ 		if (cardSource.Owner.Creature != base.Owner)
+ 		{
+ 			return 1m;
+ 		}
+ 		int num = CombatManager.Instance.History.CardPlaysStarted.Count((CardPlayStartedEntry e) => e.HappenedThisTurn(base.CombatState) && e.CardPlay.Card.Type == CardType.Attack && e.CardPlay.Card.Owner.Creature == base.Owner);
+-		int num2 = ((cardSource.Pile.Type == PileType.Play) ? 1 : 0);
++		CardPile pile = cardSource.Pile;
++		int num2 = ((pile != null && pile.Type == PileType.Play) ? 1 : 0);
+ 		if (num > num2)
+ 		{
+ 			return 1m;
+ 		}
+ 		return 1m + (decimal)base.Amount / 100m;
+ 	}
+ }
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/MayhemPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/powers/MayhemPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/MayhemPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/powers/MayhemPower.cs
+@@ -1,24 +1,23 @@
+ using System.Threading.Tasks;
+-using MegaCrit.Sts2.Core.Combat;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.Entities.Players;
+ using MegaCrit.Sts2.Core.Entities.Powers;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Powers;
+ 
+ public sealed class MayhemPower : PowerModel
+ {
+ 	public override PowerType Type => PowerType.Buff;
+ 
+ 	public override PowerStackType StackType => PowerStackType.Counter;
+ 
+-	public override async Task BeforeHandDrawLate(Player player, PlayerChoiceContext choiceContext, CombatState combatState)
++	public override async Task AfterPlayerTurnStart(PlayerChoiceContext choiceContext, Player player)
+ 	{
+ 		if (player == base.Owner.Player)
+ 		{
+ 			await CardPileCmd.AutoPlayFromDrawPile(choiceContext, base.Owner.Player, base.Amount, CardPilePosition.Top, forceExhaust: false);
+ 		}
+ 	}
+ }
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/Mocks/MockRemoveDrawnCardsFromCombatPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/powers/Mocks/MockRemoveDrawnCardsFromCombatPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/Mocks/MockRemoveDrawnCardsFromCombatPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/powers/Mocks/MockRemoveDrawnCardsFromCombatPower.cs
+@@ -0,0 +1,18 @@
++using System.Threading.Tasks;
++using MegaCrit.Sts2.Core.Commands;
++using MegaCrit.Sts2.Core.Entities.Powers;
++using MegaCrit.Sts2.Core.GameActions.Multiplayer;
++
++namespace MegaCrit.Sts2.Core.Models.Powers.Mocks;
++
++public sealed class MockRemoveDrawnCardsFromCombatPower : PowerModel
++{
++	public override PowerType Type => PowerType.Debuff;
++
++	public override PowerStackType StackType => PowerStackType.Single;
++
++	public override async Task AfterCardDrawn(PlayerChoiceContext choiceContext, CardModel card, bool fromHandDraw)
++	{
++		await CardPileCmd.RemoveFromCombat(card, skipVisuals: true);
++	}
++}
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/NoEnergyGainPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/powers/NoEnergyGainPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/NoEnergyGainPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/powers/NoEnergyGainPower.cs
+@@ -0,0 +1,35 @@
++using System.Threading.Tasks;
++using MegaCrit.Sts2.Core.Combat;
++using MegaCrit.Sts2.Core.Commands;
++using MegaCrit.Sts2.Core.Entities.Players;
++using MegaCrit.Sts2.Core.Entities.Powers;
++using MegaCrit.Sts2.Core.GameActions.Multiplayer;
++
++namespace MegaCrit.Sts2.Core.Models.Powers;
++
++public sealed class NoEnergyGainPower : PowerModel
++{
++	public override PowerType Type => PowerType.Debuff;
++
++	public override PowerStackType StackType => PowerStackType.Single;
++
++	public override decimal ModifyEnergyGain(Player player, decimal amount)
++	{
++		if (player != base.Owner.Player)
++		{
++			return amount;
++		}
++		return 0m;
++	}
++
++	public override Task AfterModifyingEnergyGain()
++	{
++		Flash();
++		return Task.CompletedTask;
++	}
++
++	public override async Task AfterTurnEnd(PlayerChoiceContext choiceContext, CombatSide side)
++	{
++		await PowerCmd.Remove(this);
++	}
++}
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/RollingBoulderPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/powers/RollingBoulderPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/RollingBoulderPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/powers/RollingBoulderPower.cs
+@@ -50,19 +50,18 @@
+ 			{
+ 				NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(vfx);
+ 				if (!vfx.IsInsideTree())
+ 				{
+ 					throw new InvalidOperationException("VFX is not inside tree after adding it to combat room!");
+ 				}
+ 			}).CallDeferred();
+ 			await vfx.ToSignal(vfx, Node.SignalName.TreeExiting);
+ 			await Task.WhenAll(damageTasks);
+ 		}
+-		base.Amount += base.DynamicVars.Damage.IntValue;
+-		InvokeDisplayAmountChanged();
++		SetAmount(base.Amount + base.DynamicVars.Damage.IntValue);
+ 	}
+ 
+ 	private Task<IEnumerable<DamageResult>> DoDamage(PlayerChoiceContext choiceContext, IEnumerable<Creature> targets)
+ 	{
+ 		return CreatureCmd.Damage(choiceContext, targets, base.Amount, ValueProp.Unpowered, base.Owner);
+ 	}
+ }
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/SandpitPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/powers/SandpitPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/SandpitPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/powers/SandpitPower.cs
+@@ -59,21 +59,21 @@
+ 		if (TestMode.IsOn)
+ 		{
+ 			return Task.CompletedTask;
+ 		}
+ 		NCreature creatureNode = NCombatRoom.Instance.GetCreatureNode(base.Target);
+ 		_initialAmount = base.Amount;
+ 		_initialTargetPosition = creatureNode.GlobalPosition.X;
+ 		return Task.CompletedTask;
+ 	}
+ 
+-	public override async Task AfterSideTurnStart(CombatSide side, CombatState combatState)
++	public override async Task AfterSideTurnStartLate(CombatSide side, CombatState combatState)
+ 	{
+ 		if (side == CombatSide.Enemy)
+ 		{
+ 			await PowerCmd.Decrement(this);
+ 		}
+ 	}
+ 
+ 	public override async Task AfterPowerAmountChanged(PowerModel power, decimal _, Creature? __, CardModel? cardSource)
+ 	{
+ 		if (!TestMode.IsOn && power == this)
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/ScrutinyPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/powers/ScrutinyPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/ScrutinyPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/powers/ScrutinyPower.cs
+@@ -0,0 +1,21 @@
++using MegaCrit.Sts2.Core.Entities.Players;
++using MegaCrit.Sts2.Core.Entities.Powers;
++
++namespace MegaCrit.Sts2.Core.Models.Powers;
++
++public sealed class ScrutinyPower : PowerModel
++{
++	public override PowerType Type => PowerType.Buff;
++
++	public override PowerStackType StackType => PowerStackType.Single;
++
++	public override bool ShouldDraw(Player player, bool fromHandDraw)
++	{
++		if (fromHandDraw)
++		{
++			return true;
++		}
++		Flash();
++		return false;
++	}
++}
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/SmokestackPower.cs v0.103.2/MegaCrit/Sts2/Core/Models/powers/SmokestackPower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/SmokestackPower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/powers/SmokestackPower.cs
+@@ -8,17 +8,17 @@
+ namespace MegaCrit.Sts2.Core.Models.Powers;
+ 
+ public sealed class SmokestackPower : PowerModel
+ {
+ 	public override PowerType Type => PowerType.Buff;
+ 
+ 	public override PowerStackType StackType => PowerStackType.Counter;
+ 
+ 	public override async Task AfterCardGeneratedForCombat(CardModel card, bool addedByPlayer)
+ 	{
+-		if (addedByPlayer && card.Type == CardType.Status)
++		if (addedByPlayer && card.Type == CardType.Status && card.Owner.Creature == base.Owner)
+ 		{
+ 			Flash();
+ 			await CreatureCmd.Damage(new ThrowingPlayerChoiceContext(), base.CombatState.HittableEnemies, base.Amount, ValueProp.Unpowered, base.Owner, null);
+ 		}
+ 	}
+ }
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/StampedePower.cs v0.103.2/MegaCrit/Sts2/Core/Models/powers/StampedePower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/StampedePower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/powers/StampedePower.cs
+@@ -8,21 +8,21 @@
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Powers;
+ 
+ public sealed class StampedePower : PowerModel
+ {
+ 	public override PowerType Type => PowerType.Buff;
+ 
+ 	public override PowerStackType StackType => PowerStackType.Counter;
+ 
+-	public override async Task BeforeTurnEnd(PlayerChoiceContext choiceContext, CombatSide side)
++	public override async Task BeforeTurnEndEarly(PlayerChoiceContext choiceContext, CombatSide side)
+ 	{
+ 		if (side != base.Owner.Side)
+ 		{
+ 			return;
+ 		}
+ 		CardPile hand = PileType.Hand.GetPile(base.Owner.Player);
+ 		for (int i = 0; i < base.Amount; i++)
+ 		{
+ 			List<CardModel> items = hand.Cards.Where((CardModel c) => c.Type == CardType.Attack && !c.Keywords.Contains(CardKeyword.Unplayable)).ToList();
+ 			CardModel cardModel = base.Owner.Player.RunState.Rng.Shuffle.NextItem(items);
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/SwordSagePower.cs v0.103.2/MegaCrit/Sts2/Core/Models/powers/SwordSagePower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/SwordSagePower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/powers/SwordSagePower.cs
+@@ -56,26 +56,11 @@
+ 		IEnumerable<CardModel> enumerable = oldOwner.Player?.PlayerCombatState?.AllCards ?? Array.Empty<CardModel>();
+ 		foreach (CardModel item in enumerable)
+ 		{
+ 			if (item is SovereignBlade sovereignBlade)
+ 			{
+ 				sovereignBlade.SetRepeats(1m);
+ 			}
+ 		}
+ 		return Task.CompletedTask;
+ 	}
+-
+-	public override bool TryModifyEnergyCostInCombat(CardModel card, decimal originalCost, out decimal modifiedCost)
+-	{
+-		modifiedCost = originalCost;
+-		if (card.Owner.Creature != base.Owner)
+-		{
+-			return false;
+-		}
+-		if (!(card is SovereignBlade))
+-		{
+-			return false;
+-		}
+-		modifiedCost += (decimal)base.Amount;
+-		return true;
+-	}
+ }
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Powers/TrashToTreasurePower.cs v0.103.2/MegaCrit/Sts2/Core/Models/powers/TrashToTreasurePower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Powers/TrashToTreasurePower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/powers/TrashToTreasurePower.cs
+@@ -7,21 +7,21 @@
+ namespace MegaCrit.Sts2.Core.Models.Powers;
+ 
+ public sealed class TrashToTreasurePower : PowerModel
+ {
+ 	public override PowerType Type => PowerType.Buff;
+ 
+ 	public override PowerStackType StackType => PowerStackType.Counter;
+ 
+ 	public override async Task AfterCardGeneratedForCombat(CardModel card, bool addedByPlayer)
+ 	{
+-		if (addedByPlayer && card.Type == CardType.Status)
++		if (addedByPlayer && card.Type == CardType.Status && card.Owner.Creature == base.Owner)
+ 		{
+ 			Flash();
+ 			for (int i = 0; i < base.Amount; i++)
+ 			{
+ 				OrbModel orb = OrbModel.GetRandomOrb(base.Owner.Player.RunState.Rng.CombatOrbGeneration).ToMutable();
+ 				await OrbCmd.Channel(new ThrowingPlayerChoiceContext(), orb, base.Owner.Player);
+ 			}
+ 		}
+ 	}
+ }

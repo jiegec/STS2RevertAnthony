@@ -1,0 +1,4468 @@
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/BattleFriendV1.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/BattleFriendV1.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/BattleFriendV1.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/BattleFriendV1.cs
+@@ -1,31 +1,29 @@
+ using System.Collections.Generic;
+ using System.Threading.Tasks;
+ using MegaCrit.Sts2.Core.Animation;
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+-using MegaCrit.Sts2.Core.Nodes.Combat;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class BattleFriendV1 : MonsterModel
+ {
+ 	public override int MinInitialHp => 75;
+ 
+ 	public override int MaxInitialHp => 75;
+ 
+-	public override void SetupSkins(NCreatureVisuals visuals)
++	public override void SetupSkins(MegaSprite spine, MegaSkeleton skeleton)
+ 	{
+-		MegaSkeleton skeleton = visuals.SpineBody.GetSkeleton();
+ 		MegaSkeletonDataResource data = skeleton.GetData();
+ 		skeleton.SetSkin(data.FindSkin("v1"));
+ 		skeleton.SetSlotsToSetupPose();
+ 	}
+ 
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		MoveState moveState = new MoveState("NOTHING_MOVE", (IReadOnlyList<Creature> _) => Task.CompletedTask);
+ 		moveState.FollowUpState = moveState;
+ 		return new MonsterMoveStateMachine(new global::_003C_003Ez__ReadOnlySingleElementList<MonsterState>(moveState), moveState);
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/BattleFriendV2.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/BattleFriendV2.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/BattleFriendV2.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/BattleFriendV2.cs
+@@ -1,31 +1,29 @@
+ using System.Collections.Generic;
+ using System.Threading.Tasks;
+ using MegaCrit.Sts2.Core.Animation;
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+-using MegaCrit.Sts2.Core.Nodes.Combat;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class BattleFriendV2 : MonsterModel
+ {
+ 	public override int MinInitialHp => 150;
+ 
+ 	public override int MaxInitialHp => 150;
+ 
+-	public override void SetupSkins(NCreatureVisuals visuals)
++	public override void SetupSkins(MegaSprite spine, MegaSkeleton skeleton)
+ 	{
+-		MegaSkeleton skeleton = visuals.SpineBody.GetSkeleton();
+ 		MegaSkeletonDataResource data = skeleton.GetData();
+ 		skeleton.SetSkin(data.FindSkin("v2"));
+ 		skeleton.SetSlotsToSetupPose();
+ 	}
+ 
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		MoveState moveState = new MoveState("NOTHING_MOVE", (IReadOnlyList<Creature> _) => Task.CompletedTask);
+ 		moveState.FollowUpState = moveState;
+ 		return new MonsterMoveStateMachine(new global::_003C_003Ez__ReadOnlySingleElementList<MonsterState>(moveState), moveState);
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/BattleFriendV3.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/BattleFriendV3.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/BattleFriendV3.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/BattleFriendV3.cs
+@@ -1,31 +1,29 @@
+ using System.Collections.Generic;
+ using System.Threading.Tasks;
+ using MegaCrit.Sts2.Core.Animation;
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+-using MegaCrit.Sts2.Core.Nodes.Combat;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class BattleFriendV3 : MonsterModel
+ {
+ 	public override int MinInitialHp => 300;
+ 
+ 	public override int MaxInitialHp => 300;
+ 
+-	public override void SetupSkins(NCreatureVisuals visuals)
++	public override void SetupSkins(MegaSprite spine, MegaSkeleton skeleton)
+ 	{
+-		MegaSkeleton skeleton = visuals.SpineBody.GetSkeleton();
+ 		MegaSkeletonDataResource data = skeleton.GetData();
+ 		skeleton.SetSkin(data.FindSkin("v3"));
+ 		skeleton.SetSlotsToSetupPose();
+ 	}
+ 
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		MoveState moveState = new MoveState("NOTHING_MOVE", (IReadOnlyList<Creature> _) => Task.CompletedTask);
+ 		moveState.FollowUpState = moveState;
+ 		return new MonsterMoveStateMachine(new global::_003C_003Ez__ReadOnlySingleElementList<MonsterState>(moveState), moveState);
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/BowlbugEgg.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/BowlbugEgg.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/BowlbugEgg.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/BowlbugEgg.cs
+@@ -3,54 +3,55 @@
+ using Godot;
+ using MegaCrit.Sts2.Core.Animation;
+ using MegaCrit.Sts2.Core.Audio;
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+-using MegaCrit.Sts2.Core.Nodes.Combat;
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class BowlbugEgg : MonsterModel
+ {
+ 	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 23, 21);
+ 
+ 	public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 24, 22);
+ 
+ 	private int BiteDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 8, 7);
+ 
+ 	private int ProtectBlock => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 8, 7);
+ 
+ 	public override string DeathSfx => "event:/sfx/enemy/enemy_attacks/workbug_egg/workbug_egg_die";
+ 
+ 	protected override string AttackSfx => "event:/sfx/enemy/enemy_attacks/workbug_egg/workbug_egg_attack";
+ 
+ 	public override DamageSfxType TakeDamageSfxType => DamageSfxType.Insect;
+ 
+-	public override void SetupSkins(NCreatureVisuals visuals)
++	public override void SetupSkins(MegaSprite spine, MegaSkeleton skeleton)
+ 	{
+-		MegaSkeleton skeleton = visuals.SpineBody.GetSkeleton();
+ 		skeleton.SetSkin(skeleton.GetData().FindSkin("cocoon"));
+ 		skeleton.SetSlotsToSetupPose();
+-		Node node = visuals.GetNode("Visuals/CocoonSlotNode/Cocoon");
++		Node node = (spine.BoundObject as Node)?.GetNodeOrNull("CocoonSlotNode/Cocoon");
+ 		if (node != null)
+ 		{
+ 			MegaSprite megaSprite = new MegaSprite(node);
+ 			MegaSkeleton skeleton2 = megaSprite.GetSkeleton();
+-			skeleton2.SetSkin(skeleton2.GetData().FindSkin("egg1"));
+-			megaSprite.GetAnimationState().SetAnimation("egg_idle_loop");
+-			skeleton2.SetSlotsToSetupPose();
++			if (skeleton2 != null)
++			{
++				skeleton2.SetSkin(skeleton2.GetData().FindSkin("egg1"));
++				megaSprite.GetAnimationState().SetAnimation("egg_idle_loop");
++				skeleton2.SetSlotsToSetupPose();
++			}
+ 		}
+ 	}
+ 
+ 	public override async Task AfterAddedToRoom()
+ 	{
+ 		await base.AfterAddedToRoom();
+ 	}
+ 
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/BowlbugNectar.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/BowlbugNectar.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/BowlbugNectar.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/BowlbugNectar.cs
+@@ -3,21 +3,20 @@
+ using MegaCrit.Sts2.Core.Animation;
+ using MegaCrit.Sts2.Core.Audio;
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+-using MegaCrit.Sts2.Core.Nodes.Combat;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class BowlbugNectar : MonsterModel
+ {
+ 	private const string _buffTrigger = "Buff";
+ 
+ 	private const string _spitSfx = "event:/sfx/enemy/enemy_attacks/workbug_goop/workbug_goop_spit";
+ 
+ 	private const string _spineSkin = "goop";
+@@ -27,23 +26,22 @@
+ 	public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 39, 38);
+ 
+ 	private int ThrashDamage => 3;
+ 
+ 	private int BuffStrengthGain => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 16, 15);
+ 
+ 	public override string DeathSfx => "event:/sfx/enemy/enemy_attacks/workbug_goop/workbug_goop_die";
+ 
+ 	public override DamageSfxType TakeDamageSfxType => DamageSfxType.Insect;
+ 
+-	public override void SetupSkins(NCreatureVisuals visuals)
++	public override void SetupSkins(MegaSprite spine, MegaSkeleton skeleton)
+ 	{
+-		MegaSkeleton skeleton = visuals.SpineBody.GetSkeleton();
+ 		skeleton.SetSkin(skeleton.GetData().FindSkin("goop"));
+ 		skeleton.SetSlotsToSetupPose();
+ 	}
+ 
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		List<MonsterState> list = new List<MonsterState>();
+ 		MoveState moveState = new MoveState("THRASH_MOVE", ThrashMove, new SingleAttackIntent(ThrashDamage));
+ 		MoveState moveState2 = new MoveState("BUFF_MOVE", BuffMove, new BuffIntent());
+ 		MoveState moveState3 = new MoveState("THRASH2_MOVE", ThrashMove, new SingleAttackIntent(ThrashDamage));
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/BowlbugRock.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/BowlbugRock.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/BowlbugRock.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/BowlbugRock.cs
+@@ -3,21 +3,20 @@
+ using MegaCrit.Sts2.Core.Animation;
+ using MegaCrit.Sts2.Core.Audio;
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+-using MegaCrit.Sts2.Core.Nodes.Combat;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class BowlbugRock : MonsterModel
+ {
+ 	private const string _stunTrigger = "Stun";
+ 
+ 	private const string _unstunTrigger = "Unstun";
+ 
+ 	private bool _isOffBalance;
+@@ -44,23 +43,22 @@
+ 			_isOffBalance = value;
+ 		}
+ 	}
+ 
+ 	public override string DeathSfx => "event:/sfx/enemy/enemy_attacks/workbug_rock/workbug_rock_die";
+ 
+ 	protected override string AttackSfx => "event:/sfx/enemy/enemy_attacks/workbug_rock/workbug_rock_attack";
+ 
+ 	public override DamageSfxType TakeDamageSfxType => DamageSfxType.Insect;
+ 
+-	public override void SetupSkins(NCreatureVisuals visuals)
++	public override void SetupSkins(MegaSprite spine, MegaSkeleton skeleton)
+ 	{
+-		MegaSkeleton skeleton = visuals.SpineBody.GetSkeleton();
+ 		skeleton.SetSkin(skeleton.GetData().FindSkin("rock"));
+ 		skeleton.SetSlotsToSetupPose();
+ 	}
+ 
+ 	public override async Task AfterAddedToRoom()
+ 	{
+ 		await base.AfterAddedToRoom();
+ 		await PowerCmd.Apply<ImbalancedPower>(base.Creature, 1m, base.Creature, null);
+ 	}
+ 
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/BowlbugSilk.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/BowlbugSilk.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/BowlbugSilk.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/BowlbugSilk.cs
+@@ -25,23 +25,22 @@
+ 	private const string _spineSkin = "web";
+ 
+ 	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 41, 40);
+ 
+ 	public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 44, 43);
+ 
+ 	private int ThrashDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 5, 4);
+ 
+ 	public override string DeathSfx => "event:/sfx/enemy/enemy_attacks/workbug_silk/workbug_silk_die";
+ 
+-	public override void SetupSkins(NCreatureVisuals visuals)
++	public override void SetupSkins(MegaSprite spine, MegaSkeleton skeleton)
+ 	{
+-		MegaSkeleton skeleton = visuals.SpineBody.GetSkeleton();
+ 		skeleton.SetSkin(skeleton.GetData().FindSkin("web"));
+ 		skeleton.SetSlotsToSetupPose();
+ 	}
+ 
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		List<MonsterState> list = new List<MonsterState>();
+ 		MoveState moveState = new MoveState("TRASH_MOVE", ThrashMove, new MultiAttackIntent(ThrashDamage, 2));
+ 		MoveState moveState2 = (MoveState)(moveState.FollowUpState = new MoveState("TOXIC_SPIT_MOVE", WebMove, new DebuffIntent()));
+ 		moveState2.FollowUpState = moveState;
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/BygoneEffigy.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/BygoneEffigy.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/BygoneEffigy.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/BygoneEffigy.cs
+@@ -19,21 +19,21 @@
+ using MegaCrit.Sts2.Core.TestSupport;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class BygoneEffigy : MonsterModel
+ {
+ 	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 132, 127);
+ 
+ 	public override int MaxInitialHp => MinInitialHp;
+ 
+-	private int SlashDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 17, 15);
++	private int SlashDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 15, 13);
+ 
+ 	public override DamageSfxType TakeDamageSfxType => DamageSfxType.Stone;
+ 
+ 	public override async Task AfterAddedToRoom()
+ 	{
+ 		await base.AfterAddedToRoom();
+ 		await PowerCmd.Apply<SlowPower>(base.Creature, 1m, base.Creature, null);
+ 	}
+ 
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+@@ -67,21 +67,21 @@
+ 	}
+ 
+ 	private async Task WakeMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		if (TestMode.IsOff)
+ 		{
+ 			NRunMusicController.Instance.TriggerEliteSecondPhase();
+ 		}
+ 		await PowerCmd.Apply<StrengthPower>(base.Creature, 10m, base.Creature, null);
+ 		LocString line = MonsterModel.L10NMonsterLookup("BYGONE_EFFIGY.moves.SLEEP.speakLine2");
+-		TalkCmd.Play(line, base.Creature);
++		TalkCmd.Play(line, base.Creature, VfxColor.DarkGray, VfxDuration.Long);
+ 		await Cmd.Wait(0.5f);
+ 	}
+ 
+ 	private async Task SlashMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		if (TestMode.IsOff)
+ 		{
+ 			Vector2? vector = null;
+ 			foreach (Creature target in targets)
+ 			{
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Byrdonis.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Byrdonis.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Byrdonis.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Byrdonis.cs
+@@ -9,47 +9,48 @@
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class Byrdonis : MonsterModel
+ {
+ 	private const string _angryTrigger = "Angry";
+ 
+-	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 99, 91);
++	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 90, 81);
+ 
+-	public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 99, 94);
++	public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 90, 84);
+ 
+ 	private static int PeckDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 4, 3);
+ 
+ 	private static int PeckRepeat => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 3, 3);
+ 
+-	private static int SwoopDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 18, 16);
++	private static int SwoopDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 19, 17);
+ 
+ 	public override string DeathSfx => "event:/sfx/enemy/enemy_attacks/byrdonis/byrdonis_die";
+ 
+ 	public override string TakeDamageSfx => "event:/sfx/enemy/enemy_attacks/byrdonis/byrdonis_hurt";
+ 
+ 	public override async Task AfterAddedToRoom()
+ 	{
+ 		await base.AfterAddedToRoom();
+ 		await PowerCmd.Apply<TerritorialPower>(base.Creature, 1m, base.Creature, null);
+ 	}
+ 
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		List<MonsterState> list = new List<MonsterState>();
+ 		MoveState moveState = new MoveState("PECK_MOVE", PeckMove, new MultiAttackIntent(PeckDamage, PeckRepeat));
+-		MoveState moveState2 = new MoveState("SWOOP_MOVE", SwoopMove, new SingleAttackIntent(SwoopDamage));
+-		moveState2.FollowUpState = moveState;
+-		moveState.FollowUpState = moveState2;
++		MoveState moveState2 = (MoveState)(moveState.FollowUpState = new MoveState("SWOOP_MOVE", SwoopMove, new SingleAttackIntent(SwoopDamage))
++		{
++			FollowUpState = moveState
++		});
+ 		list.Add(moveState2);
+ 		list.Add(moveState);
+ 		return new MonsterMoveStateMachine(list, moveState2);
+ 	}
+ 
+ 	private async Task PeckMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await DamageCmd.Attack(PeckDamage).WithHitCount(PeckRepeat).FromMonster(this)
+ 			.WithAttackerAnim("Attack", 0.4f)
+ 			.WithAttackerFx(null, AttackSfx)
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Byrdpip.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Byrdpip.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Byrdpip.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Byrdpip.cs
+@@ -1,32 +1,30 @@
+ using System.Collections.Generic;
+ using System.Threading.Tasks;
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Models.Relics;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+-using MegaCrit.Sts2.Core.Nodes.Combat;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class Byrdpip : MonsterModel
+ {
+ 	public override int MinInitialHp => 9999;
+ 
+ 	public override int MaxInitialHp => 9999;
+ 
+ 	public override bool IsHealthBarVisible => false;
+ 
+-	public override void SetupSkins(NCreatureVisuals visuals)
++	public override void SetupSkins(MegaSprite spine, MegaSkeleton skeleton)
+ 	{
+ 		string skinName = ((!base.IsMutable) ? MegaCrit.Sts2.Core.Models.Relics.Byrdpip.SkinOptions[0] : base.Creature.PetOwner.GetRelic<MegaCrit.Sts2.Core.Models.Relics.Byrdpip>().Skin);
+-		MegaSkeleton skeleton = visuals.SpineBody.GetSkeleton();
+ 		MegaSkeletonDataResource data = skeleton.GetData();
+ 		skeleton.SetSkin(data.FindSkin(skinName));
+ 		skeleton.SetSlotsToSetupPose();
+ 	}
+ 
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		MoveState moveState = new MoveState("NOTHING_MOVE", (IReadOnlyList<Creature> _) => Task.CompletedTask);
+ 		moveState.FollowUpState = moveState;
+ 		return new MonsterMoveStateMachine(new global::_003C_003Ez__ReadOnlySingleElementList<MonsterState>(moveState), moveState);
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/CalcifiedCultist.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/CalcifiedCultist.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/CalcifiedCultist.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/CalcifiedCultist.cs
+@@ -5,21 +5,21 @@
+ using MegaCrit.Sts2.Core.Audio;
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Localization;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+-using MegaCrit.Sts2.Core.Nodes.Combat;
++using MegaCrit.Sts2.Core.Nodes.Vfx;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class CalcifiedCultist : MonsterModel
+ {
+ 	private static readonly LocString _cawCawDialogue = new LocString("monsters", "CALCIFIED_CULTIST.moves.INCANTATION.banter");
+ 
+ 	private const string _buffSfx = "event:/sfx/enemy/enemy_attacks/cultists/cultists_buff_calcified";
+ 
+ 	private float _attackSfxStrength;
+@@ -46,46 +46,46 @@
+ 		{
+ 			return _attackSfxStrength;
+ 		}
+ 		set
+ 		{
+ 			AssertMutable();
+ 			_attackSfxStrength = value;
+ 		}
+ 	}
+ 
+-	public override void SetupSkins(NCreatureVisuals visuals)
++	public override void SetupSkins(MegaSprite spine, MegaSkeleton skeleton)
+ 	{
+-		MegaSkeleton skeleton = visuals.SpineBody.GetSkeleton();
+-		MegaSkin megaSkin = visuals.SpineBody.NewSkin("custom-skin");
++		MegaSkin megaSkin = spine.NewSkin("custom-skin");
+ 		MegaSkeletonDataResource data = skeleton.GetData();
+ 		megaSkin.AddSkin(data.FindSkin("coral"));
+ 		skeleton.SetSkin(megaSkin);
+ 		skeleton.SetSlotsToSetupPose();
+ 	}
+ 
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		List<MonsterState> list = new List<MonsterState>();
+ 		MoveState moveState = new MoveState("INCANTATION_MOVE", IncantationMove, new BuffIntent());
+ 		MoveState moveState2 = (MoveState)(moveState.FollowUpState = new MoveState("DARK_STRIKE_MOVE", DarkStrikeMove, new SingleAttackIntent(DarkStrikeDamage)));
+ 		moveState2.FollowUpState = moveState2;
+ 		list.Add(moveState);
+ 		list.Add(moveState2);
+ 		return new MonsterMoveStateMachine(list, moveState);
+ 	}
+ 
+ 	private async Task IncantationMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		SfxCmd.Play("event:/sfx/enemy/enemy_attacks/cultists/cultists_buff_calcified");
+-		await CreatureCmd.TriggerAnim(base.Creature, "Cast", 0.6f);
+-		TalkCmd.Play(_cawCawDialogue, base.Creature);
++		await CreatureCmd.TriggerAnim(base.Creature, "Cast", 0.5f);
++		TalkCmd.Play(_cawCawDialogue, base.Creature, VfxColor.Purple, VfxDuration.Standard);
++		await Cmd.CustomScaledWait(0.25f, 0.5f);
+ 		await PowerCmd.Apply<RitualPower>(base.Creature, IncantationAmount, base.Creature, null);
+ 	}
+ 
+ 	private async Task DarkStrikeMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await DamageCmd.Attack(DarkStrikeDamage).FromMonster(this).WithAttackerAnim("Attack", 0.2f)
+ 			.BeforeDamage(PlayAttackSfx)
+ 			.WithHitFx("vfx/vfx_attack_slash")
+ 			.Execute(null);
+ 	}
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Chomper.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Chomper.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Chomper.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Chomper.cs
+@@ -3,20 +3,21 @@
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Localization;
+ using MegaCrit.Sts2.Core.Models.Cards;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
++using MegaCrit.Sts2.Core.Nodes.Vfx;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class Chomper : MonsterModel
+ {
+ 	public const string screechMoveId = "SCREECH_MOVE";
+ 
+ 	private const int _screechStatusCount = 3;
+ 
+ 	private const int _clampRepeat = 2;
+@@ -67,16 +68,16 @@
+ 		await DamageCmd.Attack(ClampDamage).WithHitCount(2).FromMonster(this)
+ 			.WithAttackerAnim("Attack", 0.3f)
+ 			.WithAttackerFx(null, AttackSfx)
+ 			.WithHitFx("vfx/vfx_attack_slash")
+ 			.Execute(null);
+ 	}
+ 
+ 	private async Task ScreechMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		LocString line = MonsterModel.L10NMonsterLookup("CHOMPER.moves.SCREECH.title");
+-		TalkCmd.Play(line, base.Creature);
++		TalkCmd.Play(line, base.Creature, VfxColor.Cyan);
+ 		SfxCmd.Play(CastSfx);
+ 		await CreatureCmd.TriggerAnim(base.Creature, "Cast", 1f);
+ 		await CardPileCmd.AddToCombatAndPreview<Dazed>(targets, PileType.Discard, 3, addedByPlayer: false);
+ 	}
+ }
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/CrossbowRubyRaider.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/CrossbowRubyRaider.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/CrossbowRubyRaider.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/CrossbowRubyRaider.cs
+@@ -65,34 +65,34 @@
+ 	private async Task ReloadMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		SfxCmd.Play("event:/sfx/enemy/enemy_attacks/crossbow_ruby_raider/crossbow_ruby_raider_reload");
+ 		await CreatureCmd.TriggerAnim(base.Creature, "Reload", 0.25f);
+ 		await CreatureCmd.GainBlock(base.Creature, 3m, ValueProp.Move, null);
+ 		IsCrossbowReloaded = true;
+ 	}
+ 
+ 	public override CreatureAnimator GenerateAnimator(MegaSprite controller)
+ 	{
+-		AnimState animState = new AnimState("idle_loop", isLooping: true);
+-		AnimState animState2 = new AnimState("hurt");
++		AnimState nextState = new AnimState("idle_loop", isLooping: true);
++		AnimState animState = new AnimState("hurt");
+ 		AnimState state = new AnimState("die");
+-		AnimState animState3 = new AnimState("attack");
+-		AnimState animState4 = new AnimState("hurt_empty");
+-		AnimState animState5 = new AnimState("idle_loop_empty", isLooping: true);
+-		AnimState animState6 = new AnimState("hurt_empty");
++		AnimState animState2 = new AnimState("attack");
++		AnimState animState3 = new AnimState("hurt_empty");
++		AnimState animState4 = new AnimState("idle_loop_empty", isLooping: true);
++		AnimState animState5 = new AnimState("hurt_empty");
+ 		AnimState state2 = new AnimState("die_empty");
+-		AnimState animState7 = new AnimState("reload");
+-		animState2.NextState = animState;
+-		animState3.NextState = animState5;
+-		animState4.NextState = animState5;
+-		animState6.NextState = animState5;
+-		animState7.NextState = animState;
+-		CreatureAnimator creatureAnimator = new CreatureAnimator(animState, controller);
+-		creatureAnimator.AddAnyState("Attack", animState5);
+-		creatureAnimator.AddAnyState("Reload", animState7);
+-		creatureAnimator.AddAnyState("Hit", animState6, () => !IsCrossbowReloaded);
+-		creatureAnimator.AddAnyState("Hit", animState2, () => IsCrossbowReloaded);
++		AnimState animState6 = new AnimState("reload");
++		animState.NextState = nextState;
++		animState2.NextState = animState4;
++		animState3.NextState = animState4;
++		animState5.NextState = animState4;
++		animState6.NextState = nextState;
++		CreatureAnimator creatureAnimator = new CreatureAnimator(animState4, controller);
++		creatureAnimator.AddAnyState("Attack", animState2);
++		creatureAnimator.AddAnyState("Reload", animState6);
++		creatureAnimator.AddAnyState("Hit", animState5, () => !IsCrossbowReloaded);
++		creatureAnimator.AddAnyState("Hit", animState, () => IsCrossbowReloaded);
+ 		creatureAnimator.AddAnyState("Dead", state2, () => !IsCrossbowReloaded);
+ 		creatureAnimator.AddAnyState("Dead", state, () => IsCrossbowReloaded);
+ 		return creatureAnimator;
+ 	}
+ }
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Crusher.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Crusher.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Crusher.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Crusher.cs
+@@ -50,32 +50,34 @@
+ 		{
+ 			AssertMutable();
+ 			if (_background == null)
+ 			{
+ 				_background = NCombatRoom.Instance.Background.GetNode<NKaiserCrabBossBackground>("%KaiserCrab");
+ 			}
+ 			return _background;
+ 		}
+ 	}
+ 
+-	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 209, 199);
++	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 219, 209);
+ 
+ 	public override int MaxInitialHp => MinInitialHp;
+ 
+ 	private int ThrashDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 14, 12);
+ 
+ 	private int EnlargingStrikeDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 4, 4);
+ 
+ 	private int BugStingDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 7, 6);
+ 
+ 	private int BugStingTimes => 2;
+ 
++	private int AdaptStrengthGain => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 3, 2);
++
+ 	private int GuardedStrikeDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 14, 12);
+ 
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		List<MonsterState> list = new List<MonsterState>();
+ 		MoveState moveState = new MoveState("THRASH_MOVE", ThrashMove, new SingleAttackIntent(ThrashDamage));
+ 		MoveState moveState2 = new MoveState("ENLARGING_STRIKE_MOVE", EnlargingStrikeMove, new SingleAttackIntent(EnlargingStrikeDamage));
+ 		MoveState moveState3 = new MoveState("BUG_STING_MOVE", BugStingMove, new MultiAttackIntent(BugStingDamage, BugStingTimes), new DebuffIntent());
+ 		MoveState moveState4 = new MoveState("ADAPT_MOVE", AdaptMove, new BuffIntent());
+ 		MoveState moveState5 = new MoveState("GUARDED_STRIKE_MOVE", GuardedStrikeMove, new SingleAttackIntent(GuardedStrikeDamage), new DefendIntent());
+@@ -138,21 +140,21 @@
+ 			.WithAttackerFx(null, AttackSfx)
+ 			.WithHitFx("vfx/vfx_attack_slash")
+ 			.Execute(null);
+ 		await PowerCmd.Apply<WeakPower>(targets, 2m, base.Creature, null);
+ 		await PowerCmd.Apply<FrailPower>(targets, 2m, base.Creature, null);
+ 	}
+ 
+ 	private async Task AdaptMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await Background.PlayAttackAnim(NKaiserCrabBossBackground.ArmSide.Left, "buff", 0.8f);
+-		await PowerCmd.Apply<StrengthPower>(base.Creature, 2m, base.Creature, null);
++		await PowerCmd.Apply<StrengthPower>(base.Creature, AdaptStrengthGain, base.Creature, null);
+ 	}
+ 
+ 	private async Task EnlargingStrikeMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await Background.PlayAttackAnim(NKaiserCrabBossBackground.ArmSide.Left, "attack_med", 0.65f);
+ 		await DamageCmd.Attack(EnlargingStrikeDamage).FromMonster(this).WithAttackerFx(null, AttackSfx)
+ 			.WithHitFx("vfx/vfx_heavy_blunt", null, "heavy_attack.mp3")
+ 			.WithHitVfxSpawnedAtBase()
+ 			.Execute(null);
+ 	}
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/CubexConstruct.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/CubexConstruct.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/CubexConstruct.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/CubexConstruct.cs
+@@ -3,21 +3,20 @@
+ using MegaCrit.Sts2.Core.Animation;
+ using MegaCrit.Sts2.Core.Audio;
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+-using MegaCrit.Sts2.Core.Nodes.Combat;
+ using MegaCrit.Sts2.Core.Random;
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class CubexConstruct : MonsterModel
+ {
+ 	private static readonly string[] _eyeOptions = new string[3] { "diamondeye", "circleeye", "squareeye" };
+ 
+ 	private static readonly string[] _mossOptions = new string[3] { "moss1", "moss2", "moss3" };
+@@ -41,24 +40,23 @@
+ 	public override int MaxInitialHp => MinInitialHp;
+ 
+ 	public override string BestiaryAttackAnimId => "charge_start";
+ 
+ 	private int BlastDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 8, 7);
+ 
+ 	private int ExpelDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 6, 5);
+ 
+ 	public override DamageSfxType TakeDamageSfxType => DamageSfxType.Stone;
+ 
+-	public override void SetupSkins(NCreatureVisuals visuals)
++	public override void SetupSkins(MegaSprite spine, MegaSkeleton skeleton)
+ 	{
+-		MegaSkeleton skeleton = visuals.SpineBody.GetSkeleton();
+-		MegaSkin megaSkin = visuals.SpineBody.NewSkin("custom-skin");
++		MegaSkin megaSkin = spine.NewSkin("custom-skin");
+ 		MegaSkeletonDataResource data = skeleton.GetData();
+ 		megaSkin.AddSkin(data.FindSkin(MegaCrit.Sts2.Core.Random.Rng.Chaotic.NextItem(_eyeOptions)));
+ 		megaSkin.AddSkin(data.FindSkin(MegaCrit.Sts2.Core.Random.Rng.Chaotic.NextItem(_mossOptions)));
+ 		skeleton.SetSkin(megaSkin);
+ 		skeleton.SetSlotsToSetupPose();
+ 	}
+ 
+ 	public override async Task AfterAddedToRoom()
+ 	{
+ 		await base.AfterAddedToRoom();
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/DampCultist.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/DampCultist.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/DampCultist.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/DampCultist.cs
+@@ -5,21 +5,21 @@
+ using MegaCrit.Sts2.Core.Audio;
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Localization;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+-using MegaCrit.Sts2.Core.Nodes.Combat;
++using MegaCrit.Sts2.Core.Nodes.Vfx;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class DampCultist : MonsterModel
+ {
+ 	private static readonly LocString _cawCawDialogue = new LocString("monsters", "DAMP_CULTIST.moves.INCANTATION.banter");
+ 
+ 	private float _attackSfxStrength;
+ 
+ 	private const string _buffSfx = "event:/sfx/enemy/enemy_attacks/cultists/cultists_buff_damp";
+@@ -46,46 +46,46 @@
+ 		}
+ 		set
+ 		{
+ 			AssertMutable();
+ 			_attackSfxStrength = value;
+ 		}
+ 	}
+ 
+ 	protected override string AttackSfx => "event:/sfx/enemy/enemy_attacks/cultists/cultists_attack";
+ 
+-	public override void SetupSkins(NCreatureVisuals visuals)
++	public override void SetupSkins(MegaSprite spine, MegaSkeleton skeleton)
+ 	{
+-		MegaSkeleton skeleton = visuals.SpineBody.GetSkeleton();
+-		MegaSkin megaSkin = visuals.SpineBody.NewSkin("custom-skin");
++		MegaSkin megaSkin = spine.NewSkin("custom-skin");
+ 		MegaSkeletonDataResource data = skeleton.GetData();
+ 		megaSkin.AddSkin(data.FindSkin("slug"));
+ 		skeleton.SetSkin(megaSkin);
+ 		skeleton.SetSlotsToSetupPose();
+ 	}
+ 
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		List<MonsterState> list = new List<MonsterState>();
+ 		MoveState moveState = new MoveState("INCANTATION_MOVE", IncantationMove, new BuffIntent());
+ 		MoveState moveState2 = (MoveState)(moveState.FollowUpState = new MoveState("DARK_STRIKE_MOVE", DarkStrikeMove, new SingleAttackIntent(DarkStrikeDamage)));
+ 		moveState2.FollowUpState = moveState2;
+ 		list.Add(moveState);
+ 		list.Add(moveState2);
+ 		return new MonsterMoveStateMachine(list, moveState);
+ 	}
+ 
+ 	private async Task IncantationMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		SfxCmd.Play("event:/sfx/enemy/enemy_attacks/cultists/cultists_buff_damp");
+-		await CreatureCmd.TriggerAnim(base.Creature, "Cast", 0.6f);
+-		TalkCmd.Play(_cawCawDialogue, base.Creature);
++		await CreatureCmd.TriggerAnim(base.Creature, "Cast", 0.45f);
++		TalkCmd.Play(_cawCawDialogue, base.Creature, VfxColor.Swamp, VfxDuration.Standard);
++		await Cmd.CustomScaledWait(0.25f, 0.5f);
+ 		await PowerCmd.Apply<RitualPower>(base.Creature, IncantationAmount, base.Creature, null);
+ 	}
+ 
+ 	private async Task DarkStrikeMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await DamageCmd.Attack(DarkStrikeDamage).FromMonster(this).WithAttackerAnim("Attack", 0.2f)
+ 			.BeforeDamage(PlayAttackSfx)
+ 			.WithHitFx("vfx/vfx_attack_slash")
+ 			.Execute(null);
+ 	}
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/DecimillipedeSegment.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/DecimillipedeSegment.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/DecimillipedeSegment.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/DecimillipedeSegment.cs
+@@ -4,27 +4,29 @@
+ using System.Runtime.InteropServices;
+ using System.Threading.Tasks;
+ using Godot;
+ using MegaCrit.Sts2.Core.Animation;
+ using MegaCrit.Sts2.Core.Assets;
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Entities.Players;
++using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Localization;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+ using MegaCrit.Sts2.Core.Nodes;
++using MegaCrit.Sts2.Core.Nodes.Combat;
+ using MegaCrit.Sts2.Core.Nodes.Rooms;
+ using MegaCrit.Sts2.Core.TestSupport;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public abstract class DecimillipedeSegment : MonsterModel
+ {
+ 	private int _starterMoveIdx;
+ 
+ 	private const int _writheRepeat = 2;
+@@ -32,38 +34,42 @@
+ 	private MoveState _deadState;
+ 
+ 	private const string _healSfx = "event:/sfx/enemy/enemy_attacks/decimillipede/decimillipede_heal";
+ 
+ 	private const string _attackTriple = "event:/sfx/enemy/enemy_attacks/decimillipede/decimillipede_attack_triple";
+ 
+ 	private const string _attackBuff = "event:/sfx/enemy/enemy_attacks/decimillipede/decimillipede_attack_buff";
+ 
+ 	private const string _attackWeaken = "event:/sfx/enemy/enemy_attacks/decimillipede/decimillipede_attack_weaken";
+ 
++	private string PhobiaModeAliveTexture => ImageHelper.GetImagePath("monsters/phobia_mode/" + base.Id.Entry.ToLowerInvariant() + "_phobia.png");
++
++	private string PhobiaModeDeadTexture => ImageHelper.GetImagePath("monsters/phobia_mode/" + base.Id.Entry.ToLowerInvariant() + "_shriveled_phobia.png");
++
+ 	public override LocString Title => MonsterModel.L10NMonsterLookup("DECIMILLIPEDE_SEGMENT.name");
+ 
+ 	public int StarterMoveIdx
+ 	{
+ 		get
+ 		{
+ 			return _starterMoveIdx;
+ 		}
+ 		set
+ 		{
+ 			AssertMutable();
+ 			_starterMoveIdx = value;
+ 		}
+ 	}
+ 
+-	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 48, 42);
++	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 46, 40);
+ 
+-	public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 56, 48);
++	public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 52, 46);
+ 
+ 	private int WritheDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 6, 5);
+ 
+ 	private int ConstrictDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 9, 8);
+ 
+ 	private int BulkDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 7, 6);
+ 
+ 	private int BulkStrength => 2;
+ 
+ 	public override float HpBarSizeReduction => 35f;
+@@ -88,26 +94,30 @@
+ 	public override bool CanChangeScale => false;
+ 
+ 	private static string RocksVfxPath => SceneHelper.GetScenePath("vfx/vfx_decimillipede_rocks");
+ 
+ 	public override string DeathSfx => "event:/sfx/enemy/enemy_attacks/decimillipede/decimillipede_die";
+ 
+ 	public override IEnumerable<string> AssetPaths
+ 	{
+ 		get
+ 		{
+-			int num = 1;
++			int num = 3;
+ 			List<string> list = new List<string>(num);
+ 			CollectionsMarshal.SetCount(list, num);
+ 			Span<string> span = CollectionsMarshal.AsSpan(list);
+-			int index = 0;
+-			span[index] = RocksVfxPath;
++			int num2 = 0;
++			span[num2] = RocksVfxPath;
++			num2++;
++			span[num2] = PhobiaModeAliveTexture;
++			num2++;
++			span[num2] = PhobiaModeDeadTexture;
+ 			List<string> first = list;
+ 			return first.Concat(base.AssetPaths);
+ 		}
+ 	}
+ 
+ 	public override async Task AfterAddedToRoom()
+ 	{
+ 		await base.AfterAddedToRoom();
+ 		decimal maxHp = base.Creature.MaxHp;
+ 		if (maxHp % 2m == 1m)
+@@ -195,39 +205,63 @@
+ 
+ 	private Task DeadMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		return Task.CompletedTask;
+ 	}
+ 
+ 	private async Task ReattachMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		SfxCmd.Play("event:/sfx/enemy/enemy_attacks/decimillipede/decimillipede_heal");
+ 		await base.Creature.GetPower<ReattachPower>().DoReattach();
++		ChangePhobiaModeTexture(ResourceLoader.Load<Texture2D>(PhobiaModeAliveTexture, null, ResourceLoader.CacheMode.Reuse));
+ 	}
+ 
+ 	private async Task AnimSegmentsAttack()
+ 	{
+ 		if (TestMode.IsOn)
+ 		{
+ 			return;
+ 		}
+ 		IEnumerable<Creature> enumerable = from c in base.Creature.CombatState.GetTeammatesOf(base.Creature)
+ 			where c.Monster is DecimillipedeSegment
+ 			select c;
+ 		foreach (Creature item in enumerable)
+ 		{
+ 			((DecimillipedeSegment)item.Monster).SegmentAttack();
+ 		}
+ 		Node2D node2D = PreloadManager.Cache.GetScene(RocksVfxPath).Instantiate<Node2D>(PackedScene.GenEditState.Disabled);
+ 		NCombatRoom.Instance.CombatVfxContainer.AddChildSafely(node2D);
+ 		node2D.GlobalPosition = NGame.Instance.GetViewportRect().Size / 2f;
+ 		await Cmd.Wait(0.5f);
++	}
++
++	public override Task AfterDeath(PlayerChoiceContext choiceContext, Creature creature, bool wasRemovalPrevented, float deathAnimLength)
++	{
++		if (creature != base.Creature)
++		{
++			return Task.CompletedTask;
++		}
++		if (TestMode.IsOn)
++		{
++			return Task.CompletedTask;
++		}
++		ChangePhobiaModeTexture(ResourceLoader.Load<Texture2D>(PhobiaModeDeadTexture, null, ResourceLoader.CacheMode.Reuse));
++		return Task.CompletedTask;
++	}
++
++	private void ChangePhobiaModeTexture(Texture2D tex)
++	{
++		NCreature creatureNode = NCombatRoom.Instance.GetCreatureNode(base.Creature);
++		if (creatureNode != null && creatureNode.Visuals.IsUsingPhobiaModeBody)
++		{
++			((Sprite2D)creatureNode.Body).Texture = tex;
++		}
+ 	}
+ 
+ 	public override CreatureAnimator GenerateAnimator(MegaSprite controller)
+ 	{
+ 		AnimState animState = new AnimState("idle_loop", isLooping: true);
+ 		AnimState animState2 = new AnimState("hurt");
+ 		AnimState nextState = new AnimState("dead_loop", isLooping: true);
+ 		AnimState animState3 = new AnimState("wither");
+ 		AnimState animState4 = new AnimState("regenerate");
+ 		animState2.NextState = animState;
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/DeprecatedMonster.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/DeprecatedMonster.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/DeprecatedMonster.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/DeprecatedMonster.cs
+@@ -0,0 +1,26 @@
++using System;
++using System.Collections.Generic;
++using System.Threading.Tasks;
++using MegaCrit.Sts2.Core.Entities.Creatures;
++using MegaCrit.Sts2.Core.MonsterMoves.Intents;
++using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
++
++namespace MegaCrit.Sts2.Core.Models.Monsters;
++
++public sealed class DeprecatedMonster : MonsterModel
++{
++	public override int MinInitialHp => 0;
++
++	public override int MaxInitialHp => 0;
++
++	public override bool HasDeathSfx => false;
++
++	public override IEnumerable<string> AssetPaths => Array.Empty<string>();
++
++	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
++	{
++		MoveState moveState = new MoveState("STUB", (IReadOnlyList<Creature> _) => Task.CompletedTask, new HiddenIntent());
++		moveState.FollowUpState = moveState;
++		return new MonsterMoveStateMachine(new global::_003C_003Ez__ReadOnlySingleElementList<MonsterState>(moveState), moveState);
++	}
++}
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/DevotedSculptor.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/DevotedSculptor.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/DevotedSculptor.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/DevotedSculptor.cs
+@@ -2,20 +2,21 @@
+ using System.Threading.Tasks;
+ using MegaCrit.Sts2.Core.Audio;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Localization;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
++using MegaCrit.Sts2.Core.Nodes.Vfx;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class DevotedSculptor : MonsterModel
+ {
+ 	private static readonly LocString _forbiddenIncantationDialogue = new LocString("monsters", "DEVOTED_SCULPTOR.moves.FORBIDDEN_INCANTATION.banter");
+ 
+ 	private readonly int _ritualGain = 9;
+ 
+ 	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 172, 162);
+@@ -36,21 +37,21 @@
+ 		list.Add(moveState2);
+ 		return new MonsterMoveStateMachine(list, moveState);
+ 	}
+ 
+ 	private async Task ForbiddenIncantationMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		SfxCmd.Play(CastSfx);
+ 		await CreatureCmd.TriggerAnim(base.Creature, "Cast", 0f);
+ 		await Cmd.Wait(0.3f);
+ 		VfxCmd.PlayOnCreatureCenter(base.Creature, "vfx/vfx_scream");
+-		TalkCmd.Play(_forbiddenIncantationDialogue, base.Creature);
++		TalkCmd.Play(_forbiddenIncantationDialogue, base.Creature, VfxColor.Blue);
+ 		await Cmd.CustomScaledWait(0.75f, 1f);
+ 		await PowerCmd.Apply<RitualPower>(base.Creature, _ritualGain, null, null);
+ 	}
+ 
+ 	private async Task SavageMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await DamageCmd.Attack(SavageDamage).FromMonster(this).WithAttackerAnim("Attack", 0.3f)
+ 			.WithAttackerFx(null, AttackSfx)
+ 			.WithHitFx("vfx/vfx_attack_blunt")
+ 			.Execute(null);
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Door.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Door.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Door.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Door.cs
+@@ -1,148 +0,0 @@
+-using System;
+-using System.Collections.Generic;
+-using System.Threading.Tasks;
+-using MegaCrit.Sts2.Core.Audio;
+-using MegaCrit.Sts2.Core.Combat;
+-using MegaCrit.Sts2.Core.Commands;
+-using MegaCrit.Sts2.Core.Entities.Ascension;
+-using MegaCrit.Sts2.Core.Entities.Creatures;
+-using MegaCrit.Sts2.Core.Helpers;
+-using MegaCrit.Sts2.Core.Models.Powers;
+-using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+-using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+-using MegaCrit.Sts2.Core.Nodes.Rooms;
+-
+-namespace MegaCrit.Sts2.Core.Models.Monsters;
+-
+-public sealed class Door : MonsterModel
+-{
+-	public const string initialMoveId = "DRAMATIC_OPEN_MOVE";
+-
+-	private MoveState? _dramaticOpenMove;
+-
+-	private MoveState _deadState;
+-
+-	private Creature? _doormaker;
+-
+-	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 165, 155);
+-
+-	public override int MaxInitialHp => MinInitialHp;
+-
+-	public MoveState DeadState
+-	{
+-		get
+-		{
+-			return _deadState;
+-		}
+-		private set
+-		{
+-			AssertMutable();
+-			_deadState = value;
+-		}
+-	}
+-
+-	private int DramaticOpenDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 28, 25);
+-
+-	private int EnforceDamage => 20;
+-
+-	private int EnforceStrength => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 4, 3);
+-
+-	private int DoorSlamDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 15, 15);
+-
+-	private int DoorSlamRepeat => 2;
+-
+-	public override DamageSfxType TakeDamageSfxType => DamageSfxType.ArmorBig;
+-
+-	public override bool ShouldDisappearFromDoom => false;
+-
+-	public Creature Doormaker
+-	{
+-		get
+-		{
+-			return _doormaker ?? throw new InvalidOperationException();
+-		}
+-		private set
+-		{
+-			AssertMutable();
+-			_doormaker = value;
+-		}
+-	}
+-
+-	public override async Task AfterAddedToRoom()
+-	{
+-		await base.AfterAddedToRoom();
+-		await PowerCmd.Apply<DoorRevivalPower>(base.Creature, 1m, base.Creature, null);
+-		Doormaker monster = (Doormaker)ModelDb.Monster<Doormaker>().ToMutable();
+-		Doormaker = base.CombatState.CreateCreature(monster, CombatSide.Enemy, "doormaker");
+-	}
+-
+-	public void PrepareForRevival()
+-	{
+-		if (_dramaticOpenMove != null)
+-		{
+-			DeadState.FollowUpState = _dramaticOpenMove;
+-		}
+-	}
+-
+-	public void PrepareForDeath()
+-	{
+-		DeadState.FollowUpState = DeadState;
+-	}
+-
+-	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+-	{
+-		List<MonsterState> list = new List<MonsterState>();
+-		_dramaticOpenMove = new MoveState("DRAMATIC_OPEN_MOVE", DramaticOpenMove, new SingleAttackIntent(DramaticOpenDamage));
+-		MoveState dramaticOpenMove = _dramaticOpenMove;
+-		MoveState moveState = new MoveState("ENFORCE_MOVE", EnforceMove, new SingleAttackIntent(EnforceDamage), new BuffIntent());
+-		MoveState moveState2 = new MoveState("DOOR_SLAM_MOVE", DoorSlamMove, new MultiAttackIntent(DoorSlamDamage, DoorSlamRepeat));
+-		DeadState = new MoveState("DEAD_MOVE", DeadMove);
+-		DeadState.FollowUpState = DeadState;
+-		dramaticOpenMove.FollowUpState = moveState2;
+-		moveState2.FollowUpState = moveState;
+-		moveState.FollowUpState = dramaticOpenMove;
+-		list.Add(dramaticOpenMove);
+-		list.Add(moveState);
+-		list.Add(moveState2);
+-		list.Add(DeadState);
+-		return new MonsterMoveStateMachine(list, dramaticOpenMove);
+-	}
+-
+-	private Task DeadMove(IReadOnlyList<Creature> targets)
+-	{
+-		return Task.CompletedTask;
+-	}
+-
+-	private async Task DramaticOpenMove(IReadOnlyList<Creature> targets)
+-	{
+-		await DamageCmd.Attack(DramaticOpenDamage).FromMonster(this).WithAttackerAnim("Attack", 0.15f)
+-			.WithHitFx("vfx/vfx_attack_blunt")
+-			.Execute(null);
+-	}
+-
+-	private async Task EnforceMove(IReadOnlyList<Creature> targets)
+-	{
+-		await DamageCmd.Attack(EnforceDamage).FromMonster(this).WithAttackerAnim("Attack", 0.15f)
+-			.WithHitFx("vfx/vfx_attack_blunt")
+-			.Execute(null);
+-		await PowerCmd.Apply<StrengthPower>(base.Creature, EnforceStrength, base.Creature, null);
+-	}
+-
+-	private async Task DoorSlamMove(IReadOnlyList<Creature> targets)
+-	{
+-		await DamageCmd.Attack(DoorSlamDamage).WithHitCount(DoorSlamRepeat).FromMonster(this)
+-			.WithAttackerAnim("Attack", 0.15f)
+-			.WithHitFx("vfx/vfx_attack_blunt")
+-			.Execute(null);
+-	}
+-
+-	public void Close()
+-	{
+-		(NCombatRoom.Instance?.GetCreatureNode(base.Creature))?.SetVisible(visible: true);
+-	}
+-
+-	public void Open()
+-	{
+-		(NCombatRoom.Instance?.GetCreatureNode(base.Creature))?.SetVisible(visible: false);
+-	}
+-}
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Doormaker.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Doormaker.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Doormaker.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Doormaker.cs
+@@ -1,236 +1,209 @@
+-using System;
+ using System.Collections.Generic;
+ using System.Linq;
+-using System.Runtime.InteropServices;
+ using System.Threading.Tasks;
+ using Godot;
+ using MegaCrit.Sts2.Core.Assets;
+ using MegaCrit.Sts2.Core.Audio;
+-using MegaCrit.Sts2.Core.Combat;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Localization;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+ using MegaCrit.Sts2.Core.Nodes.Audio;
+ using MegaCrit.Sts2.Core.Nodes.Combat;
+ using MegaCrit.Sts2.Core.Nodes.Rooms;
++using MegaCrit.Sts2.Core.Nodes.Vfx;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class Doormaker : MonsterModel
+ {
+ 	private const string _doormakerTrackName = "queen_progress";
+ 
+-	private readonly string[] _visualsPaths = new string[3] { "monsters/beta/door_maker_placeholder_2.png", "monsters/beta/door_maker_placeholder_3.png", "monsters/beta/door_maker_placeholder_4.png" };
++	private const string _faceVisual = "monsters/beta/door_maker_placeholder_2.png";
+ 
+-	private static readonly List<string> _whatIsItLines;
++	private const string _teethVisual = "monsters/beta/door_maker_placeholder_3.png";
+ 
+-	private int _timesGotBackIn;
++	private const string _handsVisual = "monsters/beta/door_maker_placeholder_4.png";
+ 
++	private const string _dramaticOpenLine = "DOORMAKER.moves.DRAMATIC_OPEN.speakLine";
++
++	private const int _graspHitCount = 2;
++
++	private int _originalHp;
++
++	private bool _isPortalOpen;
++
++	public override LocString Title
++	{
++		get
++		{
++			if (!IsPortalOpen)
++			{
++				return MonsterModel.L10NMonsterLookup("DOOR.name");
++			}
++			return MonsterModel.L10NMonsterLookup(base.Id.Entry + ".name");
++		}
++	}
++
+ 	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 512, 489);
+ 
+ 	public override int MaxInitialHp => MinInitialHp;
+ 
+-	private int LaserBeamDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 34, 31);
++	private int HungerDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 35, 30);
+ 
+-	private int GetBackInMoveDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 45, 40);
++	private int ScrutinyDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 26, 24);
+ 
+-	private int StrengthScale => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 4, 3);
++	private int GraspDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 11, 10);
+ 
+-	private int DoorHpScale => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 25, 20);
++	private int GraspStrengthGain => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 4, 3);
+ 
+ 	public override DamageSfxType TakeDamageSfxType => DamageSfxType.Armor;
+ 
+-	public int TimesGotBackIn
++	private int OriginalHp
+ 	{
+ 		get
+ 		{
+-			return _timesGotBackIn;
++			return _originalHp;
+ 		}
+-		private set
++		set
+ 		{
+ 			AssertMutable();
+-			_timesGotBackIn = value;
++			_originalHp = value;
+ 		}
+ 	}
+ 
++	private bool IsPortalOpen
++	{
++		get
++		{
++			return _isPortalOpen;
++		}
++		set
++		{
++			AssertMutable();
++			_isPortalOpen = value;
++		}
++	}
++
++	public override async Task AfterAddedToRoom()
++	{
++		await base.AfterAddedToRoom();
++		OriginalHp = base.Creature.MaxHp;
++		await CreatureCmd.SetMaxAndCurrentHp(base.Creature, 999999999m);
++		base.Creature.ShowsInfiniteHp = true;
++	}
++
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		List<MonsterState> list = new List<MonsterState>();
+-		MoveState moveState = new MoveState("WHAT_IS_IT_MOVE", WhatIsItMove, new StunIntent());
+-		MoveState moveState2 = new MoveState("BEAM_MOVE", BeamMove, new SingleAttackIntent(LaserBeamDamage));
+-		MoveState moveState3 = new MoveState("GET_BACK_IN_MOVE", GetBackInMove, new SingleAttackIntent(GetBackInMoveDamage), new BuffIntent(), new EscapeIntent());
++		MoveState moveState = new MoveState("DRAMATIC_OPEN_MOVE", DramaticOpenMove, new SummonIntent());
++		MoveState moveState2 = new MoveState("HUNGER_MOVE", HungerMove, new SingleAttackIntent(HungerDamage));
++		MoveState moveState3 = new MoveState("SCRUTINY_MOVE", ScrutinyMove, new SingleAttackIntent(ScrutinyDamage));
++		MoveState moveState4 = new MoveState("GRASP_MOVE", GraspMove, new MultiAttackIntent(GraspDamage, 2), new BuffIntent());
+ 		moveState.FollowUpState = moveState2;
+ 		moveState2.FollowUpState = moveState3;
+-		moveState3.FollowUpState = moveState3;
++		moveState3.FollowUpState = moveState4;
++		moveState4.FollowUpState = moveState2;
+ 		list.Add(moveState);
+ 		list.Add(moveState2);
+ 		list.Add(moveState3);
++		list.Add(moveState4);
+ 		return new MonsterMoveStateMachine(list, moveState);
+ 	}
+ 
+-	private Task WhatIsItMove(IReadOnlyList<Creature> targets)
++	private async Task DramaticOpenMove(IReadOnlyList<Creature> targets)
+ 	{
+-		Creature creature = base.Creature.CombatState.GetTeammatesOf(base.Creature).FirstOrDefault((Creature c) => c.Monster is Door);
+-		if (creature == null)
++		IsPortalOpen = true;
++		await CreatureCmd.SetMaxAndCurrentHp(base.Creature, OriginalHp);
++		List<PowerModel> list = base.Creature.Powers.ToList();
++		foreach (PowerModel item in list)
+ 		{
+-			goto IL_0065;
++			await PowerCmd.Remove(item);
+ 		}
+-		if (creature.IsDead)
+-		{
+-			DoorRevivalPower? power = creature.GetPower<DoorRevivalPower>();
+-			if (power == null || !power.IsHalfDead)
+-			{
+-				goto IL_0065;
+-			}
+-		}
+-		TalkCmd.Play(MonsterModel.L10NMonsterLookup(base.Rng.NextItem(_whatIsItLines)), base.Creature);
+-		goto IL_00b2;
+-		IL_0065:
+-		TalkCmd.Play(MonsterModel.L10NMonsterLookup("DOORMAKER.moves.WHAT_IS_IT.deadDoorSpeakLine"), base.Creature);
+-		goto IL_00b2;
+-		IL_00b2:
+-		return Task.CompletedTask;
++		base.Creature.ShowsInfiniteHp = false;
++		await SwapPhasePower<HungerPower>();
++		UpdateVisual("monsters/beta/door_maker_placeholder_3.png");
++		await Cmd.CustomScaledWait(0.2f, 0.6f);
++		TalkCmd.Play(MonsterModel.L10NMonsterLookup("DOORMAKER.moves.DRAMATIC_OPEN.speakLine"), base.Creature, VfxColor.Purple);
++		await Cmd.CustomScaledWait(0.2f, 0.6f);
++		NRunMusicController.Instance?.UpdateMusicParameter("queen_progress", 1f);
+ 	}
+ 
+-	private async Task BeamMove(IReadOnlyList<Creature> targets)
++	private async Task HungerMove(IReadOnlyList<Creature> targets)
+ 	{
+-		await DamageCmd.Attack(LaserBeamDamage).FromMonster(this).WithAttackerAnim("Attack", 0.15f)
++		await DamageCmd.Attack(HungerDamage).FromMonster(this).WithAttackerAnim("Attack", 0.15f)
+ 			.WithHitFx("vfx/vfx_attack_blunt")
+ 			.Execute(null);
++		await SwapPhasePower<ScrutinyPower>();
++		await Cmd.Wait(0.2f);
++		UpdateVisual("monsters/beta/door_maker_placeholder_2.png");
+ 	}
+ 
+-	private async Task GetBackInMove(IReadOnlyList<Creature> targets)
++	private async Task ScrutinyMove(IReadOnlyList<Creature> targets)
+ 	{
+-		await DamageCmd.Attack(GetBackInMoveDamage).FromMonster(this).WithAttackerAnim("Attack", 0.15f)
++		await DamageCmd.Attack(ScrutinyDamage).FromMonster(this).WithAttackerAnim("Attack", 0.15f)
++			.WithHitFx("vfx/vfx_bite")
++			.Execute(null);
++		await SwapPhasePower<GraspPower>();
++		await Cmd.Wait(0.2f);
++		UpdateVisual("monsters/beta/door_maker_placeholder_4.png");
++	}
++
++	private async Task GraspMove(IReadOnlyList<Creature> targets)
++	{
++		await DamageCmd.Attack(GraspDamage).WithHitCount(2).FromMonster(this)
++			.WithAttackerAnim("Attack", 0.15f)
+ 			.WithHitFx("vfx/vfx_attack_blunt")
+ 			.Execute(null);
+-		if (base.Creature.IsDead)
++		await PowerCmd.Apply<StrengthPower>(base.Creature, GraspStrengthGain, base.Creature, null);
++		await SwapPhasePower<HungerPower>();
++		await Cmd.Wait(0.2f);
++		UpdateVisual("monsters/beta/door_maker_placeholder_3.png");
++	}
++
++	private async Task SwapPhasePower<T>() where T : PowerModel
++	{
++		if (base.Creature.HasPower<HungerPower>())
+ 		{
+-			return;
++			await PowerCmd.Remove<HungerPower>(base.Creature);
+ 		}
+-		await PowerCmd.Apply<StrengthPower>(base.Creature, 5m, base.Creature, null);
+-		TimesGotBackIn++;
+-		Creature door = base.Creature.CombatState.GetTeammatesOf(base.Creature).FirstOrDefault((Creature c) => c.Monster is Door);
+-		if (door != null)
++		if (base.Creature.HasPower<ScrutinyPower>())
+ 		{
+-			DoorRevivalPower power = door.GetPower<DoorRevivalPower>();
+-			if (power != null)
+-			{
+-				await power.DoRevive();
+-			}
+-			await PowerCmd.SetAmount<StrengthPower>(door, StrengthScale * TimesGotBackIn, base.Creature, null);
+-			await CreatureCmd.SetMaxAndCurrentHp(door, door.MaxHp + DoorHpScale * TimesGotBackIn);
+-			await Cmd.Wait(0.25f);
+-			await AnimOut();
+-			CombatManager.Instance.RemoveCreature(base.Creature);
+-			base.CombatState.RemoveCreature(base.Creature, unattach: false);
+-			await Cmd.Wait(0.25f);
++			await PowerCmd.Remove<ScrutinyPower>(base.Creature);
+ 		}
+-		else
++		if (base.Creature.HasPower<GraspPower>())
+ 		{
+-			await AnimOut();
+-			await CreatureCmd.Escape(base.Creature, removeCreatureNode: false);
++			await PowerCmd.Remove<GraspPower>(base.Creature);
+ 		}
++		await PowerCmd.Apply<T>(base.Creature, 1m, base.Creature, null);
+ 	}
+ 
+-	private async Task RemoveCreatureWhenDone(NCreature creatureNode, Tween tween)
++	private void UpdateVisual(string path)
+ 	{
+-		await tween.ToSignal(tween, Tween.SignalName.Finished);
+-		NCombatRoom.Instance?.RemoveCreatureNode(creatureNode);
+-		creatureNode.QueueFreeSafely();
+-	}
+-
+-	private async Task AnimOut()
+-	{
+ 		NCreature nCreature = NCombatRoom.Instance?.GetCreatureNode(base.Creature);
+ 		if (nCreature != null)
+ 		{
+-			Vector2 scale = nCreature.Visuals.Body.Scale;
+-			nCreature.ToggleIsInteractable(on: false);
++			((Sprite2D)nCreature.Visuals.GetCurrentBody()).Texture = PreloadManager.Cache.GetTexture2D(ImageHelper.GetImagePath(path));
++			Vector2 scale = nCreature.Visuals.GetCurrentBody().Scale;
+ 			Tween tween = nCreature.CreateTween();
+-			tween.TweenProperty(nCreature.Visuals.Body, "scale", scale * 0.5f, 1.2000000476837158).SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Sine);
+-			tween.Parallel().TweenProperty(nCreature.Visuals.Body, "modulate", Colors.Black, 0.25).From(Colors.White);
+-			tween.Parallel().TweenProperty(nCreature.Visuals.Body, "modulate", Colors.Transparent, 0.25).From(Colors.Black)
+-				.SetDelay(0.25);
+-			TaskHelper.RunSafely(RemoveCreatureWhenDone(nCreature, tween));
+-			await Cmd.CustomScaledWait(0.2f, 0.6f);
++			tween.TweenProperty(nCreature.Visuals.GetCurrentBody(), "scale", scale, 1.2000000476837158).From(scale * 0.5f).SetEase(Tween.EaseType.Out)
++				.SetTrans(Tween.TransitionType.Sine);
++			tween.Parallel().TweenProperty(nCreature.Visuals.GetCurrentBody(), "modulate", Colors.White, 0.5).From(Colors.Black);
+ 		}
+ 	}
+ 
+ 	public override Task AfterDeath(PlayerChoiceContext choiceContext, Creature creature, bool wasRemovalPrevented, float deathAnimLength)
+ 	{
+ 		if (creature != base.Creature)
+ 		{
+ 			return Task.CompletedTask;
+ 		}
+ 		NRunMusicController.Instance?.UpdateMusicParameter("queen_progress", 5f);
+ 		return Task.CompletedTask;
+-	}
+-
+-	public async Task AnimIn()
+-	{
+-		NCreature nCreature = NCombatRoom.Instance?.GetCreatureNode(base.Creature);
+-		NRunMusicController.Instance?.UpdateMusicParameter("queen_progress", 1f);
+-		if (nCreature != null)
+-		{
+-			Vector2 scale = nCreature.Visuals.Body.Scale;
+-			((Sprite2D)nCreature.Visuals.Body).Texture = PreloadManager.Cache.GetTexture2D(ImageHelper.GetImagePath(_visualsPaths[TimesGotBackIn % _visualsPaths.Length]));
+-			Tween tween = nCreature.CreateTween();
+-			tween.TweenProperty(nCreature.Visuals.Body, "scale", scale, 1.2000000476837158).From(scale * 0.5f).SetEase(Tween.EaseType.Out)
+-				.SetTrans(Tween.TransitionType.Sine);
+-			tween.Parallel().TweenProperty(nCreature.Visuals.Body, "modulate", Colors.Black, 0.25).From(Colors.Transparent);
+-			tween.Parallel().TweenProperty(nCreature.Visuals.Body, "modulate", Colors.White, 0.25).From(Colors.Black)
+-				.SetDelay(0.25);
+-			TaskHelper.RunSafely(PlayLineAfterAnimIn(tween));
+-			await Cmd.CustomScaledWait(0.2f, 0.6f);
+-		}
+-	}
+-
+-	private async Task PlayLineAfterAnimIn(Tween tween)
+-	{
+-		await tween.ToSignal(tween, Tween.SignalName.Finished);
+-		if (base.Creature.CombatState == null)
+-		{
+-			return;
+-		}
+-		Creature creature = base.Creature.CombatState.GetTeammatesOf(base.Creature).FirstOrDefault((Creature c) => c.Monster is Door);
+-		int num;
+-		if (creature != null)
+-		{
+-			if (creature.IsDead)
+-			{
+-				DoorRevivalPower? power = creature.GetPower<DoorRevivalPower>();
+-				num = ((power == null || !power.IsHalfDead) ? 1 : 0);
+-			}
+-			else
+-			{
+-				num = 0;
+-			}
+-		}
+-		else
+-		{
+-			num = 1;
+-		}
+-		LocString line = ((num != 0) ? MonsterModel.L10NMonsterLookup("DOORMAKER.moves.WHAT_IS_IT.deadDoorSpeakLine") : ((TimesGotBackIn != 0) ? MonsterModel.L10NMonsterLookup(base.Rng.NextItem(_whatIsItLines)) : MonsterModel.L10NMonsterLookup("DOORMAKER.moves.WHAT_IS_IT.speakLineInitial")));
+-		TalkCmd.Play(line, base.Creature);
+-	}
+-
+-	static Doormaker()
+-	{
+-		int num = 2;
+-		List<string> list = new List<string>(num);
+-		CollectionsMarshal.SetCount(list, num);
+-		Span<string> span = CollectionsMarshal.AsSpan(list);
+-		int num2 = 0;
+-		span[num2] = "DOORMAKER.moves.WHAT_IS_IT.speakLine1";
+-		num2++;
+-		span[num2] = "DOORMAKER.moves.WHAT_IS_IT.speakLine2";
+-		_whatIsItLines = list;
+ 	}
+ }
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/FakeMerchantMonster.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/FakeMerchantMonster.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/FakeMerchantMonster.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/FakeMerchantMonster.cs
+@@ -5,20 +5,21 @@
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Localization;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
++using MegaCrit.Sts2.Core.Nodes.Vfx;
+ using MegaCrit.Sts2.Core.Random;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class FakeMerchantMonster : MonsterModel
+ {
+ 	private const string _spewCoinsTrigger = "spew";
+ 
+ 	private const string _throwRelicTrigger = "throw";
+ 
+@@ -86,21 +87,21 @@
+ 		await DamageCmd.Attack(2m).FromMonster(this).WithHitCount(8)
+ 			.WithAttackerAnim("spew", 0.15f)
+ 			.WithAttackerFx(null, AttackSfx)
+ 			.WithHitFx("vfx/vfx_attack_slash")
+ 			.Execute(null);
+ 	}
+ 
+ 	private async Task ThrowRelicMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await ShowDialogueForMove("THROW_RELIC");
+-		await DamageCmd.Attack(SwipeDamage).FromMonster(this).WithAttackerAnim("throw", 0.15f)
++		await DamageCmd.Attack(ThrowRelicDamage).FromMonster(this).WithAttackerAnim("throw", 0.15f)
+ 			.WithAttackerFx(null, AttackSfx)
+ 			.WithHitFx("vfx/vfx_attack_slash")
+ 			.Execute(null);
+ 		await PowerCmd.Apply<FrailPower>(targets, 1m, base.Creature, null);
+ 	}
+ 
+ 	private async Task EnrageMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await ShowDialogueForMove("ENRAGE");
+ 		await CreatureCmd.TriggerAnim(base.Creature, "Cast", 0.5f);
+@@ -129,21 +130,21 @@
+ 		creatureAnimator.AddAnyState("throw", animState4);
+ 		creatureAnimator.AddAnyState("Cast", animState5);
+ 		return creatureAnimator;
+ 	}
+ 
+ 	private async Task ShowDialogueForMove(string moveId)
+ 	{
+ 		LocString locString = MegaCrit.Sts2.Core.Random.Rng.Chaotic.NextItem(GetLinesForMove(moveId));
+ 		if (locString != null)
+ 		{
+-			TalkCmd.Play(locString, base.Creature);
++			TalkCmd.Play(locString, base.Creature, VfxColor.Cyan);
+ 			await Cmd.Wait(0.5f);
+ 		}
+ 	}
+ 
+ 	private IEnumerable<LocString> GetLinesForMove(string moveId)
+ 	{
+ 		LocTable table = LocManager.Instance.GetTable("monsters");
+ 		return table.GetLocStringsWithPrefix(base.Id.Entry + ".moves." + moveId + ".speakLine");
+ 	}
+ }
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/FatGremlin.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/FatGremlin.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/FatGremlin.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/FatGremlin.cs
+@@ -4,20 +4,21 @@
+ using MegaCrit.Sts2.Core.Audio;
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Localization;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+ using MegaCrit.Sts2.Core.Nodes.Rooms;
++using MegaCrit.Sts2.Core.Nodes.Vfx;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class FatGremlin : MonsterModel
+ {
+ 	private const string _fleeTrigger = "FleeTrigger";
+ 
+ 	private const string _wakeUpTrigger = "WakeUpTrigger";
+ 
+ 	private const string _escapeSfx = "event:/sfx/enemy/enemy_attacks/gremlin_merc/fat_gremlin_escape";
+@@ -58,21 +59,22 @@
+ 
+ 	private async Task SpawnedMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await CreatureCmd.TriggerAnim(base.Creature, "WakeUpTrigger", 0.8f);
+ 		IsAwake = true;
+ 	}
+ 
+ 	private async Task FleeMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		LocString line = MonsterModel.L10NMonsterLookup("FAT_GREMLIN.moves.FLEE.banter");
+-		TalkCmd.Play(line, base.Creature, 1.25);
++		TalkCmd.Play(line, base.Creature, VfxColor.Swamp, VfxDuration.Standard);
++		await Cmd.CustomScaledWait(0.75f, 1.25f);
+ 		NCombatRoom.Instance?.GetCreatureNode(base.Creature)?.ToggleIsInteractable(on: false);
+ 		SfxCmd.Play("event:/sfx/enemy/enemy_attacks/gremlin_merc/fat_gremlin_escape");
+ 		await CreatureCmd.TriggerAnim(base.Creature, "FleeTrigger", 0f);
+ 		await Cmd.Wait(1.25f);
+ 		await CreatureCmd.Escape(base.Creature);
+ 	}
+ 
+ 	public override CreatureAnimator GenerateAnimator(MegaSprite controller)
+ 	{
+ 		AnimState animState = new AnimState("awake_loop", isLooping: true);
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Flyconid.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Flyconid.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Flyconid.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Flyconid.cs
+@@ -48,35 +48,33 @@
+ 		list.Add(randomBranchState);
+ 		list.Add(randomBranchState2);
+ 		return new MonsterMoveStateMachine(list, randomBranchState2);
+ 	}
+ 
+ 	private async Task VulnerableSporesMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		if (TestMode.IsOff)
+ 		{
+ 			NCreature creatureNode = NCombatRoom.Instance.GetCreatureNode(base.Creature);
+-			NFlyconidSporesVfx node = creatureNode.Visuals.Body.GetNode<NFlyconidSporesVfx>("%VfxController");
+-			node.SetSporeTypeIsVulnerable(isVulnerable: true);
++			creatureNode.Visuals.GetCurrentBody().GetNode<NFlyconidSporesVfx>("%VfxController")?.SetSporeTypeIsVulnerable(isVulnerable: true);
+ 		}
+ 		SfxCmd.Play(CastSfx);
+ 		await CreatureCmd.TriggerAnim(base.Creature, "Cast", 0.5f);
+ 		await PowerCmd.Apply<VulnerablePower>(targets, 2m, base.Creature, null);
+ 	}
+ 
+ 	private async Task FrailSporesMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		if (TestMode.IsOff)
+ 		{
+ 			NCreature creatureNode = NCombatRoom.Instance.GetCreatureNode(base.Creature);
+-			NFlyconidSporesVfx node = creatureNode.Visuals.Body.GetNode<NFlyconidSporesVfx>("%VfxController");
+-			node.SetSporeTypeIsVulnerable(isVulnerable: false);
++			creatureNode.Visuals.GetCurrentBody().GetNode<NFlyconidSporesVfx>("%VfxController")?.SetSporeTypeIsVulnerable(isVulnerable: false);
+ 		}
+ 		await DamageCmd.Attack(SporeDamage).FromMonster(this).WithAttackerAnim("Cast", 0.5f)
+ 			.WithAttackerFx(null, CastSfx)
+ 			.WithWaitBeforeHit(0f, 0.6f)
+ 			.WithHitVfxNode((Creature t) => NSporeImpactVfx.Create(t, new Color("8aad7d")))
+ 			.Execute(null);
+ 		await PowerCmd.Apply<FrailPower>(targets, 2m, base.Creature, null);
+ 	}
+ 
+ 	private async Task SmashMove(IReadOnlyList<Creature> targets)
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/GasBomb.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/GasBomb.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/GasBomb.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/GasBomb.cs
+@@ -17,21 +17,21 @@
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class GasBomb : MonsterModel
+ {
+ 	private const string _explodeTrigger = "ExplodeTrigger";
+ 
+ 	private bool _hasExploded;
+ 
+ 	private const string _explodeSfx = "event:/sfx/enemy/enemy_attacks/living_fog/living_fog_explode";
+ 
+-	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 12, 10);
++	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 8, 7);
+ 
+ 	public override int MaxInitialHp => MinInitialHp;
+ 
+ 	private int ExplodeDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 9, 8);
+ 
+ 	public override DamageSfxType TakeDamageSfxType => DamageSfxType.Magic;
+ 
+ 	private bool HasExploded
+ 	{
+ 		get
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/GremlinMerc.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/GremlinMerc.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/GremlinMerc.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/GremlinMerc.cs
+@@ -5,20 +5,21 @@
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Entities.Players;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Localization;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
++using MegaCrit.Sts2.Core.Nodes.Vfx;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class GremlinMerc : MonsterModel
+ {
+ 	private const string _attackBuffSfx = "event:/sfx/enemy/enemy_attacks/gremlin_merc/gremlin_merc_attack_buff";
+ 
+ 	private bool _hasSpoken;
+ 
+ 	private const string _attackDoubleTrigger = "AttackDouble";
+@@ -67,21 +68,22 @@
+ 		list.Add(moveState3);
+ 		return new MonsterMoveStateMachine(list, moveState);
+ 	}
+ 
+ 	private async Task GimmeMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		if (!_hasSpoken)
+ 		{
+ 			_hasSpoken = true;
+ 			LocString line = MonsterModel.L10NMonsterLookup("GREMLIN_MERC.moves.GIMME.banter");
+-			TalkCmd.Play(line, base.Creature);
++			TalkCmd.Play(line, base.Creature, VfxColor.Purple, VfxDuration.VeryShort);
++			await Cmd.CustomScaledWait(0.25f, 0.5f);
+ 		}
+ 		VfxCmd.PlayOnCreatureCenters(targets, "vfx/vfx_coin_explosion_regular");
+ 		await DamageCmd.Attack(GimmeDamage).WithHitCount(GimmeRepeat).FromMonster(this)
+ 			.WithAttackerAnim("AttackDouble", 0.15f)
+ 			.OnlyPlayAnimOnce()
+ 			.WithAttackerFx(null, AttackSfx)
+ 			.WithHitFx("vfx/vfx_attack_slash")
+ 			.Execute(null);
+ 		foreach (ThieveryPower powerInstance in base.Creature.GetPowerInstances<ThieveryPower>())
+ 		{
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Guardbot.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Guardbot.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Guardbot.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Guardbot.cs
+@@ -11,23 +11,23 @@
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+ using MegaCrit.Sts2.Core.Nodes.Combat;
+ using MegaCrit.Sts2.Core.Nodes.Rooms;
+ using MegaCrit.Sts2.Core.TestSupport;
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class Guardbot : MonsterModel
+ {
+-	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 22, 21);
++	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 17, 16);
+ 
+-	public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 26, 25);
++	public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 21, 20);
+ 
+ 	public override DamageSfxType TakeDamageSfxType => DamageSfxType.Armor;
+ 
+ 	public override Task AfterAddedToRoom()
+ 	{
+ 		base.AfterAddedToRoom();
+ 		if (TestMode.IsOff)
+ 		{
+ 			NCreature creatureNode = NCombatRoom.Instance.GetCreatureNode(base.Creature);
+ 			FabricatorNormal.SetBotFallPosition(creatureNode);
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/HauntedShip.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/HauntedShip.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/HauntedShip.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/HauntedShip.cs
+@@ -17,59 +17,58 @@
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class HauntedShip : MonsterModel
+ {
+ 	private const string _attackTripleTrigger = "AttackTriple";
+ 
+ 	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 67, 63);
+ 
+ 	public override int MaxInitialHp => MinInitialHp;
+ 
++	private int HauntDazed => 5;
++
+ 	private int RammingSpeedDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 11, 10);
+ 
+-	private int RammingSpeedStatusCount => 2;
+-
+ 	private int SwipeDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 14, 13);
+ 
+ 	private int StompDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 5, 4);
+ 
+ 	private int StompRepeat => 3;
+ 
+ 	public override DamageSfxType TakeDamageSfxType => DamageSfxType.ArmorBig;
+ 
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		List<MonsterState> list = new List<MonsterState>();
+-		MoveState moveState = new MoveState("RAMMING_SPEED_MOVE", RammingSpeedMove, new SingleAttackIntent(RammingSpeedDamage), new StatusIntent(RammingSpeedStatusCount));
++		MoveState moveState = new MoveState("RAMMING_SPEED_MOVE", RammingSpeedMove, new SingleAttackIntent(RammingSpeedDamage), new DebuffIntent());
+ 		MoveState moveState2 = new MoveState("SWIPE_MOVE", SwipeMove, new SingleAttackIntent(SwipeDamage));
+ 		MoveState moveState3 = new MoveState("STOMP_MOVE", StompMove, new MultiAttackIntent(StompDamage, StompRepeat));
+-		MoveState moveState4 = new MoveState("HAUNT_MOVE", HauntMove, new DebuffIntent());
++		MoveState moveState4 = new MoveState("HAUNT_MOVE", HauntMove, new StatusIntent(HauntDazed));
+ 		RandomBranchState randomBranchState = (RandomBranchState)(moveState4.FollowUpState = (moveState3.FollowUpState = (moveState2.FollowUpState = (moveState.FollowUpState = new RandomBranchState("RAND")))));
+ 		randomBranchState.AddBranch(moveState, MoveRepeatType.CannotRepeat, () => (base.CombatState.RoundNumber % 2 != 0) ? 1 : 0);
+ 		randomBranchState.AddBranch(moveState2, MoveRepeatType.CannotRepeat, () => (base.CombatState.RoundNumber % 2 != 0) ? 1 : 0);
+ 		randomBranchState.AddBranch(moveState3, MoveRepeatType.CannotRepeat, () => (base.CombatState.RoundNumber % 2 != 0) ? 1 : 0);
+-		randomBranchState.AddBranch(moveState4, MoveRepeatType.UseOnlyOnce, () => (base.CombatState.RoundNumber % 2 == 0) ? 1 : 0);
+ 		list.Add(randomBranchState);
+ 		list.Add(moveState);
+ 		list.Add(moveState2);
+ 		list.Add(moveState3);
+ 		list.Add(moveState4);
+-		return new MonsterMoveStateMachine(list, moveState);
++		return new MonsterMoveStateMachine(list, moveState4);
+ 	}
+ 
+ 	private async Task RammingSpeedMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await DamageCmd.Attack(RammingSpeedDamage).FromMonster(this).WithAttackerAnim("Attack", 0.15f)
+ 			.WithAttackerFx(null, AttackSfx)
+ 			.WithHitFx("vfx/vfx_attack_blunt")
+ 			.Execute(null);
+-		await CardPileCmd.AddToCombatAndPreview<Wound>(targets, PileType.Discard, RammingSpeedStatusCount, addedByPlayer: false);
++		await PowerCmd.Apply<WeakPower>(targets, 1m, base.Creature, null);
+ 	}
+ 
+ 	private async Task SwipeMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await DamageCmd.Attack(SwipeDamage).FromMonster(this).WithAttackerAnim("Attack", 0.15f)
+ 			.WithAttackerFx(null, AttackSfx)
+ 			.WithHitFx("vfx/vfx_attack_slash")
+ 			.Execute(null);
+ 	}
+ 
+@@ -83,23 +82,21 @@
+ 			.Execute(null);
+ 	}
+ 
+ 	private async Task HauntMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		SfxCmd.Play(CastSfx);
+ 		await CreatureCmd.TriggerAnim(base.Creature, "Cast", 0f);
+ 		await Cmd.Wait(0.6f);
+ 		VfxCmd.PlayOnCreatureCenter(base.Creature, "vfx/vfx_spooky_scream");
+ 		await Cmd.CustomScaledWait(0.2f, 0.5f);
+-		await PowerCmd.Apply<WeakPower>(targets, 2m, base.Creature, null);
+-		await PowerCmd.Apply<FrailPower>(targets, 2m, base.Creature, null);
+-		await PowerCmd.Apply<VulnerablePower>(targets, 2m, base.Creature, null);
++		await CardPileCmd.AddToCombatAndPreview<Dazed>(targets, PileType.Discard, HauntDazed, addedByPlayer: false);
+ 	}
+ 
+ 	public override CreatureAnimator GenerateAnimator(MegaSprite controller)
+ 	{
+ 		AnimState animState = new AnimState("idle_loop", isLooping: true);
+ 		AnimState animState2 = new AnimState("debuff");
+ 		AnimState animState3 = new AnimState("attack_triple");
+ 		AnimState animState4 = new AnimState("attack");
+ 		AnimState animState5 = new AnimState("hurt");
+ 		AnimState state = new AnimState("die");
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/KinFollower.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/KinFollower.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/KinFollower.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/KinFollower.cs
+@@ -7,21 +7,20 @@
+ using MegaCrit.Sts2.Core.Animation;
+ using MegaCrit.Sts2.Core.Audio;
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+-using MegaCrit.Sts2.Core.Nodes.Audio;
+ using MegaCrit.Sts2.Core.Nodes.Combat;
+ using MegaCrit.Sts2.Core.Nodes.Rooms;
+ using MegaCrit.Sts2.Core.Random;
+ using MegaCrit.Sts2.Core.TestSupport;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class KinFollower : MonsterModel
+ {
+ 	private static readonly string[] _hairOptions = new string[3] { "hair_1", "hair_2", "hair_3" };
+@@ -79,55 +78,34 @@
+ 		}
+ 		set
+ 		{
+ 			AssertMutable();
+ 			_startsWithDance = value;
+ 		}
+ 	}
+ 
+ 	public override DamageSfxType TakeDamageSfxType => DamageSfxType.Fur;
+ 
+-	public override void SetupSkins(NCreatureVisuals visuals)
++	public override void SetupSkins(MegaSprite spine, MegaSkeleton skeleton)
+ 	{
+-		MegaSkeleton skeleton = visuals.SpineBody.GetSkeleton();
+-		MegaSkin megaSkin = visuals.SpineBody.NewSkin("custom-skin");
++		MegaSkin megaSkin = spine.NewSkin("custom-skin");
+ 		MegaSkeletonDataResource data = skeleton.GetData();
+ 		MegaSkin skin = data.FindSkin(MegaCrit.Sts2.Core.Random.Rng.Chaotic.NextItem(_hairOptions));
+ 		megaSkin.AddSkin(skin);
+ 		skeleton.SetSkin(megaSkin);
+ 		skeleton.SetSlotsToSetupPose();
+ 	}
+ 
+ 	public override async Task AfterAddedToRoom()
+ 	{
+ 		await base.AfterAddedToRoom();
+ 		await PowerCmd.Apply<MinionPower>(base.Creature, 1m, base.Creature, null);
+-		NRunMusicController.Instance?.UpdateMusicParameter("the_kin_progress", 0f);
+-		base.Creature.Died += AfterDeath;
+-	}
+-
+-	private void AfterDeath(Creature _)
+-	{
+-		base.Creature.Died -= AfterDeath;
+-		IReadOnlyList<Creature> teammatesOf = base.Creature.CombatState.GetTeammatesOf(base.Creature);
+-		if (teammatesOf.Any((Creature c) => c != null && c.Monster is KinPriest && c.IsAlive))
+-		{
+-			NRunMusicController.Instance?.UpdateMusicParameter("the_kin_progress", 1f);
+-		}
+-		if (!teammatesOf.Any((Creature c) => c != null && c.Monster is KinFollower && c.IsAlive))
+-		{
+-			Creature creature = teammatesOf.FirstOrDefault((Creature c) => c != null && c.Monster is KinPriest && c.IsAlive);
+-			if (creature != null && creature.Monster is KinPriest kinPriest)
+-			{
+-				kinPriest.AllFollowerDeathResponse();
+-			}
+-		}
+ 	}
+ 
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		List<MonsterState> list = new List<MonsterState>();
+ 		MoveState moveState = new MoveState("QUICK_SLASH_MOVE", QuickSlashMove, new SingleAttackIntent(QuickSlashDamage));
+ 		MoveState moveState2 = new MoveState("BOOMERANG_MOVE", BoomerangMove, new MultiAttackIntent(BoomerangDamage, 2));
+ 		MoveState moveState3 = new MoveState("POWER_DANCE_MOVE", PowerDanceMove, new BuffIntent());
+ 		moveState.FollowUpState = moveState2;
+ 		moveState2.FollowUpState = moveState3;
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/KinPriest.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/KinPriest.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/KinPriest.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/KinPriest.cs
+@@ -1,32 +1,34 @@
+ using System.Collections.Generic;
++using System.Linq;
+ using System.Threading.Tasks;
+ using MegaCrit.Sts2.Core.Animation;
+ using MegaCrit.Sts2.Core.Audio;
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
++using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Localization;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+ using MegaCrit.Sts2.Core.Nodes.Audio;
+ using MegaCrit.Sts2.Core.Nodes.Rooms;
+ using MegaCrit.Sts2.Core.Nodes.Vfx;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class KinPriest : MonsterModel
+ {
+-	public const string theKinCustomTrackName = "the_kin_progress";
++	private const string _theKinCustomTrackName = "the_kin_progress";
+ 
+ 	private static readonly LocString _ritualApplyLine = MonsterModel.L10NMonsterLookup("KIN_PRIEST.moves.RITUAL.speakLine1");
+ 
+ 	private static readonly LocString _followersDeathLine = MonsterModel.L10NMonsterLookup("KIN_PRIEST.followersDeathLine");
+ 
+ 	private const string _grenadeTrigger = "AttackGrenade";
+ 
+ 	private const string _laserTrigger = "AttackLaser";
+ 
+ 	private const string _rallyTrigger = "Rally";
+@@ -71,32 +73,50 @@
+ 		{
+ 			return _speechUsed;
+ 		}
+ 		set
+ 		{
+ 			AssertMutable();
+ 			_speechUsed = value;
+ 		}
+ 	}
+ 
+-	public override async Task AfterAddedToRoom()
++	public override Task AfterDeath(PlayerChoiceContext choiceContext, Creature creature, bool wasRemovalPrevented, float deathAnimLength)
+ 	{
+-		await base.AfterAddedToRoom();
+-		base.Creature.Died += AfterDeath;
++		if (creature.Monster is KinFollower)
++		{
++			if (base.Creature.IsDead)
++			{
++				return Task.CompletedTask;
++			}
++			IReadOnlyList<Creature> readOnlyList = base.Creature.CombatState?.GetTeammatesOf(base.Creature);
++			if (readOnlyList == null)
++			{
++				return Task.CompletedTask;
++			}
++			NRunMusicController.Instance?.UpdateMusicParameter("the_kin_progress", 1f);
++			if (!readOnlyList.Any((Creature c) => c != null && c.Monster is KinFollower && c.IsAlive))
++			{
++				Creature creature2 = readOnlyList.FirstOrDefault((Creature c) => c != null && c.Monster is KinPriest && c.IsAlive);
++				if (creature2 != null && creature2.Monster is KinPriest kinPriest)
++				{
++					kinPriest.AllFollowerDeathResponse();
++				}
++			}
++		}
++		else if (creature == base.Creature)
++		{
++			NRunMusicController.Instance?.UpdateMusicParameter("the_kin_progress", 5f);
++		}
++		return Task.CompletedTask;
+ 	}
+ 
+-	private void AfterDeath(Creature _)
+-	{
+-		base.Creature.Died -= AfterDeath;
+-		NRunMusicController.Instance?.UpdateMusicParameter("the_kin_progress", 5f);
+-	}
+-
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		List<MonsterState> list = new List<MonsterState>();
+ 		MoveState moveState = new MoveState("ORB_OF_FRAILTY_MOVE", OrbOfFrailtyMove, new SingleAttackIntent(OrbOfFrailtyDamage), new DebuffIntent());
+ 		MoveState moveState2 = new MoveState("ORB_OF_WEAKNESS_MOVE", OrbOfWeaknessMove, new SingleAttackIntent(OrbOfWeaknessDamage), new DebuffIntent());
+ 		MoveState moveState3 = new MoveState("BEAM_MOVE", BeamMove, new MultiAttackIntent(BeamDamage, 3));
+ 		MoveState moveState4 = new MoveState("RITUAL_MOVE", RitualMove, new BuffIntent());
+ 		moveState.FollowUpState = moveState2;
+ 		moveState2.FollowUpState = moveState3;
+ 		moveState3.FollowUpState = moveState4;
+@@ -141,21 +161,21 @@
+ 			.WithHitFx("vfx/vfx_attack_blunt", null, "blunt_attack.mp3")
+ 			.OnlyPlayAnimOnce()
+ 			.Execute(null);
+ 	}
+ 
+ 	private async Task RitualMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		if (!SpeechUsed)
+ 		{
+ 			SpeechUsed = true;
+-			TalkCmd.Play(_ritualApplyLine, base.Creature, 1.0);
++			TalkCmd.Play(_ritualApplyLine, base.Creature, VfxColor.Purple, VfxDuration.Standard);
+ 		}
+ 		SfxCmd.Play("event:/sfx/enemy/enemy_attacks/the_kin_priest/the_kin_priest_rally");
+ 		await CreatureCmd.TriggerAnim(base.Creature, "Rally", 1f);
+ 		await PowerCmd.Apply<StrengthPower>(base.Creature, RitualStrength, base.Creature, null);
+ 	}
+ 
+ 	public override CreatureAnimator GenerateAnimator(MegaSprite controller)
+ 	{
+ 		AnimState animState = new AnimState("idle_loop", isLooping: true);
+ 		AnimState animState2 = new AnimState("rally");
+@@ -171,13 +191,13 @@
+ 		creatureAnimator.AddAnyState("Rally", animState2);
+ 		creatureAnimator.AddAnyState("AttackGrenade", animState3);
+ 		creatureAnimator.AddAnyState("AttackLaser", animState4);
+ 		creatureAnimator.AddAnyState("Dead", state);
+ 		creatureAnimator.AddAnyState("Hit", animState5);
+ 		return creatureAnimator;
+ 	}
+ 
+ 	public void AllFollowerDeathResponse()
+ 	{
+-		TalkCmd.Play(_followersDeathLine, base.Creature, 1.0);
++		TalkCmd.Play(_followersDeathLine, base.Creature, VfxColor.Purple, VfxDuration.Standard);
+ 	}
+ }
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/KnowledgeDemon.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/KnowledgeDemon.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/KnowledgeDemon.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/KnowledgeDemon.cs
+@@ -8,20 +8,21 @@
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Localization;
+ using MegaCrit.Sts2.Core.Models.Cards;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+ using MegaCrit.Sts2.Core.Nodes.Audio;
++using MegaCrit.Sts2.Core.Nodes.Vfx;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class KnowledgeDemon : MonsterModel
+ {
+ 	public interface IChoosable
+ 	{
+ 		Task OnChosen();
+ 	}
+ 
+@@ -107,20 +108,25 @@
+ 		{
+ 			return _isBurnt;
+ 		}
+ 		set
+ 		{
+ 			AssertMutable();
+ 			_isBurnt = value;
+ 		}
+ 	}
+ 
++	public override void BeforeRemovedFromRoom()
++	{
++		NRunMusicController.Instance?.UpdateMusicParameter("knowledge_demon_progress", 5f);
++	}
++
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		List<MonsterState> list = new List<MonsterState>();
+ 		MoveState moveState = new MoveState("CURSE_OF_KNOWLEDGE_MOVE", CurseOfKnowledge, new DebuffIntent());
+ 		MoveState moveState2 = new MoveState("SLAP_MOVE", SlapMove, new SingleAttackIntent(SlapDamage));
+ 		MoveState moveState3 = new MoveState("KNOWLEDGE_OVERWHELMING_MOVE", KnowledgeOverwhelmingMove, new MultiAttackIntent(KnowledgeOverwhelmingDamage, 3));
+ 		MoveState moveState4 = new MoveState("PONDER_MOVE", PonderMove, new SingleAttackIntent(PonderDamage), new HealIntent(), new BuffIntent());
+ 		ConditionalBranchState conditionalBranchState = new ConditionalBranchState("CurseOfKnowledgeBranch");
+ 		moveState.FollowUpState = moveState2;
+ 		moveState2.FollowUpState = moveState3;
+@@ -135,49 +141,53 @@
+ 		list.Add(moveState3);
+ 		return new MonsterMoveStateMachine(list, moveState);
+ 	}
+ 
+ 	private async Task CurseOfKnowledge(IReadOnlyList<Creature> targets)
+ 	{
+ 		if (CurseOfKnowledgeCounter >= _curseOfKnowledgeSets.Count)
+ 		{
+ 			throw new InvalidOperationException($"There are no valid sets at this index {CurseOfKnowledgeCounter}");
+ 		}
+-		TalkCmd.Play(_curseOfKnowledgeStartLine, base.Creature, 1.0);
++		TalkCmd.Play(_curseOfKnowledgeStartLine, base.Creature, VfxColor.Gold, VfxDuration.Standard);
+ 		await CreatureCmd.TriggerAnim(base.Creature, "MindRotTrigger", 1f);
+ 		List<Task> list = new List<Task>();
+ 		foreach (Creature target in targets)
+ 		{
+ 			list.Add(ChooseCurse(target));
+ 		}
+ 		await Task.WhenAll(list);
+-		TalkCmd.Play(_curseOfKnowledgeDoneLine, base.Creature, 1.0);
++		TalkCmd.Play(_curseOfKnowledgeDoneLine, base.Creature, VfxColor.Gold, VfxDuration.Standard);
+ 		CurseOfKnowledgeCounter++;
+ 	}
+ 
+ 	private async Task ChooseCurse(Creature target)
+ 	{
+ 		if (target.IsDead)
+ 		{
+ 			return;
+ 		}
+ 		int disintegrationDamage = _disintegrationDamageValues[CurseOfKnowledgeCounter];
+ 		List<CardModel> cards = _curseOfKnowledgeSets[CurseOfKnowledgeCounter].Select(delegate(IChoosable c)
+ 		{
+-			CardModel cardModel = base.CombatState.CreateCard((CardModel)c, target.Player);
+-			if (cardModel is Disintegration)
++			CardModel cardModel2 = base.CombatState.CreateCard((CardModel)c, target.Player);
++			if (cardModel2 is Disintegration)
+ 			{
+-				cardModel.DynamicVars["DisintegrationPower"].BaseValue = disintegrationDamage;
++				cardModel2.DynamicVars["DisintegrationPower"].BaseValue = disintegrationDamage;
+ 			}
+-			return cardModel;
++			return cardModel2;
+ 		}).ToList();
+-		await ((IChoosable)(await CardSelectCmd.FromChooseACardScreen(new BlockingPlayerChoiceContext(), cards, target.Player))).OnChosen();
++		CardModel cardModel = await CardSelectCmd.FromChooseACardScreen(new BlockingPlayerChoiceContext(), cards, target.Player);
++		if (cardModel != null)
++		{
++			await ((IChoosable)cardModel).OnChosen();
++		}
+ 	}
+ 
+ 	private async Task SlapMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await DamageCmd.Attack(SlapDamage).FromMonster(this).WithAttackerAnim("MediumAttackTrigger", 0.5f)
+ 			.WithAttackerFx(null, "event:/sfx/enemy/enemy_attacks/knowledge_demon/knowledge_demon_slap")
+ 			.WithHitFx("vfx/vfx_attack_blunt", null, "blunt_attack.mp3")
+ 			.Execute(null);
+ 	}
+ 
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/LagavulinMatriarch.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/LagavulinMatriarch.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/LagavulinMatriarch.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/LagavulinMatriarch.cs
+@@ -1,19 +1,20 @@
+ using System.Collections.Generic;
+ using System.Threading.Tasks;
+ using Godot;
+ using MegaCrit.Sts2.Core.Animation;
+ using MegaCrit.Sts2.Core.Audio;
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
++using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+ using MegaCrit.Sts2.Core.Nodes.Combat;
+ using MegaCrit.Sts2.Core.Nodes.Rooms;
+ using MegaCrit.Sts2.Core.Nodes.Vfx;
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+@@ -33,20 +34,22 @@
+ 	private const string _slamSfx = "event:/sfx/enemy/enemy_attacks/lagavulin_matriarch/lagavulin_matriarch_slam";
+ 
+ 	private const string _castSfx = "event:/sfx/enemy/enemy_attacks/lagavulin_matriarch/lagavulin_matriarch_cast";
+ 
+ 	public const string awakenSfx = "event:/sfx/enemy/enemy_attacks/lagavulin_matriarch/lagavulin_matriarch_awaken";
+ 
+ 	private const string _attackStabSfx = "event:/sfx/enemy/enemy_attacks/lagavulin_matriarch/lagavulin_matriarch_attack_stab";
+ 
+ 	private bool _isAwake;
+ 
++	private bool _isShellAwake;
++
+ 	private NSleepingVfx? _sleepingVfx;
+ 
+ 	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 233, 222);
+ 
+ 	public override int MaxInitialHp => MinInitialHp;
+ 
+ 	private int SlashDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 21, 19);
+ 
+ 	private int Slash2Damage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 14, 12);
+ 
+@@ -64,80 +67,97 @@
+ 		{
+ 			return _isAwake;
+ 		}
+ 		set
+ 		{
+ 			AssertMutable();
+ 			_isAwake = value;
+ 		}
+ 	}
+ 
++	public bool IsShellAwake
++	{
++		get
++		{
++			return _isShellAwake;
++		}
++		set
++		{
++			AssertMutable();
++			_isShellAwake = value;
++		}
++	}
++
+ 	private NSleepingVfx? SleepingVfx
+ 	{
+ 		get
+ 		{
+ 			return _sleepingVfx;
+ 		}
+ 		set
+ 		{
+ 			AssertMutable();
+ 			_sleepingVfx = value;
+ 		}
+ 	}
+ 
+-	public override void SetupSkins(NCreatureVisuals visuals)
++	public override void SetupSkins(MegaSprite spine, MegaSkeleton skeleton)
+ 	{
+-		visuals.SpineBody.GetAnimationState().SetAnimation("_tracks/eyes_closed_loop", loop: true, 1);
++		spine.GetAnimationState().SetAnimation("_tracks/eyes_closed_loop", loop: true, 1);
+ 	}
+ 
+ 	public override async Task AfterAddedToRoom()
+ 	{
+ 		await base.AfterAddedToRoom();
+ 		await CreatureCmd.TriggerAnim(base.Creature, "Sleep", 0f);
+ 		await PowerCmd.Apply<PlatingPower>(base.Creature, 12m, base.Creature, null);
+ 		await PowerCmd.Apply<AsleepPower>(base.Creature, 3m, base.Creature, null);
+-		base.Creature.Died += AfterDeath;
+-		base.Creature.CurrentHpChanged += AfterHpChanged;
+-		base.Creature.CurrentHpChanged += AfterWokenUp;
+ 		Marker2D marker2D = NCombatRoom.Instance.GetCreatureNode(base.Creature)?.GetSpecialNode<Marker2D>("%SleepVfxPos");
+ 		if (marker2D != null)
+ 		{
+ 			SleepingVfx = NSleepingVfx.Create(marker2D.GlobalPosition);
+ 			marker2D.AddChildSafely(SleepingVfx);
+ 			SleepingVfx.Position = Vector2.Zero;
+ 		}
+ 	}
+ 
+-	private void AfterWokenUp(int _, int __)
++	public override Task AfterDamageReceived(PlayerChoiceContext choiceContext, Creature target, DamageResult result, ValueProp props, Creature? dealer, CardModel? cardSource)
+ 	{
+-		base.Creature.CurrentHpChanged -= AfterWokenUp;
+-		SleepingVfx?.Stop();
+-		SleepingVfx = null;
+-	}
+-
+-	private void AfterHpChanged(int _, int __)
+-	{
+-		if (base.Creature.CurrentHp <= base.Creature.MaxHp / 2)
++		if (target != base.Creature)
+ 		{
+-			base.Creature.CurrentHpChanged -= AfterHpChanged;
++			return Task.CompletedTask;
++		}
++		if (SleepingVfx != null)
++		{
++			SleepingVfx?.Stop();
++			SleepingVfx = null;
++		}
++		if (base.Creature.CurrentHp <= base.Creature.MaxHp / 2 && !IsShellAwake)
++		{
+ 			NCreature creatureNode = NCombatRoom.Instance.GetCreatureNode(base.Creature);
+-			creatureNode?.SpineController.GetAnimationState().SetAnimation("_tracks/eyes_open", loop: false, 1);
+-			creatureNode?.SpineController.GetAnimationState().AddAnimation("_tracks/eyes_open_loop", 0f, loop: true, 1);
++			creatureNode?.SpineAnimation.SetAnimation("_tracks/eyes_open", loop: false, 1);
++			creatureNode?.SpineAnimation.AddAnimation("_tracks/eyes_open_loop", 0f, loop: true, 1);
++			IsShellAwake = true;
+ 		}
++		return Task.CompletedTask;
+ 	}
+ 
+-	private void AfterDeath(Creature _)
++	public override Task AfterDeath(PlayerChoiceContext choiceContext, Creature creature, bool wasRemovalPrevented, float deathAnimLength)
+ 	{
+-		base.Creature.Died -= AfterDeath;
+-		NCombatRoom.Instance.GetCreatureNode(base.Creature)?.SpineController.GetAnimationState().SetAnimation("_tracks/eyes_dead", loop: false, 1);
++		if (creature != base.Creature)
++		{
++			return Task.CompletedTask;
++		}
++		NCombatRoom.Instance.GetCreatureNode(base.Creature)?.SpineAnimation.SetAnimation("_tracks/eyes_dead", loop: false, 1);
+ 		SleepingVfx?.Stop();
+ 		SleepingVfx = null;
++		return Task.CompletedTask;
+ 	}
+ 
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		List<MonsterState> list = new List<MonsterState>();
+ 		MoveState moveState = new MoveState("SLEEP_MOVE", SleepMove, new SleepIntent());
+ 		MoveState moveState2 = new MoveState("SLASH_MOVE", SlashMove, new SingleAttackIntent(SlashDamage));
+ 		MoveState moveState3 = new MoveState("SLASH2_MOVE", Slash2Move, new SingleAttackIntent(Slash2Damage), new DefendIntent());
+ 		MoveState moveState4 = new MoveState("DISEMBOWEL_MOVE", DisembowelMove, new MultiAttackIntent(DisembowelDamage, DisembowelRepeat));
+ 		MoveState moveState5 = new MoveState("SOUL_SIPHON_MOVE", SoulSiphonMove, new DebuffIntent(), new BuffIntent());
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/LeafSlimeM.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/LeafSlimeM.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/LeafSlimeM.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/LeafSlimeM.cs
+@@ -25,23 +25,24 @@
+ 	public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 36, 35);
+ 
+ 	private int ClumpDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 9, 8);
+ 
+ 	public override DamageSfxType TakeDamageSfxType => DamageSfxType.Slime;
+ 
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		List<MonsterState> list = new List<MonsterState>();
+ 		MoveState moveState = new MoveState("CLUMP_SHOT", ClumpShotMove, new SingleAttackIntent(ClumpDamage));
+-		MoveState moveState2 = new MoveState("STICKY_SHOT", StickyShotMove, new StatusIntent(2));
+-		moveState2.FollowUpState = moveState;
+-		moveState.FollowUpState = moveState2;
++		MoveState moveState2 = (MoveState)(moveState.FollowUpState = new MoveState("STICKY_SHOT", StickyShotMove, new StatusIntent(2))
++		{
++			FollowUpState = moveState
++		});
+ 		list.Add(moveState);
+ 		list.Add(moveState2);
+ 		return new MonsterMoveStateMachine(list, moveState2);
+ 	}
+ 
+ 	private async Task ClumpShotMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await DamageCmd.Attack(ClumpDamage).FromMonster(this).WithAttackerAnim("Attack", 0.15f)
+ 			.WithAttackerFx(null, AttackSfx)
+ 			.WithHitFx("vfx/vfx_slime_impact")
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/LivingFog.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/LivingFog.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/LivingFog.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/LivingFog.cs
+@@ -1,11 +1,10 @@
+-using System;
+ using System.Collections.Generic;
+ using System.Threading.Tasks;
+ using Godot;
+ using MegaCrit.Sts2.Core.Animation;
+ using MegaCrit.Sts2.Core.Audio;
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Combat;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+@@ -88,21 +87,20 @@
+ 		await CreatureCmd.TriggerAnim(base.Creature, "SpawnBomb", 0.35f);
+ 		for (int i = 0; i < BloatAmount; i++)
+ 		{
+ 			string nextSlot = base.CombatState.Encounter.GetNextSlot(base.CombatState);
+ 			if (nextSlot != "")
+ 			{
+ 				SfxCmd.Play("event:/sfx/enemy/enemy_attacks/living_fog/living_fog_minion_appear");
+ 				await CreatureCmd.Add<GasBomb>(base.CombatState, nextSlot);
+ 			}
+ 		}
+-		BloatAmount = Math.Min(BloatAmount + 1, 5);
+ 		await DamageCmd.Attack(BloatDamage).FromMonster(this).WithAttackerAnim("Attack", 0.1f)
+ 			.WithAttackerFx(null, "event:/sfx/enemy/enemy_attacks/living_fog/living_fog_attack_blow")
+ 			.WithHitVfxNode((Creature _) => NGaseousImpactVfx.Create(CombatSide.Player, base.CombatState, new Color("#402f45")))
+ 			.Execute(null);
+ 	}
+ 
+ 	private async Task SuperGasBlastMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await DamageCmd.Attack(SuperGasBlastDamage).FromMonster(this).WithAttackerAnim("Attack", 0.1f)
+ 			.WithAttackerFx(null, "event:/sfx/enemy/enemy_attacks/living_fog/living_fog_attack_blow")
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/MagiKnight.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/MagiKnight.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/MagiKnight.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/MagiKnight.cs
+@@ -82,22 +82,22 @@
+ 			if (flag)
+ 			{
+ 				dampenPower = (DampenPower)ModelDb.Power<DampenPower>().ToMutable();
+ 			}
+ 			dampenPower.AddCaster(base.Creature);
+ 			if (flag)
+ 			{
+ 				await PowerCmd.Apply(dampenPower, target, 1m, base.Creature, null);
+ 			}
+ 		}
+-		NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(NSpeechBubbleVfx.Create(_dampenDialogue.GetFormattedText(), base.Creature, 2.0));
+-		await Cmd.Wait(0.25f);
++		TalkCmd.Play(_dampenDialogue, base.Creature, VfxColor.Orange, VfxDuration.Long);
++		await Cmd.Wait(0.5f);
+ 	}
+ 
+ 	private async Task PowerShieldMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await DamageCmd.Attack(PowerShieldDamage).FromMonster(this).WithAttackerAnim("ShieldAttack", 0.6f)
+ 			.WithAttackerFx(null, "event:/sfx/enemy/enemy_attacks/magi_knight/magi_knight_cast_shield")
+ 			.WithHitFx("vfx/vfx_attack_blunt")
+ 			.Execute(null);
+ 		await CreatureCmd.GainBlock(base.Creature, PowerShieldBlock, ValueProp.Move, null);
+ 	}
+@@ -119,21 +119,21 @@
+ 				NCreature creatureNode = NCombatRoom.Instance.GetCreatureNode(target);
+ 				if (!vector.HasValue || vector.Value.X > creatureNode.GlobalPosition.X)
+ 				{
+ 					vector = creatureNode.GlobalPosition;
+ 				}
+ 			}
+ 			NCreature creatureNode2 = NCombatRoom.Instance.GetCreatureNode(base.Creature);
+ 			Node2D specialNode = creatureNode2.GetSpecialNode<Node2D>("Visuals/AttackDistanceControl");
+ 			if (specialNode != null)
+ 			{
+-				float x = creatureNode2.Visuals.Body.Scale.X;
++				float x = creatureNode2.Visuals.GetCurrentBody().Scale.X;
+ 				specialNode.Position = Vector2.Left * ((creatureNode2.GlobalPosition.X - vector.Value.X - 600f) / x);
+ 			}
+ 		}
+ 		await DamageCmd.Attack(BombDamage).FromMonster(this).WithAttackerAnim("BombCast", 1.2f)
+ 			.WithAttackerFx(null, "event:/sfx/enemy/enemy_attacks/magi_knight/magi_knight_attack_bomb")
+ 			.WithHitFx("vfx/vfx_attack_blunt")
+ 			.Execute(null);
+ 	}
+ 
+ 	private async Task SpearMove(IReadOnlyList<Creature> targets)
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Nibbit.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Nibbit.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Nibbit.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Nibbit.cs
+@@ -19,24 +19,26 @@
+ 	private bool _isFront;
+ 
+ 	private bool _isAlone;
+ 
+ 	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 44, 42);
+ 
+ 	public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 48, 46);
+ 
+ 	private int ButtDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 13, 12);
+ 
+-	private int SliceBlock => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 5, 5);
++	private int SliceBlock => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 6, 5);
+ 
+-	private int SliceDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 6, 6);
++	private int SliceDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 7, 6);
+ 
++	private int HissStrengthGain => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 3, 2);
++
+ 	public override string DeathSfx => "event:/sfx/enemy/enemy_attacks/nibbit/nibbit_die";
+ 
+ 	public override DamageSfxType TakeDamageSfxType => DamageSfxType.Slime;
+ 
+ 	public bool IsFront
+ 	{
+ 		get
+ 		{
+ 			return _isFront;
+ 		}
+@@ -99,21 +101,21 @@
+ 		await DamageCmd.Attack(SliceDamage).FromMonster(this).WithAttackerAnim("Attack", 0.15f)
+ 			.WithAttackerFx(null, AttackSfx)
+ 			.WithHitFx("vfx/vfx_attack_slash")
+ 			.Execute(null);
+ 		await CreatureCmd.GainBlock(base.Creature, SliceBlock, ValueProp.Move, null);
+ 	}
+ 
+ 	private async Task HissMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await CreatureCmd.TriggerAnim(base.Creature, "Cast", 0.6f);
+-		await PowerCmd.Apply<StrengthPower>(base.Creature, 2m, base.Creature, null);
++		await PowerCmd.Apply<StrengthPower>(base.Creature, HissStrengthGain, base.Creature, null);
+ 	}
+ 
+ 	public override CreatureAnimator GenerateAnimator(MegaSprite controller)
+ 	{
+ 		AnimState animState = new AnimState("idle_loop", isLooping: true);
+ 		AnimState animState2 = new AnimState("hiss");
+ 		AnimState animState3 = new AnimState("attack");
+ 		AnimState animState4 = new AnimState("hurt");
+ 		AnimState state = new AnimState("die");
+ 		animState2.NextState = animState;
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Noisebot.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Noisebot.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Noisebot.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Noisebot.cs
+@@ -15,23 +15,23 @@
+ using MegaCrit.Sts2.Core.Nodes.Combat;
+ using MegaCrit.Sts2.Core.Nodes.Rooms;
+ using MegaCrit.Sts2.Core.TestSupport;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class Noisebot : MonsterModel
+ {
+ 	private const int _noiseStatusCount = 2;
+ 
+-	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 24, 23);
++	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 19, 18);
+ 
+-	public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 29, 28);
++	public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 24, 23);
+ 
+ 	public override DamageSfxType TakeDamageSfxType => DamageSfxType.Armor;
+ 
+ 	public override Task AfterAddedToRoom()
+ 	{
+ 		base.AfterAddedToRoom();
+ 		if (TestMode.IsOff)
+ 		{
+ 			NCreature creatureNode = NCombatRoom.Instance.GetCreatureNode(base.Creature);
+ 			FabricatorNormal.SetBotFallPosition(creatureNode);
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Ovicopter.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Ovicopter.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Ovicopter.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Ovicopter.cs
+@@ -9,38 +9,42 @@
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class Ovicopter : MonsterModel
+ {
+-	private const string _layMove = "lay";
++	private const string _layTrigger = "layTrigger";
+ 
++	private const string _buffTrigger = "buffTrigger";
++
+ 	private const string _idleLoop = "event:/sfx/enemy/enemy_attacks/egg_layer/egg_layer_idle_loop";
+ 
+ 	private const string _laySfx = "event:/sfx/enemy/enemy_attacks/egg_layer/egg_layer_lay";
+ 
+ 	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 126, 124);
+ 
+ 	public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 132, 130);
+ 
+ 	private int SmashDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 17, 16);
+ 
+ 	private int TenderizerDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 8, 7);
+ 
+ 	private int NutritionalPasteStrengthAmount => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 4, 3);
+ 
+ 	public override string DeathSfx => "event:/sfx/enemy/enemy_attacks/egg_layer/egg_layer_die";
+ 
++	protected override string AttackSfx => "event:/sfx/enemy/enemy_attacks/egg_layer/egg_layer_attack";
++
+ 	public override DamageSfxType TakeDamageSfxType => DamageSfxType.Slime;
+ 
+ 	private bool CanLay => base.Creature.CombatState.GetTeammatesOf(base.Creature).Count((Creature c) => c.IsAlive) <= 3;
+ 
+ 	public override async Task AfterAddedToRoom()
+ 	{
+ 		await base.AfterAddedToRoom();
+ 		SfxCmd.PlayLoop("event:/sfx/enemy/enemy_attacks/egg_layer/egg_layer_idle_loop");
+ 	}
+ 
+@@ -67,32 +71,32 @@
+ 		list.Add(moveState);
+ 		list.Add(moveState2);
+ 		list.Add(moveState3);
+ 		list.Add(conditionalBranchState);
+ 		return new MonsterMoveStateMachine(list, moveState);
+ 	}
+ 
+ 	private async Task LayEggsMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		SfxCmd.Play("event:/sfx/enemy/enemy_attacks/egg_layer/egg_layer_lay");
+-		await CreatureCmd.TriggerAnim(base.Creature, "lay", 1f);
++		await CreatureCmd.TriggerAnim(base.Creature, "layTrigger", 1f);
+ 		for (int i = 0; i < 3; i++)
+ 		{
+ 			string slotName = base.CombatState.Encounter.Slots.LastOrDefault((string s) => base.CombatState.Enemies.All((Creature c) => c.SlotName != s), string.Empty);
+ 			await PowerCmd.Apply<MinionPower>(await CreatureCmd.Add<ToughEgg>(base.CombatState, slotName), 1m, base.Creature, null);
+ 		}
+ 	}
+ 
+ 	private async Task NutritionalPasteMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		SfxCmd.Play("event:/sfx/enemy/enemy_attacks/egg_layer/egg_layer_lay");
+-		await CreatureCmd.TriggerAnim(base.Creature, "lay", 1f);
++		await CreatureCmd.TriggerAnim(base.Creature, "buffTrigger", 1f);
+ 		await PowerCmd.Apply<StrengthPower>(base.Creature, NutritionalPasteStrengthAmount, base.Creature, null);
+ 	}
+ 
+ 	private async Task SmashMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await DamageCmd.Attack(SmashDamage).FromMonster(this).WithAttackerAnim("Attack", 0.3f)
+ 			.WithAttackerFx(null, AttackSfx)
+ 			.WithHitFx("vfx/vfx_attack_slash")
+ 			.Execute(null);
+ 	}
+@@ -103,27 +107,30 @@
+ 			.WithAttackerFx(null, AttackSfx)
+ 			.WithHitFx("vfx/vfx_attack_slash")
+ 			.Execute(null);
+ 		await PowerCmd.Apply<VulnerablePower>(targets, 2m, base.Creature, null);
+ 	}
+ 
+ 	public override CreatureAnimator GenerateAnimator(MegaSprite controller)
+ 	{
+ 		AnimState animState = new AnimState("idle_loop", isLooping: true);
+ 		AnimState animState2 = new AnimState("cast");
+-		AnimState animState3 = new AnimState("attack");
+-		AnimState animState4 = new AnimState("hurt");
++		AnimState animState3 = new AnimState("buff");
++		AnimState animState4 = new AnimState("attack");
++		AnimState animState5 = new AnimState("hurt");
+ 		AnimState state = new AnimState("die");
+-		AnimState animState5 = new AnimState("lay");
+-		animState2.NextState = animState;
++		AnimState animState6 = new AnimState("lay");
+ 		animState3.NextState = animState;
+-		animState5.NextState = animState;
++		animState2.NextState = animState;
+ 		animState4.NextState = animState;
++		animState6.NextState = animState;
++		animState5.NextState = animState;
+ 		CreatureAnimator creatureAnimator = new CreatureAnimator(animState, controller);
+ 		creatureAnimator.AddAnyState("Dead", state);
+-		creatureAnimator.AddAnyState("Hit", animState4);
++		creatureAnimator.AddAnyState("Hit", animState5);
+ 		creatureAnimator.AddAnyState("Cast", animState2);
+-		creatureAnimator.AddAnyState("Attack", animState3);
+-		creatureAnimator.AddAnyState("lay", animState5);
++		creatureAnimator.AddAnyState("Attack", animState4);
++		creatureAnimator.AddAnyState("layTrigger", animState6);
++		creatureAnimator.AddAnyState("buffTrigger", animState3);
+ 		return creatureAnimator;
+ 	}
+ }
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/PaelsLegion.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/PaelsLegion.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/PaelsLegion.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/PaelsLegion.cs
+@@ -1,58 +1,58 @@
+ using System.Collections.Generic;
+ using System.Threading.Tasks;
+ using MegaCrit.Sts2.Core.Animation;
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Models.Relics;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+-using MegaCrit.Sts2.Core.Nodes.Combat;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class PaelsLegion : MonsterModel
+ {
+ 	public const string blockTrigger = "BlockTrigger";
+ 
+ 	public const string sleepTrigger = "SleepTrigger";
+ 
+ 	public const string wakeUpTrigger = "WakeUpTrigger";
+ 
+ 	public override int MinInitialHp => 9999;
+ 
+ 	public override int MaxInitialHp => 9999;
+ 
+ 	public override bool IsHealthBarVisible => false;
+ 
+-	public override void SetupSkins(NCreatureVisuals visuals)
++	public override void SetupSkins(MegaSprite spine, MegaSkeleton skeleton)
+ 	{
+ 		string skinName = ((!base.IsMutable) ? MegaCrit.Sts2.Core.Models.Relics.PaelsLegion.SkinOptions[0] : base.Creature.PetOwner.GetRelic<MegaCrit.Sts2.Core.Models.Relics.PaelsLegion>().Skin);
+-		MegaSkeleton skeleton = visuals.SpineBody.GetSkeleton();
+ 		MegaSkeletonDataResource data = skeleton.GetData();
+ 		skeleton.SetSkin(data.FindSkin(skinName));
+ 		skeleton.SetSlotsToSetupPose();
+ 	}
+ 
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		MoveState moveState = new MoveState("NOTHING_MOVE", (IReadOnlyList<Creature> _) => Task.CompletedTask);
+ 		moveState.FollowUpState = moveState;
+ 		return new MonsterMoveStateMachine(new global::_003C_003Ez__ReadOnlySingleElementList<MonsterState>(moveState), moveState);
+ 	}
+ 
+ 	public override CreatureAnimator GenerateAnimator(MegaSprite controller)
+ 	{
+ 		AnimState animState = new AnimState("idle_loop", isLooping: true);
+ 		AnimState animState2 = new AnimState("block");
+ 		AnimState nextState = new AnimState("block_loop");
+ 		AnimState state = new AnimState("sleep");
+-		AnimState animState3 = new AnimState("wake_up");
+-		animState3.NextState = animState;
++		AnimState state2 = new AnimState("wake_up")
++		{
++			NextState = animState
++		};
+ 		animState2.NextState = nextState;
+ 		CreatureAnimator creatureAnimator = new CreatureAnimator(animState, controller);
+ 		creatureAnimator.AddAnyState("Idle", animState);
+ 		creatureAnimator.AddAnyState("BlockTrigger", animState2);
+ 		creatureAnimator.AddAnyState("SleepTrigger", state);
+-		creatureAnimator.AddAnyState("WakeUpTrigger", animState3);
++		creatureAnimator.AddAnyState("WakeUpTrigger", state2);
+ 		return creatureAnimator;
+ 	}
+ }
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/PhantasmalGardener.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/PhantasmalGardener.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/PhantasmalGardener.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/PhantasmalGardener.cs
+@@ -4,44 +4,43 @@
+ using MegaCrit.Sts2.Core.Animation;
+ using MegaCrit.Sts2.Core.Audio;
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+-using MegaCrit.Sts2.Core.Nodes.Combat;
+ using MegaCrit.Sts2.Core.Nodes.Rooms;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class PhantasmalGardener : MonsterModel
+ {
+ 	private int _enlargeTriggers;
+ 
+ 	private const string _attackMultiTrigger = "AttackMulti";
+ 
+ 	public const string blockStartTrigger = "BlockStart";
+ 
+ 	public const string blockEndTrigger = "BlockEnd";
+ 
+ 	private const string _biteSfx = "event:/sfx/enemy/enemy_attacks/phantasmal_gardeners/phantasmal_gardeners_attack_bite";
+ 
+ 	private const string _lickSfx = "event:/sfx/enemy/enemy_attacks/phantasmal_gardeners/phantasmal_gardeners_attack_lick";
+ 
+ 	private const string _buffSfx = "event:/sfx/enemy/enemy_attacks/phantasmal_gardeners/phantasmal_gardeners_buff";
+ 
+-	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 29, 28);
++	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 27, 26);
+ 
+-	public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 33, 32);
++	public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 32, 31);
+ 
+ 	private int BiteDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 5, 5);
+ 
+ 	private int LashDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 7, 7);
+ 
+ 	private int FlailDamage => 1;
+ 
+ 	private int FlailRepeat => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 3, 3);
+ 
+ 	private int EnlargeStr => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 3, 2);
+@@ -62,24 +61,23 @@
+ 	}
+ 
+ 	public override bool ShouldFadeAfterDeath => false;
+ 
+ 	public float CurrentScale { get; private set; } = 1f;
+ 
+ 	public override DamageSfxType TakeDamageSfxType => DamageSfxType.Magic;
+ 
+ 	public override string DeathSfx => "event:/sfx/enemy/enemy_attacks/phantasmal_gardeners/phantasmal_gardeners_die";
+ 
+-	public override void SetupSkins(NCreatureVisuals visuals)
++	public override void SetupSkins(MegaSprite spine, MegaSkeleton skeleton)
+ 	{
+-		MegaSkeleton skeleton = visuals.SpineBody.GetSkeleton();
+-		MegaSkin megaSkin = visuals.SpineBody.NewSkin("custom-skin");
++		MegaSkin megaSkin = spine.NewSkin("custom-skin");
+ 		MegaSkeletonDataResource data = skeleton.GetData();
+ 		string slotName = base.Creature.SlotName;
+ 		if ((slotName == "first" || slotName == "third") ? true : false)
+ 		{
+ 			megaSkin.AddSkin(data.FindSkin("tall"));
+ 		}
+ 		else
+ 		{
+ 			megaSkin.AddSkin(data.FindSkin("short"));
+ 		}
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Queen.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Queen.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Queen.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Queen.cs
+@@ -1,24 +1,25 @@
+ using System.Collections.Generic;
+ using System.Linq;
+ using System.Threading.Tasks;
+ using MegaCrit.Sts2.Core.Audio;
++using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
++using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Localization;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+ using MegaCrit.Sts2.Core.Nodes.Audio;
+-using MegaCrit.Sts2.Core.Nodes.Combat;
+ using MegaCrit.Sts2.Core.Nodes.Rooms;
+ using MegaCrit.Sts2.Core.Nodes.Vfx;
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class Queen : MonsterModel
+ {
+ 	private const string _queenTrackName = "queen_progress";
+ 
+@@ -93,49 +94,40 @@
+ 		{
+ 			return _enragedState;
+ 		}
+ 		set
+ 		{
+ 			AssertMutable();
+ 			_enragedState = value;
+ 		}
+ 	}
+ 
+-	public override void SetupSkins(NCreatureVisuals visuals)
++	public override void SetupSkins(MegaSprite spine, MegaSkeleton skeleton)
+ 	{
+-		visuals.SpineBody.GetAnimationState().SetAnimation("tracks/writhe", loop: true, 1);
++		spine.GetAnimationState().SetAnimation("tracks/writhe", loop: true, 1);
+ 	}
+ 
+ 	public override void BeforeRemovedFromRoom()
+ 	{
+ 		if (!base.CombatState.RunState.IsGameOver)
+ 		{
+-			NCombatRoom.Instance.GetCreatureNode(base.Creature)?.SpineController.GetAnimationState().SetAnimation("tracks/empty", loop: true, 1);
++			NCombatRoom.Instance.GetCreatureNode(base.Creature)?.SpineAnimation.SetAnimation("tracks/empty", loop: true, 1);
+ 		}
+ 	}
+ 
+ 	public override async Task AfterAddedToRoom()
+ 	{
+ 		await base.AfterAddedToRoom();
+-		base.Creature.Died += AfterDeath;
+ 		Amalgam = base.CombatState.Enemies.First((Creature c) => c.Monster is TorchHeadAmalgam);
+-		Amalgam.Died += AmalgamDeathResponse;
+ 		NRunMusicController.Instance?.UpdateMusicParameter("queen_progress", 1f);
+ 	}
+ 
+-	private void AfterDeath(Creature _)
+-	{
+-		base.Creature.Died -= AfterDeath;
+-		NRunMusicController.Instance?.UpdateMusicParameter("queen_progress", 5f);
+-		NCombatRoom.Instance.GetCreatureNode(base.Creature)?.SpineController.GetAnimationState().SetAnimation("tracks/empty", loop: true, 1);
+-	}
+-
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		List<MonsterState> list = new List<MonsterState>();
+ 		MoveState moveState = new MoveState("PUPPET_STRINGS_MOVE", PuppetStringsMove, new CardDebuffIntent());
+ 		MoveState moveState2 = new MoveState("YOUR_MINE_MOVE", YoureMineMove, new DebuffIntent());
+ 		ConditionalBranchState conditionalBranchState = new ConditionalBranchState("YOURE_MINE_NOW_BRANCH");
+ 		BurnBrightForMeState = new MoveState("BURN_BRIGHT_FOR_ME_MOVE", BurnBrightForMeMove, new BuffIntent(), new DefendIntent());
+ 		ConditionalBranchState conditionalBranchState2 = new ConditionalBranchState("BURN_BRIGHT_FOR_ME_BRANCH");
+ 		MoveState moveState3 = new MoveState("OFF_WITH_YOUR_HEAD_MOVE", OffWithYourHeadMove, new MultiAttackIntent(OffWithYourHeadDamage, 5));
+ 		MoveState moveState4 = new MoveState("EXECUTION_MOVE", ExecutionMove, new SingleAttackIntent(ExecutionDamage));
+@@ -164,40 +156,37 @@
+ 	private async Task PuppetStringsMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		SfxCmd.Play("event:/sfx/enemy/enemy_attacks/queen/queen_cast");
+ 		await CreatureCmd.TriggerAnim(base.Creature, "Cast", 0.5f);
+ 		await PowerCmd.Apply<ChainsOfBindingPower>(targets, 3m, base.Creature, null);
+ 	}
+ 
+ 	private async Task YoureMineMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		LocString line = MonsterModel.L10NMonsterLookup("QUEEN.banter");
+-		TalkCmd.Play(line, base.Creature, -1.0, VfxColor.Purple);
++		TalkCmd.Play(line, base.Creature, VfxColor.Purple);
+ 		SfxCmd.Play("event:/sfx/enemy/enemy_attacks/queen/queen_cast");
+ 		await CreatureCmd.TriggerAnim(base.Creature, "Cast", 0.5f);
+ 		await PowerCmd.Apply<FrailPower>(targets, 99m, base.Creature, null);
+ 		await PowerCmd.Apply<WeakPower>(targets, 99m, base.Creature, null);
+ 		await PowerCmd.Apply<VulnerablePower>(targets, 99m, base.Creature, null);
+ 	}
+ 
+ 	private async Task BurnBrightForMeMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		SfxCmd.Play("event:/sfx/enemy/enemy_attacks/queen/queen_cast");
+ 		await CreatureCmd.TriggerAnim(base.Creature, "Cast", 0.8f);
+ 		int strengthAmount = AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 1, 1);
+-		List<Creature> list = base.Creature.CombatState.GetTeammatesOf(base.Creature).ToList();
+-		foreach (Creature item in list)
++		List<Creature> source = base.Creature.CombatState.GetTeammatesOf(base.Creature).ToList();
++		foreach (Creature item in source.Where((Creature teammate) => teammate != base.Creature))
+ 		{
+-			if (item != base.Creature)
+-			{
+-				await PowerCmd.Apply<StrengthPower>(item, strengthAmount, base.Creature, null);
+-			}
++			await PowerCmd.Apply<StrengthPower>(item, strengthAmount, base.Creature, null);
+ 		}
+ 		await CreatureCmd.GainBlock(base.Creature, 20m, ValueProp.Move, null);
+ 	}
+ 
+ 	private async Task OffWithYourHeadMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await DamageCmd.Attack(OffWithYourHeadDamage).WithHitCount(5).FromMonster(this)
+ 			.WithAttackerAnim("Attack", 0.6f)
+ 			.OnlyPlayAnimOnce()
+ 			.WithAttackerFx(null, AttackSfx)
+@@ -214,27 +203,32 @@
+ 			.Execute(null);
+ 	}
+ 
+ 	private async Task EnrageMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		SfxCmd.Play("event:/sfx/enemy/enemy_attacks/queen/queen_cast");
+ 		await CreatureCmd.TriggerAnim(base.Creature, "Cast", 0.5f);
+ 		await PowerCmd.Apply<StrengthPower>(base.Creature, 2m, base.Creature, null);
+ 	}
+ 
+-	private void AmalgamDeathResponse(Creature _)
++	public override Task AfterDeath(PlayerChoiceContext choiceContext, Creature creature, bool wasRemovalPrevented, float deathAnimLength)
+ 	{
+-		NRunMusicController.Instance?.UpdateMusicParameter("queen_progress", 2f);
+-		Amalgam.Died -= AmalgamDeathResponse;
+-		if (!base.Creature.IsDead)
++		if (creature.Monster is TorchHeadAmalgam && base.Creature.IsAlive)
+ 		{
++			NRunMusicController.Instance?.UpdateMusicParameter("queen_progress", 2f);
+ 			HasAmalgamDied = true;
+ 			Amalgam = null;
+ 			LocString line = MonsterModel.L10NMonsterLookup("QUEEN.amalgamDeathSpeakLine");
+-			TalkCmd.Play(line, base.Creature, -1.0, VfxColor.Purple);
++			TalkCmd.Play(line, base.Creature, VfxColor.Purple);
+ 			if (base.NextMove == BurnBrightForMeState)
+ 			{
+ 				SetMoveImmediate(EnragedState);
+ 			}
+ 		}
++		if (creature == base.Creature)
++		{
++			NRunMusicController.Instance?.UpdateMusicParameter("queen_progress", 5f);
++			NCombatRoom.Instance.GetCreatureNode(base.Creature)?.SpineAnimation.SetAnimation("tracks/empty", loop: true, 1);
++		}
++		return Task.CompletedTask;
+ 	}
+ }
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Rocket.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Rocket.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Rocket.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Rocket.cs
+@@ -29,30 +29,32 @@
+ 		{
+ 			AssertMutable();
+ 			if (_background == null)
+ 			{
+ 				_background = NCombatRoom.Instance.Background.GetNode<NKaiserCrabBossBackground>("%KaiserCrab");
+ 			}
+ 			return _background;
+ 		}
+ 	}
+ 
+-	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 199, 189);
++	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 209, 199);
+ 
+ 	public override int MaxInitialHp => MinInitialHp;
+ 
+ 	private int TargetingReticleDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 4, 3);
+ 
+ 	private int PrecisionBeamDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 20, 18);
+ 
+ 	private int LaserDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 35, 31);
+ 
++	private int ChargeUpStrengthGain => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 3, 2);
++
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		List<MonsterState> list = new List<MonsterState>();
+ 		MoveState moveState = new MoveState("TARGETING_RETICLE_MOVE", TargetingReticleMove, new SingleAttackIntent(TargetingReticleDamage));
+ 		MoveState moveState2 = new MoveState("PRECISION_BEAM_MOVE", PrecisionBeamMove, new SingleAttackIntent(PrecisionBeamDamage));
+ 		MoveState moveState3 = new MoveState("CHARGE_UP_MOVE", ChargeUpMove, new BuffIntent());
+ 		MoveState moveState4 = new MoveState("LASER_MOVE", LaserMove, new SingleAttackIntent(LaserDamage));
+ 		MoveState moveState5 = new MoveState("RECHARGE_MOVE", RechargeMove, new SleepIntent());
+ 		moveState.FollowUpState = moveState2;
+ 		moveState2.FollowUpState = moveState3;
+@@ -112,21 +114,21 @@
+ 		await Background.PlayAttackAnim(NKaiserCrabBossBackground.ArmSide.Right, "attack_med", 0.5f);
+ 		await DamageCmd.Attack(PrecisionBeamDamage).FromMonster(this).WithAttackerFx(null, AttackSfx)
+ 			.WithHitFx("vfx/vfx_heavy_blunt", null, "heavy_attack.mp3")
+ 			.WithHitVfxSpawnedAtBase()
+ 			.Execute(null);
+ 	}
+ 
+ 	private async Task ChargeUpMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await Background.PlayRightSideChargeUpAnim(0.7f);
+-		await PowerCmd.Apply<StrengthPower>(base.Creature, 2m, base.Creature, null);
++		await PowerCmd.Apply<StrengthPower>(base.Creature, ChargeUpStrengthGain, base.Creature, null);
+ 	}
+ 
+ 	private async Task LaserMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await Background.PlayRightSideHeavy(0.5f);
+ 		await DamageCmd.Attack(LaserDamage).FromMonster(this).WithAttackerFx(null, AttackSfx)
+ 			.WithHitFx("vfx/vfx_attack_blunt")
+ 			.Execute(null);
+ 	}
+ 
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/ScrollOfBiting.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/ScrollOfBiting.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/ScrollOfBiting.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/ScrollOfBiting.cs
+@@ -4,21 +4,20 @@
+ using MegaCrit.Sts2.Core.Audio;
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+-using MegaCrit.Sts2.Core.Nodes.Combat;
+ using MegaCrit.Sts2.Core.Random;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class ScrollOfBiting : MonsterModel
+ {
+ 	private static readonly string[] _skinOptions = new string[2] { "skin1", "skin2" };
+ 
+ 	private const int _chewRepeat = 2;
+ 
+@@ -54,24 +53,23 @@
+ 		{
+ 			return _starterMoveIdx;
+ 		}
+ 		set
+ 		{
+ 			AssertMutable();
+ 			_starterMoveIdx = value;
+ 		}
+ 	}
+ 
+-	public override void SetupSkins(NCreatureVisuals visuals)
++	public override void SetupSkins(MegaSprite spine, MegaSkeleton skeleton)
+ 	{
+-		MegaSkeleton skeleton = visuals.SpineBody.GetSkeleton();
+-		MegaSkin megaSkin = visuals.SpineBody.NewSkin("custom-skin");
++		MegaSkin megaSkin = spine.NewSkin("custom-skin");
+ 		MegaSkeletonDataResource data = skeleton.GetData();
+ 		megaSkin.AddSkin(data.FindSkin(MegaCrit.Sts2.Core.Random.Rng.Chaotic.NextItem(_skinOptions)));
+ 		skeleton.SetSkin(megaSkin);
+ 		skeleton.SetSlotsToSetupPose();
+ 	}
+ 
+ 	public override async Task AfterAddedToRoom()
+ 	{
+ 		await base.AfterAddedToRoom();
+ 		await PowerCmd.Apply<PaperCutsPower>(base.Creature, 2m, base.Creature, null);
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Seapunk.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Seapunk.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Seapunk.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Seapunk.cs
+@@ -21,21 +21,21 @@
+ 	private const string _buffSfx = "event:/sfx/enemy/enemy_attacks/seapunk/seapunk_buff";
+ 
+ 	private const string _kickSfx = "event:/sfx/enemy/enemy_attacks/seapunk/seapunk_kick";
+ 
+ 	private const string _kickMultiSfx = "event:/sfx/enemy/enemy_attacks/seapunk/seapunk_kick_multi";
+ 
+ 	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 47, 44);
+ 
+ 	public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 49, 46);
+ 
+-	private int SeaKickDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 12, 11);
++	private int SeaKickDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 13, 11);
+ 
+ 	private int SpinningKickDamage => 2;
+ 
+ 	private int SpinningKickRepeat => 4;
+ 
+ 	private int BubbleBlock => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 8, 7);
+ 
+ 	private int BubbleStr => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 2, 1);
+ 
+ 	public override DamageSfxType TakeDamageSfxType => DamageSfxType.Fur;
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/SkulkingColony.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/SkulkingColony.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/SkulkingColony.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/SkulkingColony.cs
+@@ -1,95 +1,97 @@
+ using System.Collections.Generic;
+ using System.Threading.Tasks;
+ using MegaCrit.Sts2.Core.Audio;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+-using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Helpers;
+-using MegaCrit.Sts2.Core.Models.Cards;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class SkulkingColony : MonsterModel
+ {
+-	private const int _smashStatusCount = 4;
++	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 75, 70);
+ 
+-	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 84, 79);
+-
+ 	public override int MaxInitialHp => MinInitialHp;
+ 
+-	private int SuperCrabDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 7, 6);
++	private int SmashDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 13, 12);
+ 
+-	private int SuperCrabRepeat => 2;
++	private int InertiaDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 11, 9);
+ 
+-	private int ZoomDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 17, 16);
++	private int ZoomDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 16, 14);
+ 
+-	private int SmashDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 11, 9);
++	private int ZoomBlock => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 13, 10);
+ 
+-	private int InertiaBlock => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 13, 10);
++	private int PiercingStabsDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 8, 7);
+ 
++	private int PiercingStabsRepeat => 2;
++
++	private int InertiaStrengthGain => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 3, 2);
++
+ 	public override bool HasDeathSfx => false;
+ 
+ 	public override DamageSfxType TakeDamageSfxType => DamageSfxType.Armor;
+ 
+ 	public override async Task AfterAddedToRoom()
+ 	{
+ 		await base.AfterAddedToRoom();
+-		await PowerCmd.Apply<HardenedShellPower>(base.Creature, 20m, base.Creature, null);
++		await PowerCmd.Apply<HardenedShellPower>(base.Creature, 15m, base.Creature, null);
+ 	}
+ 
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		List<MonsterState> list = new List<MonsterState>();
+-		MoveState moveState = new MoveState("INERTIA_MOVE", InertiaMove, new DefendIntent(), new BuffIntent());
+-		MoveState moveState2 = new MoveState("ZOOM_MOVE", ZoomMove, new SingleAttackIntent(ZoomDamage));
+-		MoveState moveState3 = new MoveState("SUPER_CRAB_MOVE", SuperCrabMove, new MultiAttackIntent(SuperCrabDamage, SuperCrabRepeat));
+-		MoveState moveState4 = new MoveState("SMASH_MOVE", SmashMove, new SingleAttackIntent(SmashDamage), new StatusIntent(4));
+-		moveState4.FollowUpState = moveState2;
+-		moveState2.FollowUpState = moveState;
+-		moveState.FollowUpState = moveState3;
++		MoveState moveState = new MoveState("SMASH_MOVE", SmashMove, new SingleAttackIntent(SmashDamage));
++		MoveState moveState2 = new MoveState("ZOOM_MOVE", ZoomMove, new SingleAttackIntent(ZoomDamage), new DefendIntent());
++		MoveState moveState3 = new MoveState("INERTIA_MOVE", InertiaMove, new SingleAttackIntent(InertiaDamage), new BuffIntent());
++		MoveState moveState4 = new MoveState("PIERCING_STABS_MOVE", PiercingStabsMove, new MultiAttackIntent(PiercingStabsDamage, PiercingStabsRepeat));
++		moveState.FollowUpState = moveState2;
++		moveState2.FollowUpState = moveState3;
+ 		moveState3.FollowUpState = moveState4;
++		moveState4.FollowUpState = moveState;
+ 		list.Add(moveState);
+ 		list.Add(moveState2);
+ 		list.Add(moveState3);
+ 		list.Add(moveState4);
+-		return new MonsterMoveStateMachine(list, moveState4);
++		return new MonsterMoveStateMachine(list, moveState);
+ 	}
+ 
+ 	private async Task InertiaMove(IReadOnlyList<Creature> targets)
+ 	{
+-		await CreatureCmd.TriggerAnim(base.Creature, "Attack", 0.15f);
+-		await CreatureCmd.GainBlock(base.Creature, InertiaBlock, ValueProp.Move, null);
+-		await PowerCmd.Apply<StrengthPower>(base.Creature, 3m, base.Creature, null);
++		await DamageCmd.Attack(InertiaDamage).FromMonster(this).WithAttackerAnim("Attack", 0.15f)
++			.WithAttackerFx(null, AttackSfx)
++			.WithHitFx("vfx/vfx_attack_blunt")
++			.Execute(null);
++		await PowerCmd.Apply<StrengthPower>(base.Creature, InertiaStrengthGain, base.Creature, null);
+ 	}
+ 
+-	private async Task SuperCrabMove(IReadOnlyList<Creature> targets)
++	private async Task PiercingStabsMove(IReadOnlyList<Creature> targets)
+ 	{
+-		await DamageCmd.Attack(SuperCrabDamage).WithHitCount(SuperCrabRepeat).FromMonster(this)
++		await DamageCmd.Attack(PiercingStabsDamage).WithHitCount(PiercingStabsRepeat).FromMonster(this)
+ 			.WithAttackerAnim("Attack", 0.15f)
+ 			.WithAttackerFx(null, AttackSfx)
+ 			.WithHitFx("vfx/vfx_attack_slash")
+ 			.Execute(null);
+ 	}
+ 
+ 	private async Task ZoomMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await DamageCmd.Attack(ZoomDamage).FromMonster(this).WithAttackerAnim("Attack", 0.15f)
+ 			.WithAttackerFx(null, AttackSfx)
+ 			.WithHitFx("vfx/vfx_attack_slash")
+ 			.Execute(null);
++		await CreatureCmd.GainBlock(base.Creature, ZoomBlock, ValueProp.Move, null);
+ 	}
+ 
+ 	private async Task SmashMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await DamageCmd.Attack(SmashDamage).FromMonster(this).WithAttackerAnim("Attack", 0.15f)
+ 			.WithAttackerFx(null, AttackSfx)
+ 			.WithHitFx("vfx/vfx_attack_blunt")
+ 			.Execute(null);
+-		await CardPileCmd.AddToCombatAndPreview<Dazed>(targets, PileType.Discard, 4, addedByPlayer: false);
+ 	}
+ }
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/SoulNexus.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/SoulNexus.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/SoulNexus.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/SoulNexus.cs
+@@ -1,22 +1,22 @@
+ using System.Collections.Generic;
+ using System.Threading.Tasks;
+ using MegaCrit.Sts2.Core.Audio;
++using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+-using MegaCrit.Sts2.Core.Nodes.Combat;
+ using MegaCrit.Sts2.Core.Nodes.Rooms;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class SoulNexus : MonsterModel
+ {
+ 	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 254, 234);
+ 
+ 	public override int MaxInitialHp => MinInitialHp;
+ 
+@@ -25,42 +25,42 @@
+ 	private int MaelstromDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 7, 6);
+ 
+ 	private int MaelstromRepeat => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 4, 4);
+ 
+ 	private int DrainLifeDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 19, 18);
+ 
+ 	public override bool ShouldFadeAfterDeath => false;
+ 
+ 	public override DamageSfxType TakeDamageSfxType => DamageSfxType.Magic;
+ 
+-	public override void SetupSkins(NCreatureVisuals visuals)
++	public override void SetupSkins(MegaSprite spine, MegaSkeleton skeleton)
+ 	{
+-		visuals.SpineBody.GetAnimationState().SetAnimation("tracks/writhe", loop: true, 1);
++		spine.GetAnimationState().SetAnimation("tracks/writhe", loop: true, 1);
+ 	}
+ 
+ 	public override async Task AfterAddedToRoom()
+ 	{
+ 		await base.AfterAddedToRoom();
+ 		base.Creature.Died += AfterDeath;
+ 	}
+ 
+ 	private void AfterDeath(Creature _)
+ 	{
+ 		base.Creature.Died -= AfterDeath;
+-		NCombatRoom.Instance.GetCreatureNode(base.Creature)?.SpineController.GetAnimationState().SetAnimation("tracks/empty", loop: true, 1);
++		NCombatRoom.Instance.GetCreatureNode(base.Creature)?.SpineAnimation.SetAnimation("tracks/empty", loop: true, 1);
+ 	}
+ 
+ 	public override void BeforeRemovedFromRoom()
+ 	{
+ 		if (!base.CombatState.RunState.IsGameOver)
+ 		{
+-			NCombatRoom.Instance.GetCreatureNode(base.Creature)?.SpineController.GetAnimationState().SetAnimation("tracks/empty", loop: true, 1);
++			NCombatRoom.Instance.GetCreatureNode(base.Creature)?.SpineAnimation.SetAnimation("tracks/empty", loop: true, 1);
+ 		}
+ 	}
+ 
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		List<MonsterState> list = new List<MonsterState>();
+ 		MoveState moveState = new MoveState("SOUL_BURN_MOVE", SoulBurnMove, new SingleAttackIntent(SoulBurnDamage));
+ 		MoveState moveState2 = new MoveState("MAELSTROM_MOVE", MaelstromMove, new MultiAttackIntent(MaelstromDamage, MaelstromRepeat));
+ 		MoveState moveState3 = new MoveState("DRAIN_LIFE_MOVE", DrainLifeMove, new SingleAttackIntent(DrainLifeDamage), new DebuffIntent(strong: true));
+ 		RandomBranchState randomBranchState = (RandomBranchState)(moveState3.FollowUpState = (moveState2.FollowUpState = (moveState.FollowUpState = new RandomBranchState("RAND"))));
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Stabbot.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Stabbot.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Stabbot.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Stabbot.cs
+@@ -10,23 +10,23 @@
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+ using MegaCrit.Sts2.Core.Nodes.Combat;
+ using MegaCrit.Sts2.Core.Nodes.Rooms;
+ using MegaCrit.Sts2.Core.TestSupport;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class Stabbot : MonsterModel
+ {
+-	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 24, 23);
++	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 19, 18);
+ 
+-	public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 29, 28);
++	public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 24, 23);
+ 
+ 	private int StabDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 12, 11);
+ 
+ 	public override DamageSfxType TakeDamageSfxType => DamageSfxType.Armor;
+ 
+ 	public override Task AfterAddedToRoom()
+ 	{
+ 		base.AfterAddedToRoom();
+ 		if (TestMode.IsOff)
+ 		{
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/TerrorEel.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/TerrorEel.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/TerrorEel.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/TerrorEel.cs
+@@ -28,21 +28,21 @@
+ 	private MoveState _terrorState;
+ 
+ 	private const string _attackTripleTrigger = "AttackTripleTrigger";
+ 
+ 	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 150, 140);
+ 
+ 	public override int MaxInitialHp => MinInitialHp;
+ 
+ 	private int ShriekAmount => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 75, 70);
+ 
+-	private int CrashDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 19, 17);
++	private int CrashDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 18, 16);
+ 
+ 	private int ThrashDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 4, 3);
+ 
+ 	private int ThrashRepeat => 3;
+ 
+ 	public MoveState TerrorState
+ 	{
+ 		get
+ 		{
+ 			return _terrorState;
+@@ -89,21 +89,21 @@
+ 	}
+ 
+ 	private async Task ThrashMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await DamageCmd.Attack(ThrashDamage).WithHitCount(ThrashRepeat).FromMonster(this)
+ 			.WithAttackerAnim("AttackTripleTrigger", 0.25f)
+ 			.OnlyPlayAnimOnce()
+ 			.WithAttackerFx(null, "event:/sfx/enemy/enemy_attacks/terror_eel/terror_eel_attack_multi")
+ 			.WithHitFx("vfx/vfx_attack_slash")
+ 			.Execute(null);
+-		await PowerCmd.Apply<VigorPower>(base.Creature, 7m, base.Creature, null);
++		await PowerCmd.Apply<VigorPower>(base.Creature, 6m, base.Creature, null);
+ 	}
+ 
+ 	private Task StunMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		return Task.CompletedTask;
+ 	}
+ 
+ 	private async Task TerrorMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		SfxCmd.Play("event:/sfx/enemy/enemy_attacks/terror_eel/terror_eel_debuff");
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/TestSubject.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/TestSubject.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/TestSubject.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/TestSubject.cs
+@@ -1,28 +1,30 @@
+ using System.Collections.Generic;
+ using System.Threading.Tasks;
+ using Godot;
+ using MegaCrit.Sts2.Core.Animation;
+ using MegaCrit.Sts2.Core.Audio;
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
++using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Localization;
+ using MegaCrit.Sts2.Core.Models.Cards;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+ using MegaCrit.Sts2.Core.Nodes.Audio;
+ using MegaCrit.Sts2.Core.Nodes.Rooms;
++using MegaCrit.Sts2.Core.Nodes.Vfx;
+ using MegaCrit.Sts2.Core.Saves;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class TestSubject : MonsterModel
+ {
+ 	private const string _testSubjectCustomTrackName = "test_subject_progress";
+ 
+ 	private const int _baseTestSubjectNum = 8;
+ 
+@@ -31,20 +33,22 @@
+ 	private const string _growthSpurtTrigger = "GrowthSpurtTrigger";
+ 
+ 	private const string _bigAttackTrigger = "BiteTrigger";
+ 
+ 	private const string _multiAttackTrigger = "MultiAttackTrigger";
+ 
+ 	private const string _deadTrigger = "DeadTrigger";
+ 
+ 	private const string _respawnTrigger = "RespawnTrigger";
+ 
++	private const string _burnTrigger = "BurnTrigger";
++
+ 	private const string _biteSfx = "event:/sfx/enemy/enemy_attacks/test_subject/test_subject_bite";
+ 
+ 	private const string _slashSfx = "event:/sfx/enemy/enemy_attacks/test_subject/test_subject_slash";
+ 
+ 	private const string _knockOutSfx = "event:/sfx/enemy/enemy_attacks/test_subject/test_subject_knock_out";
+ 
+ 	private const string _reviveTwoHeadsSfx = "event:/sfx/enemy/enemy_attacks/test_subject/test_subject_revive_two_heads";
+ 
+ 	private const string _reviveThreeHeadsSfx = "event:/sfx/enemy/enemy_attacks/test_subject/test_subject_revive_three_heads";
+ 
+@@ -73,22 +77,20 @@
+ 	public int SecondFormHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 212, 200);
+ 
+ 	public int ThirdFormHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 313, 300);
+ 
+ 	private int EnrageAmount => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 3, 2);
+ 
+ 	private int BiteDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 22, 20);
+ 
+ 	private int SkullBashDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 16, 14);
+ 
+-	private int PounceDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 32, 30);
+-
+ 	private int MultiClawDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 11, 10);
+ 
+ 	private int BaseMultiClawCount => 3;
+ 
+ 	private int Phase3LacerateDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 11, 10);
+ 
+ 	private int BigPounceDamage => 45;
+ 
+ 	private int BurningGrowlBurnCount => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 5, 3);
+ 
+@@ -161,72 +163,77 @@
+ 		base.CombatState.RunState.ExtraFields.TestSubjectKills++;
+ 		await CreatureCmd.TriggerAnim(base.Creature, "DeadTrigger", 0f);
+ 		SetMoveImmediate(DeadState, forceTransition: true);
+ 	}
+ 
+ 	public override async Task AfterAddedToRoom()
+ 	{
+ 		await base.AfterAddedToRoom();
+ 		await PowerCmd.Apply<AdaptablePower>(base.Creature, 1m, base.Creature, null);
+ 		await PowerCmd.Apply<EnragePower>(base.Creature, EnrageAmount, base.Creature, null);
+-		base.Creature.Died += AfterDeath;
+ 		base.Creature.PowerApplied += AfterPowerApplied;
+ 		base.Creature.PowerRemoved += AfterPowerRemoved;
+ 	}
+ 
++	public override void BeforeRemovedFromRoom()
++	{
++		base.Creature.PowerApplied -= AfterPowerApplied;
++		base.Creature.PowerRemoved -= AfterPowerRemoved;
++	}
++
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		List<MonsterState> list = new List<MonsterState>();
+ 		DeadState = new MoveState("RESPAWN_MOVE", RespawnMove, new HealIntent(), new BuffIntent())
+ 		{
+ 			MustPerformOnceBeforeTransitioning = true
+ 		};
+ 		MoveState moveState = new MoveState("BITE_MOVE", BiteMove, new SingleAttackIntent(BiteDamage));
+ 		MoveState moveState2 = new MoveState("SKULL_BASH_MOVE", SkullBashMove, new SingleAttackIntent(SkullBashDamage), new DebuffIntent());
+-		MoveState moveState3 = new MoveState("POUNCE_MOVE", PounceMove, new SingleAttackIntent(PounceDamage));
+-		MoveState moveState4 = new MoveState("MULTI_CLAW_MOVE", MultiClawMove, new MultiAttackIntent(MultiClawDamage, () => MultiClawTotalCount));
+-		MoveState moveState5 = new MoveState("PHASE3_LACERATE_MOVE", Phase3LacerateMove, new MultiAttackIntent(Phase3LacerateDamage, 3));
+-		MoveState moveState6 = new MoveState("BIG_POUNCE_MOVE", BigPounceMove, new SingleAttackIntent(BigPounceDamage));
+-		MoveState moveState7 = new MoveState("BURNING_GROWL_MOVE", BurningGrowlMove, new StatusIntent(BurningGrowlBurnCount), new BuffIntent());
++		MoveState moveState3 = new MoveState("MULTI_CLAW_MOVE", MultiClawMove, new MultiAttackIntent(MultiClawDamage, () => MultiClawTotalCount));
++		MoveState moveState4 = new MoveState("PHASE3_LACERATE_MOVE", Phase3LacerateMove, new MultiAttackIntent(Phase3LacerateDamage, 3));
++		MoveState moveState5 = new MoveState("BIG_POUNCE_MOVE", BigPounceMove, new SingleAttackIntent(BigPounceDamage));
++		MoveState moveState6 = new MoveState("BURNING_GROWL_MOVE", BurningGrowlMove, new StatusIntent(BurningGrowlBurnCount), new BuffIntent());
+ 		ConditionalBranchState conditionalBranchState = new ConditionalBranchState("REVIVE_BRANCH");
+ 		moveState.FollowUpState = moveState2;
+ 		moveState2.FollowUpState = moveState;
+-		moveState3.FollowUpState = moveState4;
+-		moveState4.FollowUpState = moveState3;
++		moveState3.FollowUpState = moveState3;
++		moveState4.FollowUpState = moveState5;
+ 		moveState5.FollowUpState = moveState6;
+-		moveState6.FollowUpState = moveState7;
+-		moveState7.FollowUpState = moveState5;
++		moveState6.FollowUpState = moveState4;
+ 		DeadState.FollowUpState = conditionalBranchState;
+-		conditionalBranchState.AddState(moveState4, () => Respawns < 2);
+-		conditionalBranchState.AddState(moveState5, () => Respawns >= 2);
++		conditionalBranchState.AddState(moveState3, () => Respawns < 2);
++		conditionalBranchState.AddState(moveState4, () => Respawns >= 2);
+ 		list.Add(DeadState);
+ 		list.Add(moveState);
+ 		list.Add(moveState2);
+ 		list.Add(moveState3);
+ 		list.Add(moveState4);
+ 		list.Add(moveState5);
+ 		list.Add(moveState6);
+-		list.Add(moveState7);
+ 		list.Add(conditionalBranchState);
+ 		return new MonsterMoveStateMachine(list, moveState);
+ 	}
+ 
+-	private void AfterDeath(Creature _)
++	public override Task AfterDeath(PlayerChoiceContext choiceContext, Creature creature, bool wasRemovalPrevented, float deathAnimLength)
+ 	{
+-		if (!base.Creature.HasPower<AdaptablePower>())
++		if (creature != base.Creature)
+ 		{
+-			base.Creature.Died -= AfterDeath;
+-			base.Creature.PowerApplied -= AfterPowerApplied;
+-			base.Creature.PowerRemoved -= AfterPowerRemoved;
+-			NRunMusicController.Instance?.UpdateMusicParameter("test_subject_progress", 5f);
+-			SetColor(Colors.White);
++			return Task.CompletedTask;
+ 		}
++		if (base.Creature.HasPower<AdaptablePower>())
++		{
++			return Task.CompletedTask;
++		}
++		SetColor(Colors.White);
++		NRunMusicController.Instance?.UpdateMusicParameter("test_subject_progress", 5f);
++		return Task.CompletedTask;
+ 	}
+ 
+ 	private void AfterPowerApplied(PowerModel power)
+ 	{
+ 		if (power is IntangiblePower)
+ 		{
+ 			SetColor(StsColors.halfTransparentWhite);
+ 		}
+ 	}
+ 
+@@ -240,61 +247,56 @@
+ 
+ 	private async Task RespawnMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		Respawns++;
+ 		NRunMusicController.Instance?.UpdateMusicParameter("test_subject_progress", 2f);
+ 		SfxCmd.Play((Respawns == 1) ? "event:/sfx/enemy/enemy_attacks/test_subject/test_subject_revive_two_heads" : "event:/sfx/enemy/enemy_attacks/test_subject/test_subject_revive_three_heads");
+ 		await CreatureCmd.TriggerAnim(base.Creature, "RespawnTrigger", 0f);
+ 		await Cmd.Wait(0.8f);
+ 		NCombatRoom.Instance?.GetCreatureNode(base.Creature)?.SetDefaultScaleTo(1f + (float)Respawns * 0.1f, 0.1f);
+ 		await Cmd.Wait(1.15f);
+-		base.Creature.GetPower<AdaptablePower>().DoRevive();
+-		switch (Respawns)
++		if (base.Creature.CombatState != null)
+ 		{
+-		case 1:
+-			await Revive(SecondFormHp);
+-			await PowerCmd.Apply<PainfulStabsPower>(base.Creature, 1m, base.Creature, null);
+-			break;
+-		case 2:
+-			await Revive(ThirdFormHp);
+-			await PowerCmd.Apply<NemesisPower>(base.Creature, 1m, base.Creature, null);
+-			await PowerCmd.Remove<AdaptablePower>(base.Creature);
+-			await PowerCmd.Remove<PainfulStabsPower>(base.Creature);
+-			break;
++			base.Creature.GetPower<AdaptablePower>()?.DoRevive();
++			switch (Respawns)
++			{
++			case 1:
++				await Revive(SecondFormHp);
++				await PowerCmd.Apply<PainfulStabsPower>(base.Creature, 1m, base.Creature, null);
++				break;
++			case 2:
++				await Revive(ThirdFormHp);
++				await PowerCmd.Apply<NemesisPower>(base.Creature, 1m, base.Creature, null);
++				await PowerCmd.Remove<AdaptablePower>(base.Creature);
++				await PowerCmd.Remove<PainfulStabsPower>(base.Creature);
++				break;
++			}
+ 		}
+ 	}
+ 
+ 	private async Task BiteMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await DamageCmd.Attack(BiteDamage).FromMonster(this).WithAttackerAnim("BiteTrigger", 0.25f)
+ 			.WithAttackerFx(null, "event:/sfx/enemy/enemy_attacks/test_subject/test_subject_bite")
+ 			.WithHitFx("vfx/vfx_attack_blunt")
+ 			.Execute(null);
+ 	}
+ 
+ 	private async Task SkullBashMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await DamageCmd.Attack(SkullBashDamage).FromMonster(this).WithAttackerAnim("BiteTrigger", 0.25f)
+ 			.WithAttackerFx(null, "event:/sfx/enemy/enemy_attacks/test_subject/test_subject_bite")
+ 			.WithHitFx("vfx/vfx_attack_blunt")
+ 			.Execute(null);
+ 		await PowerCmd.Apply<VulnerablePower>(targets, 1m, base.Creature, null);
+ 	}
+ 
+-	private async Task PounceMove(IReadOnlyList<Creature> targets)
+-	{
+-		await DamageCmd.Attack(PounceDamage).FromMonster(this).WithAttackerAnim("BiteTrigger", 0.25f)
+-			.WithAttackerFx(null, "event:/sfx/enemy/enemy_attacks/test_subject/test_subject_bite")
+-			.WithHitFx("vfx/vfx_attack_blunt")
+-			.Execute(null);
+-	}
+-
+ 	private async Task MultiClawMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await DamageCmd.Attack(MultiClawDamage).WithHitCount(MultiClawTotalCount).FromMonster(this)
+ 			.OnlyPlayAnimOnce()
+ 			.WithAttackerAnim("MultiAttackTrigger", 0.2f)
+ 			.WithAttackerFx(null, "event:/sfx/enemy/enemy_attacks/test_subject/test_subject_slash")
+ 			.Execute(null);
+ 		ExtraMultiClawCount++;
+ 	}
+ 
+@@ -310,20 +312,23 @@
+ 	private async Task BigPounceMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await DamageCmd.Attack(BigPounceDamage).FromMonster(this).WithAttackerAnim("BiteTrigger", 0.25f)
+ 			.WithAttackerFx(null, "event:/sfx/enemy/enemy_attacks/test_subject/test_subject_bite")
+ 			.WithHitFx("vfx/vfx_attack_blunt")
+ 			.Execute(null);
+ 	}
+ 
+ 	private async Task BurningGrowlMove(IReadOnlyList<Creature> targets)
+ 	{
++		SetColor(Colors.White);
++		NCombatRoom.Instance.BackCombatVfxContainer.AddChildSafely(NTestSubjectBurnVfx.Create());
++		await CreatureCmd.TriggerAnim(base.Creature, "BurnTrigger", 1.25f);
+ 		await CardPileCmd.AddToCombatAndPreview<Burn>(targets, PileType.Discard, BurningGrowlBurnCount, addedByPlayer: false);
+ 		await PowerCmd.Apply<StrengthPower>(base.Creature, BurningGrowlStrengthGain, base.Creature, null);
+ 	}
+ 
+ 	private async Task Revive(int baseRespawnHp)
+ 	{
+ 		AssertMutable();
+ 		int scaledHp = baseRespawnHp * base.Creature.CombatState.Players.Count;
+ 		await CreatureCmd.SetMaxHp(base.Creature, scaledHp);
+ 		await CreatureCmd.Heal(base.Creature, scaledHp);
+@@ -355,49 +360,52 @@
+ 		AnimState animState12 = new AnimState("knockout2");
+ 		AnimState nextState3 = new AnimState("knocked_out_loop2", isLooping: true);
+ 		AnimState animState13 = new AnimState("regenerate2")
+ 		{
+ 			BoundsContainer = "RespawnBounds2"
+ 		};
+ 		AnimState nextState4 = new AnimState("idle_loop3", isLooping: true);
+ 		AnimState animState14 = new AnimState("hurt3");
+ 		AnimState animState15 = new AnimState("attack_double3");
+ 		AnimState animState16 = new AnimState("attack_big3");
+-		AnimState animState17 = new AnimState("heal3");
++		AnimState animState17 = new AnimState("burn");
++		AnimState animState18 = new AnimState("heal3");
+ 		AnimState state = new AnimState("die");
+ 		animState5.NextState = animState;
+ 		animState4.NextState = animState;
+ 		animState3.NextState = animState;
+ 		animState2.NextState = animState;
+ 		animState6.NextState = nextState;
+ 		animState7.NextState = nextState2;
+ 		animState11.NextState = nextState2;
+ 		animState10.NextState = nextState2;
+ 		animState9.NextState = nextState2;
+ 		animState8.NextState = nextState2;
+ 		animState12.NextState = nextState3;
+ 		animState13.NextState = nextState4;
+-		animState17.NextState = nextState4;
++		animState18.NextState = nextState4;
+ 		animState16.NextState = nextState4;
+ 		animState15.NextState = nextState4;
++		animState17.NextState = nextState4;
+ 		animState14.NextState = nextState4;
+ 		CreatureAnimator creatureAnimator = new CreatureAnimator(animState, controller);
+ 		creatureAnimator.AddAnyState("Hit", animState2, () => Respawns == 0);
+ 		creatureAnimator.AddAnyState("BiteTrigger", animState4, () => Respawns == 0);
+ 		creatureAnimator.AddAnyState("MultiAttackTrigger", animState3, () => Respawns == 0);
+ 		creatureAnimator.AddAnyState("GrowthSpurtTrigger", animState5, () => Respawns == 0);
+ 		creatureAnimator.AddAnyState("DeadTrigger", animState6, () => Respawns == 0);
+ 		creatureAnimator.AddAnyState("RespawnTrigger", animState7, () => Respawns == 1);
+ 		creatureAnimator.AddAnyState("Hit", animState8, () => Respawns == 1);
+ 		creatureAnimator.AddAnyState("BiteTrigger", animState10, () => Respawns == 1);
+ 		creatureAnimator.AddAnyState("MultiAttackTrigger", animState9, () => Respawns == 1);
+ 		creatureAnimator.AddAnyState("GrowthSpurtTrigger", animState11, () => Respawns == 1);
+ 		creatureAnimator.AddAnyState("DeadTrigger", animState12, () => Respawns == 1);
+ 		creatureAnimator.AddAnyState("RespawnTrigger", animState13, () => Respawns >= 2);
+ 		creatureAnimator.AddAnyState("Hit", animState14, () => Respawns >= 2);
+ 		creatureAnimator.AddAnyState("BiteTrigger", animState16, () => Respawns >= 2);
+ 		creatureAnimator.AddAnyState("MultiAttackTrigger", animState15, () => Respawns >= 2);
+-		creatureAnimator.AddAnyState("GrowthSpurtTrigger", animState17, () => Respawns >= 2);
++		creatureAnimator.AddAnyState("GrowthSpurtTrigger", animState18, () => Respawns >= 2);
++		creatureAnimator.AddAnyState("BurnTrigger", animState17, () => Respawns >= 2);
+ 		creatureAnimator.AddAnyState("Dead", state);
+ 		return creatureAnimator;
+ 	}
+ }
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/TheForgotten.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/TheForgotten.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/TheForgotten.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/TheForgotten.cs
+@@ -13,47 +13,56 @@
+ using MegaCrit.Sts2.Core.ValueProps;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class TheForgotten : MonsterModel
+ {
+ 	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 111, 106);
+ 
+ 	public override int MaxInitialHp => MinInitialHp;
+ 
+-	private int DreadDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 17, 15);
++	private int DreadDamage
++	{
++		get
++		{
++			int valueIfAscension = AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 15, 13);
++			return valueIfAscension + base.Creature.GetPowerAmount<DexterityPower>();
++		}
++	}
+ 
++	private int DebilitatingSmogDexStealAmount => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 2, 2);
++
+ 	public override DamageSfxType TakeDamageSfxType => DamageSfxType.Stone;
+ 
+ 	public override async Task AfterAddedToRoom()
+ 	{
+ 		await PowerCmd.Apply<PossessSpeedPower>(base.Creature, 1m, null, null);
+ 	}
+ 
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		List<MonsterState> list = new List<MonsterState>();
+ 		MoveState moveState = new MoveState("MIASMA", MiasmaMove, new DebuffIntent(), new DefendIntent(), new BuffIntent());
+-		MoveState moveState2 = (MoveState)(moveState.FollowUpState = new MoveState("DREAD", DreadMove, new SingleAttackIntent(DreadDamage)));
++		MoveState moveState2 = (MoveState)(moveState.FollowUpState = new MoveState("DREAD", DreadMove, new SingleAttackIntent(() => DreadDamage)));
+ 		moveState2.FollowUpState = moveState;
+ 		list.Add(moveState);
+ 		list.Add(moveState2);
+ 		return new MonsterMoveStateMachine(list, moveState);
+ 	}
+ 
+ 	private async Task MiasmaMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		SfxCmd.Play(CastSfx);
+ 		await CreatureCmd.TriggerAnim(base.Creature, "Cast", 0.5f);
+-		await PowerCmd.Apply<DexterityPower>(targets, -2m, base.Creature, null);
++		await PowerCmd.Apply<DexterityPower>(targets, -DebilitatingSmogDexStealAmount, base.Creature, null);
+ 		await CreatureCmd.GainBlock(base.Creature, 8m, ValueProp.Move, null);
+-		await PowerCmd.Apply<DexterityPower>(base.Creature, 2m, base.Creature, null);
++		await PowerCmd.Apply<DexterityPower>(base.Creature, DebilitatingSmogDexStealAmount, base.Creature, null);
+ 	}
+ 
+ 	private async Task DreadMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await DamageCmd.Attack(DreadDamage).FromMonster(this).WithAttackerAnim("Attack", 0.15f)
+ 			.OnlyPlayAnimOnce()
+ 			.WithAttackerFx(null, AttackSfx)
+ 			.WithHitFx("vfx/vfx_attack_blunt")
+ 			.Execute(null);
+ 	}
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/TheInsatiable.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/TheInsatiable.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/TheInsatiable.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/TheInsatiable.cs
+@@ -2,20 +2,21 @@
+ using System.Threading.Tasks;
+ using MegaCrit.Sts2.Core.Animation;
+ using MegaCrit.Sts2.Core.Audio;
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Context;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Entities.Players;
++using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Models.Cards;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+ using MegaCrit.Sts2.Core.Nodes.Audio;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class TheInsatiable : MonsterModel
+@@ -68,30 +69,28 @@
+ 		}
+ 		set
+ 		{
+ 			AssertMutable();
+ 			_hasLiquified = value;
+ 		}
+ 	}
+ 
+ 	public override DamageSfxType TakeDamageSfxType => DamageSfxType.Insect;
+ 
+-	public override async Task AfterAddedToRoom()
++	public override Task AfterDeath(PlayerChoiceContext choiceContext, Creature creature, bool wasRemovalPrevented, float deathAnimLength)
+ 	{
+-		await base.AfterAddedToRoom();
+-		base.Creature.Died += AfterDeath;
+-	}
+-
+-	private void AfterDeath(Creature _)
+-	{
+-		base.Creature.Died -= AfterDeath;
++		if (creature != base.Creature)
++		{
++			return Task.CompletedTask;
++		}
+ 		NRunMusicController.Instance?.UpdateMusicParameter(TheInsatiableTrackName, 10f);
++		return Task.CompletedTask;
+ 	}
+ 
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		List<MonsterState> list = new List<MonsterState>();
+ 		MoveState moveState = new MoveState("LIQUIFY_GROUND_MOVE", LiquifyMove, new BuffIntent(), new StatusIntent(6));
+ 		MoveState moveState2 = new MoveState("THRASH_MOVE_1", ThrashMove, new MultiAttackIntent(ThrashDamage, 2));
+ 		MoveState moveState3 = new MoveState("THRASH_MOVE_2", ThrashMove, new MultiAttackIntent(ThrashDamage, 2));
+ 		MoveState moveState4 = new MoveState("LUNGING_BITE_MOVE", BiteMove, new SingleAttackIntent(BiteDamage));
+ 		MoveState moveState5 = new MoveState("SALIVATE_MOVE", SalivateMove, new BuffIntent());
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/TheLost.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/TheLost.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/TheLost.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/TheLost.cs
+@@ -16,20 +16,22 @@
+ public sealed class TheLost : MonsterModel
+ {
+ 	private const int _eyeLasersRepeat = 2;
+ 
+ 	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 99, 93);
+ 
+ 	public override int MaxInitialHp => MinInitialHp;
+ 
+ 	private int EyeLasersDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 5, 4);
+ 
++	private int DebilitatingSmogStrengthStealAmount => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 2, 2);
++
+ 	public override DamageSfxType TakeDamageSfxType => DamageSfxType.Stone;
+ 
+ 	public override async Task AfterAddedToRoom()
+ 	{
+ 		await PowerCmd.Apply<PossessStrengthPower>(base.Creature, 1m, null, null);
+ 	}
+ 
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		List<MonsterState> list = new List<MonsterState>();
+@@ -38,22 +40,22 @@
+ 		moveState2.FollowUpState = moveState;
+ 		list.Add(moveState);
+ 		list.Add(moveState2);
+ 		return new MonsterMoveStateMachine(list, moveState);
+ 	}
+ 
+ 	private async Task DebilitatingSmogMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		SfxCmd.Play(CastSfx);
+ 		await CreatureCmd.TriggerAnim(base.Creature, "Cast", 0.5f);
+-		await PowerCmd.Apply<StrengthPower>(targets, -2m, base.Creature, null);
+-		await PowerCmd.Apply<StrengthPower>(base.Creature, 2m, base.Creature, null);
++		await PowerCmd.Apply<StrengthPower>(targets, -DebilitatingSmogStrengthStealAmount, base.Creature, null);
++		await PowerCmd.Apply<StrengthPower>(base.Creature, DebilitatingSmogStrengthStealAmount, base.Creature, null);
+ 	}
+ 
+ 	private async Task EyeLasersMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await DamageCmd.Attack(EyeLasersDamage).WithHitCount(2).FromMonster(this)
+ 			.WithAttackerAnim("Attack", 0.15f)
+ 			.OnlyPlayAnimOnce()
+ 			.WithAttackerFx(null, AttackSfx)
+ 			.WithHitFx("vfx/vfx_attack_blunt")
+ 			.Execute(null);
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/ThievingHopper.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/ThievingHopper.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/ThievingHopper.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/ThievingHopper.cs
+@@ -188,20 +188,24 @@
+ 			if (specialNode != null)
+ 			{
+ 				specialNode.Position = Vector2.Right * (creatureNode2.GlobalPosition.X - creatureNode.GlobalPosition.X);
+ 			}
+ 		}
+ 		await CreatureCmd.TriggerAnim(base.Creature, "Steal", 0.25f);
+ 		SfxCmd.Play("event:/sfx/enemy/enemy_attacks/thieving_hopper/thieving_hopper_steal");
+ 		List<CardModel> cardsToSteal = new List<CardModel>();
+ 		foreach (Creature target in targets)
+ 		{
++			if (target.IsDead)
++			{
++				continue;
++			}
+ 			List<CardModel> list = (from c in CardPile.GetCards(target.Player ?? target.PetOwner, PileType.Draw, PileType.Discard)
+ 				where c.DeckVersion != null
+ 				select c).ToList();
+ 			IEnumerable<CardModel> items = list;
+ 			Func<CardModel, bool>[] stealPriorities = _stealPriorities;
+ 			foreach (Func<CardModel, bool> predicate in stealPriorities)
+ 			{
+ 				IEnumerable<CardModel> enumerable = list.Where(predicate);
+ 				if (enumerable.Any())
+ 				{
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Toadpole.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Toadpole.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Toadpole.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Toadpole.cs
+@@ -3,21 +3,20 @@
+ using MegaCrit.Sts2.Core.Animation;
+ using MegaCrit.Sts2.Core.Audio;
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+-using MegaCrit.Sts2.Core.Nodes.Combat;
+ using MegaCrit.Sts2.Core.Random;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class Toadpole : MonsterModel
+ {
+ 	private static readonly string[] _eyeOptions = new string[2] { "eye1", "eye2" };
+ 
+ 	private static readonly string[] _patternOptions = new string[2] { "pattern1", "pattern2" };
+ 
+@@ -49,24 +48,23 @@
+ 	private int SpikeSpitDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 4, 3);
+ 
+ 	private int SpikeSpitRepeat => 3;
+ 
+ 	private int WhirlDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 8, 7);
+ 
+ 	private int SpikenAmount => 2;
+ 
+ 	public override DamageSfxType TakeDamageSfxType => DamageSfxType.Slime;
+ 
+-	public override void SetupSkins(NCreatureVisuals visuals)
++	public override void SetupSkins(MegaSprite spine, MegaSkeleton skeleton)
+ 	{
+-		MegaSkeleton skeleton = visuals.SpineBody.GetSkeleton();
+-		MegaSkin megaSkin = visuals.SpineBody.NewSkin("custom-skin");
++		MegaSkin megaSkin = spine.NewSkin("custom-skin");
+ 		MegaSkeletonDataResource data = skeleton.GetData();
+ 		megaSkin.AddSkin(data.FindSkin(MegaCrit.Sts2.Core.Random.Rng.Chaotic.NextItem(_eyeOptions)));
+ 		megaSkin.AddSkin(data.FindSkin(MegaCrit.Sts2.Core.Random.Rng.Chaotic.NextItem(_patternOptions)));
+ 		skeleton.SetSkin(megaSkin);
+ 		skeleton.SetSlotsToSetupPose();
+ 	}
+ 
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		List<MonsterState> list = new List<MonsterState>();
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/ToughEgg.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/ToughEgg.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/ToughEgg.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/ToughEgg.cs
+@@ -104,24 +104,23 @@
+ 		{
+ 			return _hatchPos;
+ 		}
+ 		set
+ 		{
+ 			AssertMutable();
+ 			_hatchPos = value;
+ 		}
+ 	}
+ 
+-	public override void SetupSkins(NCreatureVisuals visuals)
++	public override void SetupSkins(MegaSprite spine, MegaSkeleton skeleton)
+ 	{
+-		MegaSkeleton skeleton = visuals.SpineBody.GetSkeleton();
+-		MegaSkin megaSkin = visuals.SpineBody.NewSkin("custom-skin");
++		MegaSkin megaSkin = spine.NewSkin("custom-skin");
+ 		MegaSkeletonDataResource data = skeleton.GetData();
+ 		megaSkin.AddSkin(data.FindSkin(base.Rng.NextItem(_eggOptions)));
+ 		skeleton.SetSkin(megaSkin);
+ 		skeleton.SetSlotsToSetupPose();
+ 	}
+ 
+ 	public override async Task AfterAddedToRoom()
+ 	{
+ 		await base.AfterAddedToRoom();
+ 		if (TestMode.IsOff && HatchPos.HasValue)
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/TwoTailedRat.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/TwoTailedRat.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/TwoTailedRat.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/TwoTailedRat.cs
+@@ -5,21 +5,20 @@
+ using MegaCrit.Sts2.Core.Audio;
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+-using MegaCrit.Sts2.Core.Nodes.Combat;
+ using MegaCrit.Sts2.Core.Random;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class TwoTailedRat : MonsterModel
+ {
+ 	private const string _attackHandsSfx = "event:/sfx/enemy/enemy_attacks/two_tail_rats/two_tail_rats_attack_hands";
+ 
+ 	private const string _summonSfx = "event:/sfx/enemy/enemy_attacks/two_tail_rats/two_tail_rats_summon";
+ 
+@@ -89,24 +88,23 @@
+ 		{
+ 			return _callForBackupCount;
+ 		}
+ 		set
+ 		{
+ 			AssertMutable();
+ 			_callForBackupCount = value;
+ 		}
+ 	}
+ 
+-	public override void SetupSkins(NCreatureVisuals visuals)
++	public override void SetupSkins(MegaSprite spine, MegaSkeleton skeleton)
+ 	{
+-		MegaSkeleton skeleton = visuals.SpineBody.GetSkeleton();
+-		MegaSkin megaSkin = visuals.SpineBody.NewSkin("custom-skin");
++		MegaSkin megaSkin = spine.NewSkin("custom-skin");
+ 		MegaSkeletonDataResource data = skeleton.GetData();
+ 		megaSkin.AddSkin(data.FindSkin(MegaCrit.Sts2.Core.Random.Rng.Chaotic.NextItem(_barnacleOptions)));
+ 		megaSkin.AddSkin(data.FindSkin(MegaCrit.Sts2.Core.Random.Rng.Chaotic.NextItem(_headOptions)));
+ 		skeleton.SetSkin(megaSkin);
+ 		skeleton.SetSlotsToSetupPose();
+ 	}
+ 
+ 	public override async Task AfterAddedToRoom()
+ 	{
+ 		await base.AfterAddedToRoom();
+@@ -146,22 +144,22 @@
+ 		TurnsUntilSummonable--;
+ 		await DamageCmd.Attack(ScratchDamage).FromMonster(this).WithAttackerAnim("Attack", 0.25f)
+ 			.WithAttackerFx(null, "event:/sfx/enemy/enemy_attacks/two_tail_rats/two_tail_rats_attack_hands")
+ 			.WithHitFx("vfx/vfx_attack_slash")
+ 			.Execute(null);
+ 	}
+ 
+ 	private async Task DiseaseBiteMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		TurnsUntilSummonable--;
+-		await DamageCmd.Attack(DiseaseBiteDamage).FromMonster(this).WithAttackerAnim("Cast", 0.25f)
+-			.WithAttackerFx(null, "event:/sfx/enemy/enemy_attacks/two_tail_rats/two_tail_rats_attack_bite")
++		await DamageCmd.Attack(DiseaseBiteDamage).FromMonster(this).WithAttackerAnim("Attack", 0.25f)
++			.WithAttackerFx(null, "event:/sfx/enemy/enemy_attacks/two_tail_rats/two_tail_rats_attack_hands")
+ 			.WithHitFx("vfx/vfx_attack_slash")
+ 			.Execute(null);
+ 	}
+ 
+ 	private async Task ScreechMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		TurnsUntilSummonable--;
+ 		SfxCmd.Play("event:/sfx/enemy/enemy_attacks/two_tail_rats/two_tail_rats_attack_bite");
+ 		await CreatureCmd.TriggerAnim(base.Creature, "Cast", 0.3f);
+ 		await PowerCmd.Apply<FrailPower>(targets, 1m, base.Creature, null);
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Vantom.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Vantom.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Vantom.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Vantom.cs
+@@ -1,27 +1,27 @@
+ using System.Collections.Generic;
+ using System.Threading.Tasks;
+ using MegaCrit.Sts2.Core.Animation;
+ using MegaCrit.Sts2.Core.Audio;
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
++using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Models.Cards;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+ using MegaCrit.Sts2.Core.Nodes;
+ using MegaCrit.Sts2.Core.Nodes.Audio;
+-using MegaCrit.Sts2.Core.Nodes.Combat;
+ using MegaCrit.Sts2.Core.Nodes.Rooms;
+ using MegaCrit.Sts2.Core.Nodes.Vfx;
+ using MegaCrit.Sts2.Core.Nodes.Vfx.Utilities;
+ using MegaCrit.Sts2.Core.Random;
+ using MegaCrit.Sts2.Core.TestSupport;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class Vantom : MonsterModel
+ {
+@@ -64,32 +64,35 @@
+ 	private int DismemberDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 30, 27);
+ 
+ 	public override DamageSfxType TakeDamageSfxType => DamageSfxType.Magic;
+ 
+ 	public override bool ShouldDisappearFromDoom => false;
+ 
+ 	public override async Task AfterAddedToRoom()
+ 	{
+ 		await base.AfterAddedToRoom();
+ 		await PowerCmd.Apply<SlipperyPower>(base.Creature, 9m, base.Creature, null);
+-		base.Creature.Died += AfterDeath;
+ 	}
+ 
+-	private void AfterDeath(Creature _)
++	public override Task AfterDeath(PlayerChoiceContext choiceContext, Creature creature, bool wasRemovalPrevented, float deathAnimLength)
+ 	{
+-		base.Creature.Died -= AfterDeath;
++		if (creature != base.Creature)
++		{
++			return Task.CompletedTask;
++		}
+ 		NRunMusicController.Instance?.UpdateMusicParameter("vantom_progress", 5f);
++		return Task.CompletedTask;
+ 	}
+ 
+-	public override void SetupSkins(NCreatureVisuals visuals)
++	public override void SetupSkins(MegaSprite spine, MegaSkeleton skeleton)
+ 	{
+-		MegaAnimationState animationState = visuals.SpineBody.GetAnimationState();
++		MegaAnimationState animationState = spine.GetAnimationState();
+ 		animationState.SetAnimation("_tracks/charge_up_1", loop: false, 1);
+ 		animationState.AddAnimation("_tracks/charged_1", 0f, loop: true, 1);
+ 	}
+ 
+ 	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
+ 	{
+ 		List<MonsterState> list = new List<MonsterState>();
+ 		MoveState moveState = new MoveState("INK_BLOT_MOVE", InkBlotMove, new SingleAttackIntent(InkBlotDamage));
+ 		MoveState moveState2 = new MoveState("INKY_LANCE_MOVE", InkyLanceMove, new MultiAttackIntent(InkyLanceDamage, 2));
+ 		MoveState moveState3 = new MoveState("DISMEMBER_MOVE", DismemberMove, new SingleAttackIntent(DismemberDamage), new StatusIntent(3));
+@@ -110,50 +113,50 @@
+ 		await DamageCmd.Attack(InkBlotDamage).FromMonster(this).WithAttackerAnim("Attack", 0.35f)
+ 			.WithAttackerFx(null, "event:/sfx/enemy/enemy_attacks/vantom/vantom_inky_lance")
+ 			.WithHitFx("vfx/vfx_attack_blunt")
+ 			.Execute(null);
+ 		if (TestMode.IsOff && base.Creature.IsAlive)
+ 		{
+ 			await Cmd.CustomScaledWait(1f, 1f);
+ 			NRunMusicController.Instance?.UpdateMusicParameter("vantom_progress", 1f);
+ 			SfxCmd.Play("event:/sfx/enemy/enemy_attacks/vantom/vantom_extend_2");
+ 			await CreatureCmd.TriggerAnim(base.Creature, "CHARGE_UP", 0.15f);
+-			MegaAnimationState megaAnimationState = (NCombatRoom.Instance?.GetCreatureNode(base.Creature))?.SpineController?.GetAnimationState();
++			MegaAnimationState megaAnimationState = (NCombatRoom.Instance?.GetCreatureNode(base.Creature))?.SpineAnimation.GetAnimationState();
+ 			megaAnimationState?.SetAnimation("_tracks/charge_up_2", loop: false, 1);
+ 			megaAnimationState?.AddAnimation("_tracks/charged_2", 0f, loop: true, 1);
+ 		}
+ 	}
+ 
+ 	private async Task InkyLanceMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		await DamageCmd.Attack(InkyLanceDamage).WithHitCount(2).FromMonster(this)
+ 			.WithAttackerAnim("DEBUFF", 0.4f)
+ 			.WithAttackerFx(null, "event:/sfx/enemy/enemy_attacks/vantom/vantom_inky_lance")
+ 			.WithHitFx("vfx/vfx_attack_blunt")
+ 			.Execute(null);
+ 		if (TestMode.IsOff && base.Creature.IsAlive)
+ 		{
+ 			NRunMusicController.Instance?.UpdateMusicParameter("vantom_progress", 2f);
+ 			await Cmd.CustomScaledWait(1f, 1f);
+ 			SfxCmd.Play("event:/sfx/enemy/enemy_attacks/vantom/vantom_extend_2");
+-			MegaAnimationState megaAnimationState = (NCombatRoom.Instance?.GetCreatureNode(base.Creature))?.SpineController?.GetAnimationState();
++			MegaAnimationState megaAnimationState = (NCombatRoom.Instance?.GetCreatureNode(base.Creature))?.SpineAnimation.GetAnimationState();
+ 			megaAnimationState?.SetAnimation("_tracks/charge_up_3", loop: false, 1);
+ 			megaAnimationState?.AddAnimation("_tracks/charged_3", 0f, loop: true, 1);
+ 			await CreatureCmd.TriggerAnim(base.Creature, "CHARGE_UP", 0.15f);
+ 		}
+ 	}
+ 
+ 	private async Task DismemberMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		if (TestMode.IsOff && base.Creature.IsAlive)
+ 		{
+-			MegaAnimationState megaAnimationState = (NCombatRoom.Instance?.GetCreatureNode(base.Creature))?.SpineController?.GetAnimationState();
++			MegaAnimationState megaAnimationState = (NCombatRoom.Instance?.GetCreatureNode(base.Creature))?.SpineAnimation.GetAnimationState();
+ 			megaAnimationState?.SetAnimation("_tracks/attack_heavy", loop: false, 1);
+ 			megaAnimationState?.AddAnimation("_tracks/charged_0", 0f, loop: true, 1);
+ 		}
+ 		NRunMusicController.Instance?.UpdateMusicParameter("vantom_progress", 3f);
+ 		await CreatureCmd.TriggerAnim(base.Creature, "ATTACK_HEAVY", 0f);
+ 		await Cmd.Wait(0.25f);
+ 		NCombatRoom.Instance?.RadialBlur(VfxPosition.Left);
+ 		NGame.Instance?.ScreenShake(ShakeStrength.Strong, ShakeDuration.Normal, 180f + MegaCrit.Sts2.Core.Random.Rng.Chaotic.NextFloat(-10f, 10f));
+ 		await DamageCmd.Attack(DismemberDamage).FromMonster(this).WithNoAttackerAnim()
+ 			.WithHitFx("vfx/vfx_giant_horizontal_slash", "event:/sfx/enemy/enemy_attacks/vantom/vantom_dismember")
+@@ -165,21 +168,21 @@
+ 
+ 	private async Task PrepareMove(IReadOnlyList<Creature> targets)
+ 	{
+ 		SfxCmd.Play("event:/sfx/enemy/enemy_attacks/vantom/vantom_buff");
+ 		await CreatureCmd.TriggerAnim(base.Creature, "BUFF", 0.6f);
+ 		await PowerCmd.Apply<StrengthPower>(base.Creature, 2m, base.Creature, null);
+ 		if (TestMode.IsOff && base.Creature.IsAlive)
+ 		{
+ 			await Cmd.CustomScaledWait(1f, 1f);
+ 			SfxCmd.Play("event:/sfx/enemy/enemy_attacks/vantom/vantom_extend_1");
+-			MegaAnimationState megaAnimationState = (NCombatRoom.Instance?.GetCreatureNode(base.Creature))?.SpineController?.GetAnimationState();
++			MegaAnimationState megaAnimationState = (NCombatRoom.Instance?.GetCreatureNode(base.Creature))?.SpineAnimation.GetAnimationState();
+ 			megaAnimationState?.SetAnimation("_tracks/charge_up_1", loop: false, 1);
+ 			megaAnimationState?.AddAnimation("_tracks/charged_1", 0f, loop: true, 1);
+ 			await CreatureCmd.TriggerAnim(base.Creature, "CHARGE_UP", 0.25f);
+ 			NRunMusicController.Instance?.UpdateMusicParameter("vantom_progress", 1f);
+ 		}
+ 	}
+ 
+ 	public override CreatureAnimator GenerateAnimator(MegaSprite controller)
+ 	{
+ 		AnimState animState = new AnimState("idle_loop", isLooping: true);
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/WaterfallGiant.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/WaterfallGiant.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/WaterfallGiant.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/WaterfallGiant.cs
+@@ -1,19 +1,20 @@
+ using System.Collections.Generic;
+ using System.Threading.Tasks;
+ using Godot;
+ using MegaCrit.Sts2.Core.Animation;
+ using MegaCrit.Sts2.Core.Audio;
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
++using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.Helpers;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+ using MegaCrit.Sts2.Core.Nodes.Audio;
+ using MegaCrit.Sts2.Core.Nodes.Rooms;
+ using MegaCrit.Sts2.Core.TestSupport;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+@@ -56,21 +57,21 @@
+ 	private const string _attackKickSfx = "event:/sfx/enemy/enemy_attacks/waterfall_giant/waterfall_giant_attack_kick";
+ 
+ 	private const string _attackStompSfx = "event:/sfx/enemy/enemy_attacks/waterfall_giant/waterfall_giant_attack_stomp";
+ 
+ 	private const string _eruptionSfx = "event:/sfx/enemy/enemy_attacks/waterfall_giant/waterfall_giant_eruption";
+ 
+ 	private const string _knockoutSfx = "event:/sfx/enemy/enemy_attacks/waterfall_giant/waterfall_giant_knockout";
+ 
+ 	private const string _ambientSfx = "event:/sfx/enemy/enemy_attacks/waterfall_giant/waterfall_giant_ambient";
+ 
+-	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 260, 250);
++	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 250, 240);
+ 
+ 	public override int MaxInitialHp => MinInitialHp;
+ 
+ 	private int PressurizeAmount => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 20, 15);
+ 
+ 	private int StompDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 16, 15);
+ 
+ 	private int RamDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 11, 10);
+ 
+ 	private int PressureUpDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 14, 13);
+@@ -152,30 +153,35 @@
+ 
+ 	public override bool HasDeathSfx => false;
+ 
+ 	public override bool ShouldFadeAfterDeath => PressureBuildupIdx == 0;
+ 
+ 	public override async Task AfterAddedToRoom()
+ 	{
+ 		await base.AfterAddedToRoom();
+ 		CurrentPressureGunDamage = BasePressureGunDamage;
+ 		SfxCmd.PlayLoop("event:/sfx/enemy/enemy_attacks/waterfall_giant/waterfall_giant_ambient", usesLoopParam: false);
+-		base.Creature.Died += AfterDeath;
+ 	}
+ 
+-	private void AfterDeath(Creature _)
++	public override Task AfterDeath(PlayerChoiceContext choiceContext, Creature creature, bool wasRemovalPrevented, float deathAnimLength)
+ 	{
+-		if (!base.Creature.HasPower<SteamEruptionPower>())
++		if (creature != base.Creature)
+ 		{
+-			base.Creature.Died -= AfterDeath;
+-			NRunMusicController.Instance?.UpdateMusicParameter("waterfall_giant_progress", 5f);
++			return Task.CompletedTask;
+ 		}
++		if (base.Creature.HasPower<SteamEruptionPower>())
++		{
++			return Task.CompletedTask;
++		}
++		NRunMusicController.Instance?.UpdateMusicParameter("waterfall_giant_progress", 5f);
++		StopAmbientSfx();
++		return Task.CompletedTask;
+ 	}
+ 
+ 	public override void BeforeRemovedFromRoom()
+ 	{
+ 		StopAmbientSfx();
+ 	}
+ 
+ 	private void StopAmbientSfx()
+ 	{
+ 		SfxCmd.SetParam("event:/sfx/enemy/enemy_attacks/waterfall_giant/waterfall_giant_ambient", "waterfall_giant_sfx", 2f);
+@@ -305,21 +311,21 @@
+ 
+ 	private void IncrementBuildUpAnimationTrack()
+ 	{
+ 		if (TestMode.IsOff)
+ 		{
+ 			NRunMusicController.Instance?.UpdateMusicParameter("waterfall_giant_progress", 1f);
+ 			SfxCmd.SetParam("event:/sfx/enemy/enemy_attacks/waterfall_giant/waterfall_giant_ambient", "waterfall_giant_sfx", 1f);
+ 			PressureBuildupIdx++;
+ 			int value = Mathf.FloorToInt((float)PressureBuildupIdx * 0.5f);
+ 			value = Mathf.Clamp(value, 1, 3);
+-			NCombatRoom.Instance.GetCreatureNode(base.Creature)?.SpineController.GetAnimationState().SetAnimation($"_tracks/buildup{value}", loop: true, 1);
++			NCombatRoom.Instance.GetCreatureNode(base.Creature)?.SpineAnimation.SetAnimation($"_tracks/buildup{value}", loop: true, 1);
+ 		}
+ 	}
+ 
+ 	public override CreatureAnimator GenerateAnimator(MegaSprite controller)
+ 	{
+ 		AnimState animState = new AnimState("idle_loop", isLooping: true);
+ 		AnimState animState2 = new AnimState("cast");
+ 		AnimState animState3 = new AnimState("attack");
+ 		AnimState animState4 = new AnimState("attack_buff");
+ 		AnimState animState5 = new AnimState("attack_debuff");
+diff -u10 -r -N v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Zapbot.cs v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Zapbot.cs
+--- v0.99.1/MegaCrit/Sts2/Core/Models/Monsters/Zapbot.cs
++++ v0.103.2/MegaCrit/Sts2/Core/Models/monsters/Zapbot.cs
+@@ -10,23 +10,23 @@
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+ using MegaCrit.Sts2.Core.Nodes.Combat;
+ using MegaCrit.Sts2.Core.Nodes.Rooms;
+ using MegaCrit.Sts2.Core.TestSupport;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class Zapbot : MonsterModel
+ {
+-	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 24, 23);
++	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 19, 18);
+ 
+-	public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 29, 28);
++	public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 24, 23);
+ 
+ 	private int ZapDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 15, 14);
+ 
+ 	public override DamageSfxType TakeDamageSfxType => DamageSfxType.Armor;
+ 
+ 	public override async Task AfterAddedToRoom()
+ 	{
+ 		await base.AfterAddedToRoom();
+ 		if (TestMode.IsOff)
+ 		{
