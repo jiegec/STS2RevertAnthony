@@ -217,4 +217,4 @@ When a card's version is set to an old version, the patches return the historica
 - Batch operations for global and per-character version switching
 - ModConfig GUI integration
 - Description localization support (English and Simplified Chinese)
-- Tested on game versions v0.102.0 and v0.103.2
+- Tested on game versions v0.103.2
