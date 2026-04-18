@@ -8,6 +8,7 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
+using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Cards;
@@ -18,23 +19,6 @@ namespace RevertAnthony;
 // Begone v0.99.1 vs current
 // v0.99.1: 1-cost Attack, AnyEnemy, Damage 4(+1), ExtraHoverTips → MinionDiveBomb, deal dmg then transform to MinionDiveBomb
 // Current:  1-cost Skill, Self, no vars, ExtraHoverTips → MinionStrike, transform to MinionStrike
-
-[HarmonyPatch(typeof(Begone), "get_CanonicalVars")]
-static class Begone_CanonicalVars_Patch
-{
-    static bool Prefix(ref IEnumerable<DynamicVar> __result)
-    {
-        if (RevertAnthony.IsVersion("begone", "v0.99.1"))
-        {
-            __result = new DynamicVar[]
-            {
-                new DamageVar(4m, ValueProp.Move)
-            };
-            return false;
-        }
-        return true;
-    }
-}
 
 [HarmonyPatch(typeof(Begone), "get_ExtraHoverTips")]
 static class Begone_ExtraHoverTips_Patch
@@ -93,6 +77,51 @@ static class Begone_OnPlay_Patch
                 CardCmd.Upgrade(cardModel2);
             }
             await CardCmd.Transform(cardModel, cardModel2);
+        }
+    }
+}
+
+[HarmonyPatch(typeof(CardModel), "TargetType", MethodType.Getter)]
+static class Begone_TargetType_Patch
+{
+    static void Postfix(CardModel __instance, ref TargetType __result)
+    {
+        if (__instance is Begone && RevertAnthony.IsVersion("begone", "v0.99.1"))
+            __result = TargetType.AnyEnemy;
+    }
+}
+
+[HarmonyPatch(typeof(CardModel), "Type", MethodType.Getter)]
+static class Begone_CardType_Patch
+{
+    static void Postfix(CardModel __instance, ref CardType __result)
+    {
+        if (__instance is Begone && RevertAnthony.IsVersion("begone", "v0.99.1"))
+            __result = CardType.Attack;
+    }
+}
+
+[HarmonyPatch(typeof(CardModel), "Description", MethodType.Getter)]
+static class Begone_Description_Patch
+{
+    static void Postfix(CardModel __instance, ref LocString __result)
+    {
+        if (__instance is Begone && RevertAnthony.IsVersion("begone", "v0.99.1"))
+            __result = new LocString("cards", "BEGONE_V0991.description");
+    }
+}
+
+[HarmonyPatch(typeof(CardModel), "CanonicalVars", MethodType.Getter)]
+static class Begone_CanonicalVars_Patch
+{
+    static void Postfix(CardModel __instance, ref IEnumerable<DynamicVar> __result)
+    {
+        if (__instance is Begone && RevertAnthony.IsVersion("begone", "v0.99.1"))
+        {
+            __result = new DynamicVar[]
+            {
+                new DamageVar(4m, ValueProp.Move)
+            };
         }
     }
 }

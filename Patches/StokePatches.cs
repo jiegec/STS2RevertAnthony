@@ -5,6 +5,7 @@ using HarmonyLib;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Cards;
 
@@ -72,5 +73,15 @@ static class Stoke_OnUpgrade_Patch
             return false;
         }
         return true;
+    }
+}
+
+[HarmonyPatch(typeof(CardModel), "Description", MethodType.Getter)]
+static class Stoke_Description_Patch
+{
+    static void Postfix(CardModel __instance, ref LocString __result)
+    {
+        if (__instance is Stoke && RevertAnthony.IsVersion("stoke", "v0.99.1"))
+            __result = new LocString("cards", "STOKE_V0991.description");
     }
 }

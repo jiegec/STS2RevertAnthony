@@ -4,7 +4,9 @@ using HarmonyLib;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Powers;
 
@@ -52,5 +54,15 @@ static class Glow_OnPlay_Patch
         await CreatureCmd.TriggerAnim(instance.Owner.Creature, "Cast", instance.Owner.Character.CastAnimDelay);
         await PlayerCmd.GainStars(instance.DynamicVars.Stars.BaseValue, instance.Owner);
         await CardPileCmd.Draw(choiceContext, instance.DynamicVars.Cards.BaseValue, instance.Owner);
+    }
+}
+
+[HarmonyPatch(typeof(CardModel), "Description", MethodType.Getter)]
+static class Glow_Description_Patch
+{
+    static void Postfix(CardModel __instance, ref LocString __result)
+    {
+        if (__instance is Glow && RevertAnthony.IsVersion("glow", "v0.99.1"))
+            __result = new LocString("cards", "GLOW_V0991.description");
     }
 }

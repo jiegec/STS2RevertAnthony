@@ -5,7 +5,9 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
+using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Powers;
 
@@ -91,5 +93,25 @@ static class BorrowedTime_OnUpgrade_Patch
             return false;
         }
         return true;
+    }
+}
+
+[HarmonyPatch(typeof(CardModel), "CanonicalEnergyCost", MethodType.Getter)]
+static class BorrowedTime_EnergyCost_Patch
+{
+    static void Postfix(CardModel __instance, ref int __result)
+    {
+        if (__instance is BorrowedTime && RevertAnthony.IsVersion("borrowed-time", "v0.99.1"))
+            __result = 0;
+    }
+}
+
+[HarmonyPatch(typeof(CardModel), "Description", MethodType.Getter)]
+static class BorrowedTime_Description_Patch
+{
+    static void Postfix(CardModel __instance, ref LocString __result)
+    {
+        if (__instance is BorrowedTime && RevertAnthony.IsVersion("borrowed-time", "v0.99.1"))
+            __result = new LocString("cards", "BORROWED_TIME_V0991.description");
     }
 }

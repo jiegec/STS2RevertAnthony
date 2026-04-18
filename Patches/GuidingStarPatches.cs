@@ -6,6 +6,8 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Localization;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Nodes.Combat;
@@ -47,5 +49,15 @@ static class GuidingStar_OnPlay_Patch
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
         await PowerCmd.Apply<DrawCardsNextTurnPower>(instance.Owner.Creature, instance.DynamicVars.Cards.BaseValue, instance.Owner.Creature, instance);
+    }
+}
+
+[HarmonyPatch(typeof(CardModel), "Description", MethodType.Getter)]
+static class GuidingStar_Description_Patch
+{
+    static void Postfix(CardModel __instance, ref LocString __result)
+    {
+        if (__instance is GuidingStar && RevertAnthony.IsVersion("guiding-star", "v0.99.1"))
+            __result = new LocString("cards", "GUIDING_STAR_V0991.description");
     }
 }

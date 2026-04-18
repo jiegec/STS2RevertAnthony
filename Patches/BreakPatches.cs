@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using HarmonyLib;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Cards;
 
 namespace RevertAnthony;
@@ -21,5 +22,15 @@ static class Break_OnUpgrade_Patch
             return false;
         }
         return true;
+    }
+}
+
+[HarmonyPatch(typeof(CardModel), "CanonicalEnergyCost", MethodType.Getter)]
+static class Break_EnergyCost_Patch
+{
+    static void Postfix(CardModel __instance, ref int __result)
+    {
+        if (__instance is Break && RevertAnthony.IsVersion("break", "v0.99.1"))
+            __result = 2;
     }
 }

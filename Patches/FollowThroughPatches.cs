@@ -9,7 +9,9 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
+using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
@@ -117,6 +119,36 @@ static class FollowThrough_OnPlay_Patch
         {
             await PowerCmd.Apply<WeakPower>(instance.CombatState.HittableEnemies, instance.DynamicVars.Weak.BaseValue, instance.Owner.Creature, instance);
         }
+    }
+}
+
+[HarmonyPatch(typeof(CardModel), "Rarity", MethodType.Getter)]
+static class FollowThrough_Rarity_Patch
+{
+    static void Postfix(CardModel __instance, ref CardRarity __result)
+    {
+        if (__instance is FollowThrough && RevertAnthony.IsVersion("follow-through", "v0.99.1"))
+            __result = CardRarity.Uncommon;
+    }
+}
+
+[HarmonyPatch(typeof(CardModel), "TargetType", MethodType.Getter)]
+static class FollowThrough_TargetType_Patch
+{
+    static void Postfix(CardModel __instance, ref TargetType __result)
+    {
+        if (__instance is FollowThrough && RevertAnthony.IsVersion("follow-through", "v0.99.1"))
+            __result = TargetType.AllEnemies;
+    }
+}
+
+[HarmonyPatch(typeof(CardModel), "Description", MethodType.Getter)]
+static class FollowThrough_Description_Patch
+{
+    static void Postfix(CardModel __instance, ref LocString __result)
+    {
+        if (__instance is FollowThrough && RevertAnthony.IsVersion("follow-through", "v0.99.1"))
+            __result = new LocString("cards", "FOLLOW_THROUGH_V0991.description");
     }
 }
 

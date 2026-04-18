@@ -3,6 +3,7 @@ using HarmonyLib;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 
 namespace RevertAnthony;
@@ -18,25 +19,32 @@ static class ArsenalPower_AfterCardGeneratedForCombat_Patch
     {
         if (RevertAnthony.IsVersion("arsenal", "v0.99.1"))
         {
-            return false; // Skip original method
+            return false; // Skip current behavior (card creation trigger)
         }
         return true;
     }
 }
 
-[HarmonyPatch(typeof(ArsenalPower), "AfterCardPlayed")]
-static class ArsenalPower_AfterCardPlayed_Patch
+// v0.99.1 ArsenalPower overrides AfterCardPlayed (inherited from AbstractModel)
+// Since the override was removed in current version, we patch the base class method
+// to inject the old behavior when the instance is ArsenalPower and v0.99.1 is selected
+[HarmonyPatch(typeof(AbstractModel), "AfterCardPlayed")]
+static class ArsenalPower_AbstractModel_AfterCardPlayed_Patch
 {
-    static bool Prefix(PlayerChoiceContext context, CardPlay cardPlay, ArsenalPower __instance, ref Task __result)
+    static bool Prefix(AbstractModel __instance, PlayerChoiceContext context, CardPlay cardPlay)
     {
+        if (!(__instance is ArsenalPower arsenalPower))
+            return true;
+
         if (!RevertAnthony.IsVersion("arsenal", "v0.99.1"))
             return true;
 
-        __result = OldAfterCardPlayed(context, cardPlay, __instance);
-        return false;
+        // v0.99.1 behavior: trigger when playing a Colorless card
+        _ = TriggerArsenalPower(context, cardPlay, arsenalPower);
+        return true; // Continue with original method (base AfterCardPlayed is empty for powers)
     }
 
-    static async Task OldAfterCardPlayed(PlayerChoiceContext context, CardPlay cardPlay, ArsenalPower instance)
+    static async Task TriggerArsenalPower(PlayerChoiceContext context, CardPlay cardPlay, ArsenalPower instance)
     {
         if (cardPlay.Card.Owner == instance.Owner.Player && cardPlay.Card.VisualCardPool.IsColorless)
         {

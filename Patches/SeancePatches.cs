@@ -7,6 +7,7 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
+using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Cards;
 
@@ -50,8 +51,8 @@ static class Seance_OnPlay_Patch
     {
         await CreatureCmd.TriggerAnim(instance.Owner.Creature, "Cast", instance.Owner.Character.CastAnimDelay);
         List<CardModel> cardsIn = (from c in PileType.Draw.GetPile(instance.Owner).Cards
-            orderby c.Rarity, c.Id
-            select c).ToList();
+                                   orderby c.Rarity, c.Id
+                                   select c).ToList();
         List<CardModel> list = (await CardSelectCmd.FromSimpleGrid(choiceContext, cardsIn, instance.Owner, new CardSelectorPrefs(CardSelectorPrefs.TransformSelectionPrompt, instance.DynamicVars.Cards.IntValue))).ToList();
         foreach (CardModel item in list)
         {
@@ -75,5 +76,25 @@ static class Seance_OnUpgrade_Patch
             return false;
         }
         return true;
+    }
+}
+
+[HarmonyPatch(typeof(CardModel), "CanonicalEnergyCost", MethodType.Getter)]
+static class Seance_EnergyCost_Patch
+{
+    static void Postfix(CardModel __instance, ref int __result)
+    {
+        if (__instance is Seance && RevertAnthony.IsVersion("seance", "v0.99.1"))
+            __result = 0;
+    }
+}
+
+[HarmonyPatch(typeof(CardModel), "Description", MethodType.Getter)]
+static class Seance_Description_Patch
+{
+    static void Postfix(CardModel __instance, ref LocString __result)
+    {
+        if (__instance is Seance && RevertAnthony.IsVersion("seance", "v0.99.1"))
+            __result = new LocString("cards", "SEANCE_V0991.description");
     }
 }
