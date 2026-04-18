@@ -170,6 +170,60 @@ static class CardModel_Rarity_Patch
 5. **Clear canonical cache** - When a user switches versions, `ClearCanonicalCache()` resets the canonical instance so new mutable clones pick up patched values
 6. **ModConfig types** - Available types: `Header`, `Dropdown`, `Toggle`, `TextInput`, `Slider`, `Button`, `Separator`, `ColorPicker`. There is NO `Description` type.
 
+## Localization (Card Descriptions)
+
+When a card's **description changes** between versions (like BorrowedTime), you must provide the old description text so the game displays it correctly.
+
+### Extract Old Descriptions
+
+Run the extraction tool from the **project root**:
+
+```bash
+python3 tools/extract_old_localizations.py \
+    "/path/to/old/game/Slay the Spire 2.pck" \
+    --output-dir RevertAnthony/localization
+```
+
+This:
+1. Auto-detects the game version from `release_info.json` next to the PCK
+2. Generates version slug automatically (`v0.99.1` → `V0991`)
+3. Extracts card descriptions for all supported cards
+4. Saves them to `RevertAnthony/localization/{lang}/cards.json`
+
+The game's mod loader automatically loads these as override localization tables.
+
+### Patch Description Property
+
+In your patch file, override `Description`:
+
+```csharp
+[HarmonyPatch(typeof(CardModel), "Description", MethodType.Getter)]
+static class CardModel_Description_Patch
+{
+    static void Postfix(CardModel __instance, ref LocString __result)
+    {
+        if (__instance is BorrowedTime && RevertAnthony.IsVersion("borrowed-time", "v0.99.1"))
+        {
+            __result = new LocString("cards", "BORROWED_TIME_V0991.description");
+        }
+    }
+}
+```
+
+The key format is `{CARD_KEY}_{VERSION_SLUG}.description` (e.g., `BORROWED_TIME_V0991.description`).
+
+### Export Localization Files
+
+Add the generated JSON files to `export_presets.cfg`:
+
+```ini
+export_files=PackedStringArray(
+    "res://RevertAnthony/mod_image.png",
+    "res://RevertAnthony/localization/eng/cards.json",
+    "res://RevertAnthony/localization/zhs/cards.json"
+)
+```
+
 ## Build
 
 ```bash

@@ -1,0 +1,6 @@
+{
+  "BORROWED_TIME_V0991.description": "Apply {DoomPower:diff()} [gold]Doom[/gold] to yourself.\nGain {Energy:energyIcons()}.",
+  "HEMOKINESIS_V0991.description": "Lose {HpLoss:diff()} HP.\nDeal {Damage:diff()} damage.",
+  "ACROBATICS_V0991.description": "Draw {Cards:diff()} cards.\nDiscard 1 card.",
+  "SKEWER_V0991.description": "Deal {Damage:diff()} damage X times."
+}

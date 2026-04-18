@@ -1,5 +1,6 @@
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Cards;
 
@@ -39,6 +40,23 @@ static class CardModel_CanonicalEnergyCost_Patch
         if (__instance is BorrowedTime && RevertAnthony.IsVersion("borrowed-time", "v0.99.1"))
         {
             __result = 0;
+        }
+    }
+}
+
+[HarmonyPatch(typeof(CardModel), "Description", MethodType.Getter)]
+static class CardModel_Description_Patch
+{
+    // ============================================
+    // Borrowed Time - v0.99.1 vs v0.103.2
+    // Old description uses DoomPower + Energy
+    // New description uses Energy + ExtraCost
+    // ============================================
+    static void Postfix(CardModel __instance, ref LocString __result)
+    {
+        if (__instance is BorrowedTime && RevertAnthony.IsVersion("borrowed-time", "v0.99.1"))
+        {
+            __result = new LocString("cards", "BORROWED_TIME_V0991.description");
         }
     }
 }

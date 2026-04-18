@@ -189,8 +189,7 @@ public static class RevertAnthony
                 var characterLabel = charLoc.Exists() ? charLoc.GetFormattedText() : charLoc.GetRawText();
 
                 // Add character header
-                entries.Add(MakeEntry("", characterLabel, GetConfigType("Header"),
-                    ));
+                entries.Add(MakeEntry("", characterLabel, GetConfigType("Header")));
 
                 foreach (var card in group)
                 {
