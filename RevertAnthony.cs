@@ -58,6 +58,7 @@ public static class RevertAnthony
         new SupportedCard("dirge", "NECROBINDER", "v0.99.1"),
         new SupportedCard("hemokinesis", "IRONCLAD", "v0.99.1"),
         new SupportedCard("skewer","SILENT", "v0.99.1"),
+        new SupportedCard("untouchable","SILENT", "v0.99.1"),
     };
 
     public static string SlugToLocKey(string slug) => slug.Replace("-", "_").ToUpperInvariant();
