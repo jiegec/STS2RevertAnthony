@@ -30,13 +30,3 @@ static class LeadingStrike_CanonicalVars_Patch
         return true;
     }
 }
-
-[HarmonyPatch(typeof(CardModel), "Description", MethodType.Getter)]
-static class LeadingStrike_Description_Patch
-{
-    static void Postfix(CardModel __instance, ref LocString __result)
-    {
-        if (__instance is LeadingStrike && RevertAnthony.IsVersion("leading-strike", "v0.99.1"))
-            __result = new LocString("cards", "LEADING_STRIKE_V0991.description");
-    }
-}

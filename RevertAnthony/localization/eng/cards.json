@@ -27,6 +27,8 @@
   "HUDDLE_UP_V0991.description": "ALL allies draw {Cards:diff()} cards.",
   "LEADING_STRIKE_V01032.description": "Deal {Damage:diff()} damage.\nAdd {Shivs:diff()} [gold]{Shivs:plural:Shiv|Shivs}[/gold] into your [gold]Hand[/gold].",
   "LEADING_STRIKE_V0991.description": "Deal {Damage:diff()} damage.\nAdd {Shivs:diff()} [gold]Shiv[/gold] into your [gold]Hand[/gold].",
+  "SEANCE_V01032.description": "Transform a card in your [gold]Draw Pile[/gold] into [gold]Soul[/gold].",
+  "SEANCE_V0991.description": "Transform a card in your [gold]Draw Pile[/gold] into [gold]{IfUpgraded:show:Soul+|Soul}[/gold].",
   "SPITE_V01032.description": "Deal {Damage:diff()} damage.\nIf you lost HP this turn,\nhits {Repeat:diff()} times.",
   "SPITE_V0991.description": "Deal {Damage:diff()} damage.\nIf you lost HP this turn, draw {Cards:diff()} {Cards:plural:card|cards}.",
   "SPOILS_OF_BATTLE_V01032.description": "[gold]Forge[/gold] {Forge:diff()}.\nDraw {Cards:diff()} {Cards:plural:card|cards}.",

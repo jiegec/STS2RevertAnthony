@@ -27,6 +27,8 @@
   "GRAVE_WARDEN_V0991.description": "获得{Block:diff()}点[gold]格挡[/gold]。\n将一张[gold]{IfUpgraded:show:灵魂+|灵魂}[/gold]放入你的[gold]抽牌堆[/gold]中。",
   "GUIDING_STAR_V01032.description": "造成{Damage:diff()}点伤害。\n抽{Cards:diff()}张牌。",
   "GUIDING_STAR_V0991.description": "造成{Damage:diff()}点伤害。\n在下一回合抽{Cards:diff()}张牌。",
+  "SEANCE_V01032.description": "将你[gold]抽牌堆[/gold]中的一张牌变化为[gold]灵魂[/gold]。",
+  "SEANCE_V0991.description": "将你[gold]抽牌堆[/gold]中的一张牌变化为[gold]{IfUpgraded:show:灵魂+|灵魂}[/gold]。",
   "SPITE_V01032.description": "造成{Damage:diff()}点伤害。\n如果你在本回合失去过生命值，\n则攻击{Repeat:diff()}次。",
   "SPITE_V0991.description": "造成{Damage:diff()}点伤害。\n如果你在本回合失去过生命值，则抽{Cards:diff()}张牌。",
   "SPOILS_OF_BATTLE_V01032.description": "[gold]铸造[/gold]{Forge:diff()}。\n抽{Cards:diff()}张牌。",
