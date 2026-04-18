@@ -179,8 +179,36 @@ public static class RevertAnthony
         {
             tree.ProcessFrame -= callback;
             RegisterModConfigViaReflection();
+            TrySubscribeLocaleChange();
         };
         tree.ProcessFrame += callback;
+    }
+
+    static void TrySubscribeLocaleChange()
+    {
+        try
+        {
+            var instance = LocManager.Instance;
+            if (instance != null)
+            {
+                instance.SubscribeToLocaleChange(OnLocaleChanged);
+                Log.Info("RevertAnthony: Subscribed to locale changes");
+            }
+            else
+            {
+                Log.Error("RevertAnthony: LocManager.Instance is null, cannot subscribe to locale changes");
+            }
+        }
+        catch (Exception e)
+        {
+            Log.Error($"RevertAnthony: Failed to subscribe to locale change: {e}");
+        }
+    }
+
+    static void OnLocaleChanged()
+    {
+        Log.Info("RevertAnthony: Locale changed, re-registering ModConfig");
+        RegisterModConfigViaReflection();
     }
 
     static void RegisterModConfigViaReflection()
@@ -248,8 +276,8 @@ public static class RevertAnthony
             foreach (var group in cardsByCharacter)
             {
                 var characterKey = group.Key;
-                var charLoc = new LocString("characters", characterKey + ".title");
-                var characterLabel = charLoc.Exists() ? charLoc.GetFormattedText() : charLoc.GetRawText();
+                var charLoc = LocString.GetIfExists("characters", characterKey + ".title");
+                var characterLabel = charLoc != null ? charLoc.GetFormattedText() : characterKey;
 
                 // Add character header
                 entries.Add(MakeEntry("", characterLabel, GetConfigType("Header")));
