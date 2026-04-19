@@ -27,7 +27,7 @@ static class MementoMori_CanonicalVars_Patch
             {
                 new CalculationBaseVar(8m),
                 new ExtraDamageVar(4m),
-                new CalculatedDamageVar(ValueProp.Move).WithMultiplier((CardModel card, Creature? _) => CombatManager.Instance.History.Entries.OfType<CardDiscardedEntry>().Count((CardDiscardedEntry e) => e.HappenedThisTurn(card.CombatState) && e.Card.Owner == card.Owner)),
+                new CalculatedDamageVar(ValueProp.Move).WithMultiplier((CardModel card, Creature _) => CombatManager.Instance.History.Entries.OfType<CardDiscardedEntry>().Count((CardDiscardedEntry e) => e.HappenedThisTurn(card.CombatState) && e.Card.Owner == card.Owner)),
             };
             return false;
         }

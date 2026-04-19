@@ -145,32 +145,20 @@ public static class RevertAnthony
 
     static void ClearAllCanonicalCaches()
     {
-        foreach (var card in SupportedCards)
-        {
-            if (CardVersions.TryGetValue(card.Slug, out var version) && card.OldVersions.Contains(version))
-            {
-                ClearCanonicalCache(card.Slug);
-            }
-        }
-    }
-
-    public static void ClearCanonicalCache(string cardSlug)
-    {
         try
         {
-            var id = new ModelId("card-model", cardSlug);
-            var canonical = ModelDb.GetByIdOrNull<CardModel>(id);
-            if (canonical == null) return;
-
             var dynField = typeof(CardModel).GetField("_dynamicVars", BindingFlags.NonPublic | BindingFlags.Instance);
             var energyField = typeof(CardModel).GetField("_energyCost", BindingFlags.NonPublic | BindingFlags.Instance);
-            dynField?.SetValue(canonical, null);
-            energyField?.SetValue(canonical, null);
-            Log.Info($"RevertAnthony: Cleared canonical cache for {cardSlug}");
+            foreach (var card in ModelDb.AllCards)
+            {
+                dynField?.SetValue(card, null);
+                energyField?.SetValue(card, null);
+            }
+            Log.Info("RevertAnthony: Cleared all canonical caches");
         }
         catch (Exception ex)
         {
-            Log.Error($"RevertAnthony: Failed to clear cache for {cardSlug}: {ex.Message}");
+            Log.Error($"RevertAnthony: Failed to clear all caches: {ex.Message}");
         }
     }
 
@@ -307,10 +295,7 @@ public static class RevertAnthony
                                 continue;
                             CardVersions[card.Slug] = version;
                             setValueMethod.Invoke(null, new object[] { "RevertAnthony", $"card_{card.Slug}_version", version });
-                            if (card.OldVersions.Contains(version))
-                            {
-                                ClearCanonicalCache(card.Slug);
-                            }
+                            ClearAllCanonicalCaches();
                         }
                         SaveConfig();
                     }
@@ -373,10 +358,7 @@ public static class RevertAnthony
                                     continue;
                                 CardVersions[card.Slug] = version;
                                 setValueMethod.Invoke(null, new object[] { "RevertAnthony", $"card_{card.Slug}_version", version });
-                                if (card.OldVersions.Contains(version))
-                                {
-                                    ClearCanonicalCache(card.Slug);
-                                }
+                                ClearAllCanonicalCaches();
                             }
                             SaveConfig();
                         }
@@ -422,10 +404,7 @@ public static class RevertAnthony
                             var version = (string)value;
                             CardVersions[slug] = version;
                             SaveConfig();
-                            if (card.OldVersions.Contains(version))
-                            {
-                                ClearCanonicalCache(slug);
-                            }
+                            ClearAllCanonicalCaches();
                         }));
                 }
             }
