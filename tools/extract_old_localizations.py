@@ -54,11 +54,21 @@ def parse_pck(pck_path):
 
 
 def extract_localizations(pck_path, languages=None):
-    """Extract localization tables from PCK. Returns {language: {table_name: {key: value}}}."""
-    if languages is None:
-        languages = ["eng", "zhs"]
-    
+    """Extract localization tables from PCK. Returns {language: {table_name: {key: value}}}.
+    If languages is None, auto-detect all languages present in the PCK."""
     file_base, entries = parse_pck(pck_path)
+    
+    # Auto-detect languages if not specified
+    if languages is None:
+        languages = set()
+        for path, _, _ in entries:
+            if path.startswith("localization/") and path.endswith(".json"):
+                parts = path.split("/")
+                if len(parts) >= 2:
+                    languages.add(parts[1])
+        languages = sorted(languages)
+        if languages:
+            print(f"Auto-detected languages: {', '.join(languages)}")
     
     result = {lang: {} for lang in languages}
     
@@ -147,8 +157,8 @@ def main():
                         default=None,
                         help="Card slugs to extract (default: auto-detect from RevertAnthony.cs)")
     parser.add_argument("--languages", "-l", nargs="+", 
-                        default=["eng", "zhs"],
-                        help="Languages to extract (default: eng zhs)")
+                        default=None,
+                        help="Languages to extract (default: auto-detect all)")
     
     args = parser.parse_args()
     

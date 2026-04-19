@@ -1,0 +1,20 @@
+{
+  "BEGONE_V01032.description": "เลือกการ์ด 1 ใบใน[gold]มือ[/gold]เพื่อ[gold]แปรสภาพ[/gold]ให้เป็น[gold]{IfUpgraded:show:ลูกน้องจู่โจม+|ลูกน้องจู่โจม}[/gold]",
+  "BEGONE_V0991.description": "สร้างความเสียหาย {Damage:diff()}\nเลือก 1 การ์ดใน[gold]มือ[/gold]เพื่อ[gold]แปรสภาพ[/gold]เป็น [gold]{IfUpgraded:show:อุกกาบาตลูกน้อง+|อุกกาบาตลูกน้อง}[/gold]",
+  "CHARGE_V01032.description": "เลือกการ์ด {Cards:diff()} ใบใน[gold]กองจั่ว[/gold]เพื่อ[gold]แปรสภาพ[/gold]เป็น[gold]{Cards:choose(1):{IfUpgraded:show:ลูกน้องจู่โจม+|ลูกน้องจู่โจม}[/gold]|{IfUpgraded:show:ลูกน้องจู่โจม+|ลูกน้องจู่โจม}[/gold]}",
+  "CHARGE_V0991.description": "เลือกการ์ด {Cards:diff()} ใบใน[gold]กองจั่ว[/gold]เพื่อ[gold]แปรสภาพ[/gold]เป็น[gold]{Cards:plural:{IfUpgraded:show:ลูกน้องจู่โจม+|ลูกน้องจู่โจม}[/gold]|{IfUpgraded:show:ลูกน้องจู่โจม+|ลูกน้องจู่โจม}[/gold]}",
+  "ETERNAL_ARMOR_V01032.description": "ได้รับ {PlatingPower:diff()} [gold]เกราะโลหะ[/gold]",
+  "ETERNAL_ARMOR_V0991.description": "ได้รับ {PlatingPower:diff()} [gold]Plating[/gold]",
+  "GRAVE_WARDEN_V01032.description": "ได้รับ {Block:diff()} [gold]บล็อก[/gold]\nเพิ่ม[gold]วิญญาณ[/gold] 1 ใบเข้า[gold]กองจั่ว[/gold]",
+  "GRAVE_WARDEN_V0991.description": "ได้รับ {Block:diff()} [gold]บล็อก[/gold]\nเพิ่ม[gold]{IfUpgraded:show:วิญญาณ+|วิญญาณ}[/gold] 1 ใบเข้า[gold]กองจั่ว[/gold]",
+  "NEOWS_FURY_V01032.description": "สร้างความเสียหาย {Damage:diff()}\nนำการ์ด {Cards:choose(1):1|{:diff()}} ใบแบบสุ่มจาก[gold]กองทิ้ง[/gold]ขึ้น[gold]มือ[/gold]",
+  "NEOWS_FURY_V0991.description": "สร้างความเสียหาย {Damage:diff()}\nนำการ์ด {Cards:plural:1|{:diff()}} ใบแบบสุ่มจาก[gold]กองทิ้ง[/gold]ขึ้น[gold]มือ[/gold]",
+  "PARRY_V01032.description": "ทุกครั้งที่คุณเล่น[gold]พระแสงอาญาสิทธิ์[/gold] ได้รับ {ParryPower:diff()} [gold]บล็อก[/gold]",
+  "PARRY_V0991.description": "ทุกครั้งที่คุณเล่น[gold]Sovereign Blade[/gold] ได้รับ {ParryPower:diff()} [gold]บล็อก[/gold]",
+  "REFINE_BLADE_V01032.description": "[gold]หลอมสร้าง[/gold] {Forge:diff()}\nเทิร์นถัดไป ได้รับ {Energy:energyIcons()}",
+  "REFINE_BLADE_V0991.description": "[gold]หลอมสร้าง[/gold] {Forge:diff()}\nเทิร์นถูกไป ได้รับ {Energy:energyIcons()}",
+  "SEANCE_V01032.description": "แปรสภาพการ์ด 1 ใบใน[gold]กองจั่ว[/gold]ให้เป็น[gold]วิญญาณ[/gold]",
+  "SEANCE_V0991.description": "แปรสภาพการ์ด 1 ใบใน[gold]กองจั่ว[/gold]ให้เป็น[gold]{IfUpgraded:show:วิญญาณ+|วิญญาณ}[/gold]",
+  "VOID_FORM_V01032.description": "จบเทิร์นทันที แต่หลังจากนี้\nการ์ด{VoidFormPower:choose(1):ใบแรก|{VoidFormPower:diff()} ใบแรก}ที่คุณเล่นในแต่ละเทิร์นจะเล่นฟรี",
+  "VOID_FORM_V0991.description": "จบเทิร์นทันที แต่หลังจากนี้\nการ์ด{VoidFormPower:plural:ใบแรก|{VoidFormPower:diff()} ใบแรก}ที่คุณเล่นในแต่ละเทิร์นจะเล่นฟรี"
+}

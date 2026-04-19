@@ -23,6 +23,8 @@
   "GRAVE_WARDEN_V0991.description": "Gain {Block:diff()} [gold]Block[/gold].\nAdd a [gold]{IfUpgraded:show:Soul+|Soul}[/gold] into your [gold]Draw Pile[/gold].",
   "GUIDING_STAR_V01032.description": "Deal {Damage:diff()} damage.\nDraw {Cards:diff()} {Cards:plural:card|cards}.",
   "GUIDING_STAR_V0991.description": "Deal {Damage:diff()} damage.\nNext turn, draw {Cards:diff()} {Cards:plural:card|cards}.",
+  "HIDDEN_GEM_V01032.description": "A random card without [gold]Replay[/gold] in your [gold]Draw Pile[/gold] gains [gold]Replay[/gold] {Replay:diff()}.",
+  "HIDDEN_GEM_V0991.description": "A random card in your [gold]Draw Pile[/gold] gains [gold]Replay[/gold] {Replay:diff()}.",
   "HUDDLE_UP_V01032.description": "ALL players draw {Cards:diff()} cards.",
   "HUDDLE_UP_V0991.description": "ALL allies draw {Cards:diff()} cards.",
   "LEADING_STRIKE_V01032.description": "Deal {Damage:diff()} damage.\nAdd {Shivs:diff()} [gold]{Shivs:plural:Shiv|Shivs}[/gold] into your [gold]Hand[/gold].",
