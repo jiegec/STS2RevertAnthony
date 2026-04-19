@@ -53,7 +53,9 @@ static class Charge_OnPlay_Patch
     static async Task OldOnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay, Charge instance)
     {
         await CreatureCmd.TriggerAnim(instance.Owner.Creature, "Cast", instance.Owner.Character.CastAnimDelay);
-        List<CardModel> cardsIn = PileType.Hand.GetPile(instance.Owner).Cards.ToList();
+        List<CardModel> cardsIn = (from c in PileType.Draw.GetPile(instance.Owner).Cards
+             orderby c.Rarity, c.Id
+             select c).ToList();
         List<CardModel> list = (await CardSelectCmd.FromSimpleGrid(choiceContext, cardsIn, instance.Owner, new CardSelectorPrefs(CardSelectorPrefs.TransformSelectionPrompt, instance.DynamicVars.Cards.IntValue))).ToList();
         foreach (CardModel item in list)
         {
