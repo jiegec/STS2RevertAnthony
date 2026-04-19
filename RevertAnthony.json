@@ -3,7 +3,7 @@
     "name": "RevertAnthony",
     "author": "Jiajie Chen @jiegec <c@jia.je",
     "description": "Revert Anthony's changes to previous game versions",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "has_pck": true,
     "has_dll": true,
     "dependencies": [],

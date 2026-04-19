@@ -210,6 +210,10 @@ When a card's version is set to an old version, the patches return the historica
 
 ## Changelog
 
+### v1.2.0
+
+- Fix implementation of Charge!!, thanks dangyang233
+
 ### v1.1.0
 
 - Fixed critical cache clearing bug that caused localization errors when switching card versions
