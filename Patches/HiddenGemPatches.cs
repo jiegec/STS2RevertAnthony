@@ -51,7 +51,7 @@ static class HiddenGem_OnPlay_Patch
         {
             return;
         }
-        List<CardModel> list2 = list.Where(delegate(CardModel c)
+        List<CardModel> list2 = list.Where(delegate (CardModel c)
         {
             bool flag = !c.Keywords.Contains(CardKeyword.Unplayable);
             bool flag2 = flag;
@@ -63,7 +63,7 @@ static class HiddenGem_OnPlay_Patch
             }
             return flag2;
         }).ToList();
-        List<CardModel> list3 = list2.Where(delegate(CardModel c)
+        List<CardModel> list3 = list2.Where(delegate (CardModel c)
         {
             CardType type = c.Type;
             return (uint)(type - 1) <= 2u;

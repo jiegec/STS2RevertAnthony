@@ -233,6 +233,7 @@ public static class RevertAnthony
                 object defaultValue = null, float min = 0, float max = 100, float step = 1,
                 string format = "F0", string[] options = null,
                 Dictionary<string, string> labels = null,
+                string description = null,
                 Dictionary<string, string> descriptions = null,
                 Action<object> onChanged = null)
             {
@@ -250,6 +251,8 @@ public static class RevertAnthony
                     entryType.GetProperty("Options")?.SetValue(entry, options);
                 if (labels != null)
                     entryType.GetProperty("Labels")?.SetValue(entry, labels);
+                if (description != null)
+                    entryType.GetProperty("Description")?.SetValue(entry, description);
                 if (descriptions != null)
                     entryType.GetProperty("Descriptions")?.SetValue(entry, descriptions);
                 if (onChanged != null)
@@ -266,7 +269,13 @@ public static class RevertAnthony
             const string Unchanged = "Unchanged";
 
             // Global batch operation
-            entries.Add(MakeEntry("", "Batch Operations", GetConfigType("Header")));
+            entries.Add(MakeEntry("", "Batch Operations", GetConfigType("Header"),
+                labels: new()
+                {
+                    { "zhs", "批量设置" }
+                }
+            ));
+
             setValueMethod.Invoke(null, new object[] { "RevertAnthony", "batch_all_version", Unchanged });
             entries.Add(MakeEntry("batch_all_version", "Set all cards to",
                 GetConfigType("Dropdown"),
@@ -274,12 +283,11 @@ public static class RevertAnthony
                 options: batchOptions.ToArray(),
                 labels: new()
                 {
-                    { "en", "Set all cards to" },
                     { "zhs", "将所有卡牌设置为" }
                 },
+                description: "Apply the selected version to ALL cards at once (only cards that support it)",
                 descriptions: new()
                 {
-                    { "en", "Apply the selected version to ALL cards at once (only cards that support it)" },
                     { "zhs", "将所选版本批量应用到所有卡牌（仅支持该版本的卡牌）" }
                 },
                 onChanged: (value) =>
@@ -337,12 +345,11 @@ public static class RevertAnthony
                     options: batchOptions.ToArray(),
                     labels: new()
                     {
-                        { "en", $"Set all {characterLabel} cards to" },
                         { "zhs", $"将所有{characterLabel}卡牌设置为" }
                     },
+                    description: $"Apply the selected version to all {characterLabel} cards at once (only cards that support it)",
                     descriptions: new()
                     {
-                        { "en", $"Apply the selected version to all {characterLabel} cards at once (only cards that support it)" },
                         { "zhs", $"将所选版本批量应用到所有{characterLabel}卡牌（仅支持该版本的卡牌）" }
                     },
                     onChanged: (value) =>
@@ -393,9 +400,9 @@ public static class RevertAnthony
                         GetConfigType("Dropdown"),
                         defaultValue: CardVersions.GetValueOrDefault(slug, Latest),
                         options: options.ToArray(),
+                        description: $"Use {Latest} (current) or {versionList} (old) version of {cardLabel}",
                         descriptions: new()
                         {
-                            { "en", $"Use {Latest} (current) or {versionList} (old) version of {cardLabel}" },
                             { "zhs", $"使用 {Latest}（当前）或 {versionList}（旧版）版本的 {cardLabel}" }
                         },
                         onChanged: (value) =>
