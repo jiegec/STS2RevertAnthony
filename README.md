@@ -210,6 +210,11 @@ When a card's version is set to an old version, the patches return the historica
 
 ## Changelog
 
+### v1.1.0
+
+- Fixed critical cache clearing bug that caused localization errors when switching card versions
+- Add card description localizations from more languages
+
 ### v1.0.0
 
 - Initial release
