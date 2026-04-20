@@ -210,6 +210,10 @@ When a card's version is set to an old version, the patches return the historica
 
 ## Changelog
 
+### v1.3.0
+
+- Fix miss description of Hidden Gem, thanks xiaoyou233
+
 ### v1.2.0
 
 - Fix implementation of Charge!!, thanks dangyang233
