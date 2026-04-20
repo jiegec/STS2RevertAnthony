@@ -5,6 +5,7 @@ using HarmonyLib;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Cards;
 
@@ -75,5 +76,15 @@ static class HiddenGem_OnPlay_Patch
             cardModel.BaseReplayCount += instance.DynamicVars["Replay"].IntValue;
             CardCmd.Preview(cardModel);
         }
+    }
+}
+
+[HarmonyPatch(typeof(CardModel), "Description", MethodType.Getter)]
+static class HiddenGem_Description_Patch
+{
+    static void Postfix(CardModel __instance, ref LocString __result)
+    {
+        if (__instance is HiddenGem && RevertAnthony.IsVersion("hidden-gem", "v0.99.1"))
+            __result = new LocString("cards", "HIDDEN_GEM_V0991.description");
     }
 }
