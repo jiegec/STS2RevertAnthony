@@ -138,8 +138,6 @@ public static class RevertAnthony
         _harmony.PatchAll(typeof(RevertAnthony).Assembly);
         Log.Info("RevertAnthony: Harmony patches applied");
 
-        ClearAllCanonicalCaches();
-
         DeferredRegisterModConfig();
     }
 
@@ -158,7 +156,7 @@ public static class RevertAnthony
         }
         catch (Exception ex)
         {
-            Log.Error($"RevertAnthony: Failed to clear all caches: {ex.Message}");
+            Log.Error($"RevertAnthony: Failed to clear all caches: {ex}");
         }
     }
 
