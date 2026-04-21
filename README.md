@@ -72,6 +72,12 @@ All cards listed below can be reverted to their v0.99.1 versions. Descriptions a
 |------|----------|---------|---------|
 | **Neow's Fury** | Upgrade | +4 Damage, +1 Cards | **+4 Damage** |
 
+### CURSE
+
+| Card | Property | Current | v0.99.1 |
+|------|----------|---------|---------|
+| **Folly** | Keywords | Unplayable, Eternal, Innate, Ethereal | **Unplayable, Eternal, Innate** |
+
 ### IRONCLAD
 
 | Card | Property | Current | v0.99.1 |
@@ -98,7 +104,6 @@ All cards listed below can be reverted to their v0.99.1 versions. Descriptions a
 | **Debilitate** | Damage | 10 | **7** |
 | **Defy** | Upgrade | +3 Block | **+1 Block, +1 Weak** |
 | **Dirge** | Keywords | Exhaust | **None** |
-| **Folly** | Keywords | Unplayable, Eternal, Innate, Ethereal | **Unplayable, Eternal, Innate** |
 | **Grave Warden** | Souls / Hover / Upgrade | Unupgraded Souls / Soul (no upg param) / +3 Block | **Upgraded Souls if card upg / Soul (upg=true) / +2 Block** |
 | **Sculpting Strike** | Damage | 9 | **8** |
 | **Seance** | Cost / Hover / OnPlay / Upgrade | 1 / Show Soul / Transform draw pile to Soul / None | **0 / Show upgraded Soul / Transform draw pile to upgraded Soul / None** |
@@ -210,6 +215,11 @@ The mod uses Harmony patches to intercept card properties at runtime:
 When a card's version is set to an old version, the patches return the historical values. When set to Latest, the original game behavior is preserved.
 
 ## Changelog
+
+### v1.5.0
+
+- Fix Folly incorrectly categorized under NECROBINDER — it is a CURSE card
+- Add CURSE category to character grouping in ModConfig GUI
 
 ### v1.4.0
 
