@@ -36,5 +36,7 @@
   "SPOILS_OF_BATTLE_V01032.description": "[gold]铸造[/gold]{Forge:diff()}。\n抽{Cards:diff()}张牌。",
   "SPOILS_OF_BATTLE_V0991.description": "[gold]铸造[/gold]{Forge:diff()}。",
   "STOKE_V01032.description": "[gold]消耗[/gold]所有[gold]手牌[/gold]。\n每[gold]消耗[/gold]一张牌，将1张随机{IfUpgraded:show:已[gold]升级[/gold]的|}牌加入你的[gold]手牌[/gold]。",
-  "STOKE_V0991.description": "[gold]消耗[/gold]所有[gold]手牌[/gold]。\n然后抽相同数量张牌。"
+  "STOKE_V0991.description": "[gold]消耗[/gold]所有[gold]手牌[/gold]。\n然后抽相同数量张牌。",
+  "SWORD_SAGE_V01032.description": "[gold]君王之剑[/gold]现在会额外命中一次。",
+  "SWORD_SAGE_V0991.description": "[gold]君王之剑[/gold]的耗能加1。[gold]君王之剑[/gold]现在会额外命中一次。"
 }

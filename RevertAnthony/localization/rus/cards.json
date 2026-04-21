@@ -35,6 +35,8 @@
   "SPOILS_OF_BATTLE_V0991.description": "[gold]Закаляет[/gold] {Forge:diff()}.",
   "STOKE_V01032.description": "[gold]Сжигает[/gold] все карты в [gold]руке[/gold].\nДобавляет в [gold]руку[/gold] по 1 случайной {IfUpgraded:show:[gold]улучшенной[/gold] |}карте за каждую.",
   "STOKE_V0991.description": "[gold]Сжигает[/gold] все карты в [gold]руке[/gold].\nВы добираете по карте за каждую.",
+  "SWORD_SAGE_V01032.description": "[gold]Клинок монарха[/gold] наносит урон еще 1 раз.",
+  "SWORD_SAGE_V0991.description": "[gold]Клинок монарха[/gold] наносит урон еще 1 раз, но его стоимость повышается на 1.",
   "VOID_FORM_V01032.description": "Ваш ход завершается.\n{VoidFormPower:plural(ru):Первая карта|Первые {VoidFormPower:diff()} карты|Первые {VoidFormPower:diff()} карт} за ход {VoidFormPower:plural(ru):разыгрывается|разыгрываются|разыгрываются} бесплатно.",
   "VOID_FORM_V0991.description": "Ваш ход завершается.\n{VoidFormPower:plural(ru):Первая карта|Первые {VoidFormPower:diff()} карты|Первые {VoidFormPower:diff()} карт} за ход {VoidFormPower:plural(ru):бесплатная|бесплатные|бесплатные}."
 }

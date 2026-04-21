@@ -15,6 +15,8 @@
   "REFINE_BLADE_V0991.description": "[gold]หลอมสร้าง[/gold] {Forge:diff()}\nเทิร์นถูกไป ได้รับ {Energy:energyIcons()}",
   "SEANCE_V01032.description": "แปรสภาพการ์ด 1 ใบใน[gold]กองจั่ว[/gold]ให้เป็น[gold]วิญญาณ[/gold]",
   "SEANCE_V0991.description": "แปรสภาพการ์ด 1 ใบใน[gold]กองจั่ว[/gold]ให้เป็น[gold]{IfUpgraded:show:วิญญาณ+|วิญญาณ}[/gold]",
+  "SWORD_SAGE_V01032.description": "ค่าร่ายของ[gold]พระแสงอาญาสิทธิ์[/gold] เพิ่มขึ้น 1 ต่อไปนี้[gold]พระแสงอาญาสิทธิ์[/gold]โจมตีเพิ่มอีกครั้ง",
+  "SWORD_SAGE_V0991.description": "ค่าร่ายของ[gold]Sovereign Blade[/gold] เพิ่มขึ้น 1 ต่อไปนี้[gold]Sovereign Blade[/gold]โจมตีเพิ่มอีกครั้ง",
   "VOID_FORM_V01032.description": "จบเทิร์นทันที แต่หลังจากนี้\nการ์ด{VoidFormPower:choose(1):ใบแรก|{VoidFormPower:diff()} ใบแรก}ที่คุณเล่นในแต่ละเทิร์นจะเล่นฟรี",
   "VOID_FORM_V0991.description": "จบเทิร์นทันที แต่หลังจากนี้\nการ์ด{VoidFormPower:plural:ใบแรก|{VoidFormPower:diff()} ใบแรก}ที่คุณเล่นในแต่ละเทิร์นจะเล่นฟรี"
 }

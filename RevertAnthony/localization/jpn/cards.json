@@ -34,5 +34,7 @@
   "SPOILS_OF_BATTLE_V01032.description": "[gold]鍛造[/gold]{Forge:diff()}。\nカードを{Cards:diff()}枚引く。",
   "SPOILS_OF_BATTLE_V0991.description": "[gold]鍛造[/gold]{Forge:diff()}。",
   "STOKE_V01032.description": "[gold]手札[/gold]をすべて[gold]廃棄[/gold]する。\n[gold]廃棄[/gold]したカード1枚につき\nランダムな{IfUpgraded:show:[gold]アップグレード[/gold]した|}カードを1枚[gold]手札[/gold]に加える。",
-  "STOKE_V0991.description": "[gold]手札[/gold]をすべて[gold]廃棄[/gold]する。\n[gold]廃棄[/gold]したカード1枚につき\nカードを1枚引く。"
+  "STOKE_V0991.description": "[gold]手札[/gold]をすべて[gold]廃棄[/gold]する。\n[gold]廃棄[/gold]したカード1枚につき\nカードを1枚引く。",
+  "SWORD_SAGE_V01032.description": "[gold]ソヴリン・ブレード[/gold]の攻撃回数が1回増える。",
+  "SWORD_SAGE_V0991.description": "[gold]ソヴリン・ブレード[/gold]のコストが1増加する。[gold]ソヴリン・ブレード[/gold]の攻撃回数が1回増える。"
 }

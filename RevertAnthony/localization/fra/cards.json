@@ -34,5 +34,7 @@
   "SPOILS_OF_BATTLE_V01032.description": "[gold]Forgez[/gold] pour {Forge:diff()}.\nPiochez {Cards:diff()} {Cards:plural:carte|cartes}.",
   "SPOILS_OF_BATTLE_V0991.description": "[gold]Forgez[/gold] pour {Forge:diff()}.",
   "STOKE_V01032.description": "[gold]Épuisez[/gold] votre [gold]Main[/gold].\nAjoutez une carte aléatoire {IfUpgraded:show:[gold]Améliorée[/gold]|} à votre [gold]Main[/gold] pour chaque carte [gold]Épuisée[/gold].",
-  "STOKE_V0991.description": "[gold]Épuisez[/gold] votre [gold]Main[/gold].\nPiochez une carte pour chaque carte [gold]Épuisée[/gold]."
+  "STOKE_V0991.description": "[gold]Épuisez[/gold] votre [gold]Main[/gold].\nPiochez une carte pour chaque carte [gold]Épuisée[/gold].",
+  "SWORD_SAGE_V01032.description": "[gold]Lame souveraine[/gold] inflige désormais ses dégâts une fois supplémentaire.",
+  "SWORD_SAGE_V0991.description": "Augmentez le coût de [gold]Lame souveraine[/gold] de 1. [gold]Lame souveraine[/gold] inflige désormais ses dégâts une fois supplémentaire."
 }

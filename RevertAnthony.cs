@@ -112,6 +112,7 @@ public static class RevertAnthony
         new SupportedCard("skewer", "SILENT", "v0.99.1"),
         new SupportedCard("solar-strike", "REGENT", "v0.99.1"),
         new SupportedCard("speedster", "SILENT", "v0.99.1"),
+        new SupportedCard("sword-sage", "REGENT", "v0.99.1"),
         new SupportedCard("spite", "IRONCLAD", "v0.99.1"),
         new SupportedCard("spoils-of-battle", "REGENT", "v0.99.1"),
         new SupportedCard("stoke", "IRONCLAD", "v0.99.1"),

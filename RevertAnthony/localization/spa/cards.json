@@ -34,5 +34,7 @@
   "SPOILS_OF_BATTLE_V01032.description": "[gold]Forja[/gold] {Forge:diff()}.\nRoba {Cards:diff()} {Cards:plural:carta|cartas}.",
   "SPOILS_OF_BATTLE_V0991.description": "[gold]Forja[/gold] {Forge:diff()}.",
   "STOKE_V01032.description": "[gold]Agota[/gold] tu [gold]Mano[/gold].\nAñade 1 carta aleatoria {IfUpgraded:show:[gold]Mejorada[/gold] |}a tu [gold]Mano[/gold] por cada carta [gold]Agotada[/gold].",
-  "STOKE_V0991.description": "[gold]Agota[/gold] tu [gold]Mano[/gold].\nRoba una carta por cada carta [gold]Agotada[/gold]."
+  "STOKE_V0991.description": "[gold]Agota[/gold] tu [gold]Mano[/gold].\nRoba una carta por cada carta [gold]Agotada[/gold].",
+  "SWORD_SAGE_V01032.description": "Ahora [gold]Espada del soberano[/gold] golpea una vez más.",
+  "SWORD_SAGE_V0991.description": "Aumenta el coste de [gold]Espada del soberano[/gold] en 1. Ahora [gold]Espada del soberano[/gold] golpea una vez más."
 }

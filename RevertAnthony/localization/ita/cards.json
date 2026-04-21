@@ -35,6 +35,8 @@
   "SPOILS_OF_BATTLE_V0991.description": "Applichi {Forge:diff()} di [gold]Forgiatura[/gold]",
   "STOKE_V01032.description": "[gold]Esaurisci[/gold] la tua [gold]mano[/gold].\nAggiungi 1 carta {IfUpgraded:show:[gold]potenziata[/gold] |}casuale alla tua [gold]mano[/gold] per ogni carta [gold]esaurita[/gold].",
   "STOKE_V0991.description": "[gold]Esaurisci[/gold] la tua [gold]mano[/gold].\nPeschi una carta per ogni carta [gold]esaurita[/gold].",
+  "SWORD_SAGE_V01032.description": "La carta [gold]Spada Sovrana[/gold] ora colpisce una volta in più.",
+  "SWORD_SAGE_V0991.description": "Aumenti il costo della carta [gold]Spada Sovrana[/gold] di 1. La carta [gold]Spada Sovrana[/gold] ora colpisce una volta in più.",
   "VOLTAIC_V01032.description": "[gold]Canalizzi Elettroglobi[/gold] pari agli [gold]Elettroglobi[/gold] già [gold]canalizzati[/gold] in questo combattimento.{InCombat:\n([gold]Elettroglobi[/gold] [gold]canalizzati[/gold]: {CalculatedChannels:diff()}|}.",
   "VOLTAIC_V0991.description": "[gold]Canalizzi Elettroglobi[/gold] pari agli [gold]Elettroglobi[/gold] già [gold]canalizzati[/gold] in questo combattimento.{InCombat:\n([gold]Elettroglobi[/gold] [gold]canalizzati[/gold]: {CalculatedChannels:diff()}|}"
 }

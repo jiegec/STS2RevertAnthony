@@ -36,5 +36,7 @@
   "SPOILS_OF_BATTLE_V01032.description": "[gold]Forge[/gold] {Forge:diff()}.\nDraw {Cards:diff()} {Cards:plural:card|cards}.",
   "SPOILS_OF_BATTLE_V0991.description": "[gold]Forge[/gold] {Forge:diff()}.",
   "STOKE_V01032.description": "[gold]Exhaust[/gold] your [gold]Hand[/gold].\nAdd 1 random {IfUpgraded:show:[gold]Upgraded[/gold] |}card into your [gold]Hand[/gold] for each card [gold]Exhausted[/gold].",
-  "STOKE_V0991.description": "[gold]Exhaust[/gold] your [gold]Hand[/gold].\nDraw a card for each card [gold]Exhausted[/gold]."
+  "STOKE_V0991.description": "[gold]Exhaust[/gold] your [gold]Hand[/gold].\nDraw a card for each card [gold]Exhausted[/gold].",
+  "SWORD_SAGE_V01032.description": "[gold]Sovereign Blade[/gold] now hits an additional time.",
+  "SWORD_SAGE_V0991.description": "Increase the cost of [gold]Sovereign Blade[/gold] by 1. [gold]Sovereign Blade[/gold] now hits an additional time."
 }

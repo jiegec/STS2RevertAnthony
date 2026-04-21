@@ -42,5 +42,7 @@
   "SPOILS_OF_BATTLE_V01032.description": "[gold]Schmiede[/gold] {Forge:diff()}.\nZiehe {Cards:diff()} {Cards:plural:Karte|Karten}.",
   "SPOILS_OF_BATTLE_V0991.description": "[gold]Schmiede[/gold] {Forge:diff()}.",
   "STOKE_V01032.description": "[gold]Erschöpfe[/gold] deine [gold]Hand[/gold].\nErhalte für jede [gold]Erschöpfte[/gold] Karte 1 zufällige {IfUpgraded:show:[gold]Verbesserte[/gold] |}Karte auf deine [gold]Hand[/gold].",
-  "STOKE_V0991.description": "[gold]Erschöpfe[/gold] deine [gold]Hand[/gold].\nZiehe eine Karte für jede [gold]Erschöpfte[/gold] Karte."
+  "STOKE_V0991.description": "[gold]Erschöpfe[/gold] deine [gold]Hand[/gold].\nZiehe eine Karte für jede [gold]Erschöpfte[/gold] Karte.",
+  "SWORD_SAGE_V01032.description": "[gold]Hoheitsklinge[/gold] trifft jetzt ein weiteres Mal.",
+  "SWORD_SAGE_V0991.description": "Erhöhe die Kosten der [gold]Hoheitsklinge[/gold] um 1. [gold]Hoheitsklinge[/gold] trifft jetzt ein weiteres Mal."
 }

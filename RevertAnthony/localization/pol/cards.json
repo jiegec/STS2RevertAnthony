@@ -34,5 +34,7 @@
   "SPOILS_OF_BATTLE_V01032.description": "[gold]Wykuj[/gold] {Forge:diff()}.\nDobierz {Cards:diff()} {Cards:plural:kartę|karty|kart}.",
   "SPOILS_OF_BATTLE_V0991.description": "[gold]Wykuj[/gold] {Forge:diff()}.",
   "STOKE_V01032.description": "[gold]Wyczerp[/gold] swoją [gold]rękę[/gold].\nDodaj 1 losową [gold]{IfUpgraded:show:[gold]Ulepszoną[/gold] | }[/gold]kartę do [gold]ręki[/gold] za każdą [gold]Wyczerpaną[/gold] kartę.",
-  "STOKE_V0991.description": "[gold]Wyczerp[/gold] swoją [gold]rękę[/gold].\nDobierz kartę za każdą [gold]Wyczerpaną[/gold] kartę."
+  "STOKE_V0991.description": "[gold]Wyczerp[/gold] swoją [gold]rękę[/gold].\nDobierz kartę za każdą [gold]Wyczerpaną[/gold] kartę.",
+  "SWORD_SAGE_V01032.description": "Od teraz [gold]Niebiańskie Ostrze[/gold] uderza dodatkowy raz.",
+  "SWORD_SAGE_V0991.description": "Zwiększ koszt [gold]Niebiańskiego Ostrza[/gold] o [blue]1[/blue]. Od teraz [gold]Niebiańskie Ostrze[/gold] uderza dodatkowy raz."
 }

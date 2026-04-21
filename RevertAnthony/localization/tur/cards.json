@@ -34,5 +34,7 @@
   "SPOILS_OF_BATTLE_V01032.description": "{Forge:diff()} [gold]Döv[/gold].\n{Cards:diff()} {Cards:plural:kart|kart} çek.",
   "SPOILS_OF_BATTLE_V0991.description": "{Forge:diff()} [gold]Döv[/gold].",
   "STOKE_V01032.description": "[gold]El[/gold]'ini [gold]Tüket[/gold].\n[gold]Tüketilen[/gold] her kart için [gold]El[/gold]'ine {IfUpgraded:show:[gold]Geliştirilmiş[/gold] |}rastgele bir kart ekle.",
-  "STOKE_V0991.description": "[gold]El[/gold]'inin tamamını [gold]Tüket[/gold].\n[gold]Tüketilen[/gold] her kart için bir kart çek."
+  "STOKE_V0991.description": "[gold]El[/gold]'inin tamamını [gold]Tüket[/gold].\n[gold]Tüketilen[/gold] her kart için bir kart çek.",
+  "SWORD_SAGE_V01032.description": "[gold]Egemen Kılıcı[/gold] artık fazladan bir kez daha vurur.",
+  "SWORD_SAGE_V0991.description": "[gold]Egemen Kılıcı[/gold]'nın maliyetini 1 artır. [gold]Egemen Kılıcı[/gold] artık fazladan bir kez daha vurur."
 }

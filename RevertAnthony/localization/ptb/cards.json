@@ -36,5 +36,7 @@
   "SPOILS_OF_BATTLE_V01032.description": "[gold]Forje[/gold] {Forge:diff()}.\nCompre {Cards:diff()} {Cards:plural:carta|cartas}.",
   "SPOILS_OF_BATTLE_V0991.description": "[gold]Forje[/gold] {Forge:diff()}.",
   "STOKE_V01032.description": "[gold]Exaure[/gold] a sua [gold]Mão[/gold].\nAdicione 1 carta aleatória {IfUpgraded:show:[gold]Aprimorada[/gold] |}na sua [gold]Mão[/gold] para cada carta [gold]Exaurida[/gold].",
-  "STOKE_V0991.description": "[gold]Exaure[/gold] a sua [gold]Mão[/gold].\nCompre uma carta para cada carta [gold]Exaurida[/gold]."
+  "STOKE_V0991.description": "[gold]Exaure[/gold] a sua [gold]Mão[/gold].\nCompre uma carta para cada carta [gold]Exaurida[/gold].",
+  "SWORD_SAGE_V01032.description": "[gold]Espada Soberana[/gold] agora golpeia uma vez adicional.",
+  "SWORD_SAGE_V0991.description": "Aumente o custo da [gold]Espada Soberana[/gold] em 1. [gold]Espada Soberana[/gold] agora golpeia uma vez adicional."
 }

@@ -131,6 +131,7 @@ All cards listed below can be reverted to their v0.99.1 versions. Descriptions a
 | **Refine Blade** | Forge | 9 | **6** |
 | **Solar Strike** | Damage | 9 | **8** |
 | **Spoils of Battle** | Vars / OnPlay / Upgrade | Forge 5, Cards 2 / Forge + draw 2 / +3 Forge | **Forge 10 / Forge only / +5 Forge** |
+| **Sword Sage** | Power | No energy cost increase | **Add energy cost to SovereignBlade** |
 | **Void Form** | Keywords / Upgrade | Ethereal / Remove Ethereal | **None / +1 VoidFormPower** |
 | **Wrought in War** | Forge | 7 | **5** |
 
@@ -209,6 +210,10 @@ The mod uses Harmony patches to intercept card properties at runtime:
 When a card's version is set to an old version, the patches return the historical values. When set to Latest, the original game behavior is preserved.
 
 ## Changelog
+
+### v1.4.0
+
+- Add Sword Sage v0.99.1 reversion (power increases SovereignBlade energy cost)
 
 ### v1.3.0
 
