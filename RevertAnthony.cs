@@ -139,6 +139,7 @@ public static class RevertAnthony
         _harmony.PatchAll(typeof(RevertAnthony).Assembly);
         Log.Info("RevertAnthony: Harmony patches applied");
 
+        DeferredLogPatches();
         DeferredRegisterModConfig();
     }
 
@@ -159,6 +160,66 @@ public static class RevertAnthony
         {
             Log.Error($"RevertAnthony: Failed to clear all caches: {ex}");
         }
+    }
+
+    static void DeferredLogPatches()
+    {
+        var tree = (SceneTree)Engine.GetMainLoop();
+        Action callback = null;
+        callback = () =>
+        {
+            tree.ProcessFrame -= callback;
+            try
+            {
+                var allMethods = Harmony.GetAllPatchedMethods();
+                Log.Info("RevertAnthony: === All Harmony Patches in Game ===");
+
+                var modPatchCounts = new Dictionary<string, int>();
+                int totalPatchedMethods = 0;
+
+                foreach (var method in allMethods)
+                {
+                    var patchInfo = Harmony.GetPatchInfo(method);
+                    if (patchInfo == null) continue;
+
+                    totalPatchedMethods++;
+                    var owners = patchInfo.Owners.ToList();
+                    string methodName = $"{method.DeclaringType?.Name}.{method.Name}";
+                    string prefixes = patchInfo.Prefixes != null ? string.Join(", ", patchInfo.Prefixes.Select(p => $"{p.owner}({p.priority})")) : "none";
+                    string postfixes = patchInfo.Postfixes != null ? string.Join(", ", patchInfo.Postfixes.Select(p => $"{p.owner}({p.priority})")) : "none";
+                    string transpilers = patchInfo.Transpilers != null ? string.Join(", ", patchInfo.Transpilers.Select(p => $"{p.owner}({p.priority})")) : "none";
+
+                    Log.Info($"  [PATCH] {methodName}");
+                    Log.Info($"    Owners: {string.Join(", ", owners)}");
+                    if (patchInfo.Prefixes != null && patchInfo.Prefixes.Count > 0)
+                        Log.Info($"    Prefixes: {prefixes}");
+                    if (patchInfo.Postfixes != null && patchInfo.Postfixes.Count > 0)
+                        Log.Info($"    Postfixes: {postfixes}");
+                    if (patchInfo.Transpilers != null && patchInfo.Transpilers.Count > 0)
+                        Log.Info($"    Transpilers: {transpilers}");
+
+                    foreach (var owner in owners.Distinct())
+                    {
+                        if (!modPatchCounts.ContainsKey(owner))
+                            modPatchCounts[owner] = 0;
+                        modPatchCounts[owner]++;
+                    }
+                }
+
+                Log.Info("RevertAnthony: === Patch Summary ===");
+                Log.Info($"  Total patched methods: {totalPatchedMethods}");
+                foreach (var kvp in modPatchCounts.OrderByDescending(x => x.Value))
+                {
+                    Log.Info($"  {kvp.Key}: {kvp.Value} methods");
+                }
+                Log.Info("RevertAnthony: === End Patch Report ===");
+            }
+            catch (Exception ex)
+            {
+                Log.Warn($"RevertAnthony: Failed to enumerate patches: {ex}");
+            }
+        };
+        tree.ProcessFrame += callback;
     }
 
     static void DeferredRegisterModConfig()
