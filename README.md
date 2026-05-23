@@ -2,7 +2,7 @@
 
 A mod for Slay the Spire 2 that allows you to individually revert cards to older game versions (currently v0.99.1). Each card gets a dropdown in **ModConfig** to pick either the current version or a historical version, with changes taking effect immediately on newly spawned cards.
 
-**Supported game versions:** v0.103.2
+**Supported game versions:** v0.103.2 and v0.106.1 (beta)
 
 ## Features
 
@@ -216,8 +216,11 @@ When a card's version is set to an old version, the patches return the historica
 
 ## Changelog
 
+
 ### v1.5.0
 
+- Port to game version v0.106.1
+- Note: This is an initial port, please report any bugs you encounter
 - Fix Folly incorrectly categorized under NECROBINDER — it is a CURSE card
 - Add CURSE category to character grouping in ModConfig GUI
 
@@ -245,4 +248,4 @@ When a card's version is set to an old version, the patches return the historica
 - Batch operations for global and per-character version switching
 - ModConfig GUI integration
 - Description localization support (English and Simplified Chinese)
-- Tested on game versions v0.103.2
+- Tested on game versions v0.103.2, v0.106.1
