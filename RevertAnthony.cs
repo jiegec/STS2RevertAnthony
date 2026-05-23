@@ -138,6 +138,7 @@ public static class RevertAnthony
         _harmony = new Harmony("RevertAnthony");
         _harmony.PatchAll(typeof(RevertAnthony).Assembly);
         FollowThroughPatches.ApplyPatchesIfAvailable(_harmony);
+        BladeOfInkPowerTurnEndPatch.Apply(_harmony);
         Log.Info("RevertAnthony: Harmony patches applied");
 
         DeferredLogPatches();

@@ -1,12 +1,16 @@
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
 using HarmonyLib;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Enchantments;
@@ -98,5 +102,56 @@ static class BladeOfInk_Description_Patch
     {
         if (__instance is BladeOfInk && RevertAnthony.IsVersion("blade-of-ink", "v0.99.1"))
             __result = new LocString("cards", "BLADE_OF_INK_V0991.description");
+    }
+}
+
+// AfterTurnEnd was renamed to AfterSideTurnEnd + gained participants param in v0.106.1.
+// Patch whichever exists at runtime to dispatch to BladeOfInkPower.HandleTurnEnd.
+static class BladeOfInkPowerTurnEndPatch
+{
+    private static bool _patched;
+
+    public static void Apply(Harmony harmony)
+    {
+        if (_patched)
+            return;
+
+        var afterTurnEnd = typeof(AbstractModel).GetMethod("AfterTurnEnd",
+            BindingFlags.Public | BindingFlags.Instance, null,
+            new[] { typeof(PlayerChoiceContext), typeof(CombatSide) }, null);
+
+        if (afterTurnEnd != null)
+        {
+            harmony.Patch(afterTurnEnd,
+                prefix: new HarmonyMethod(typeof(BladeOfInkPowerTurnEndPatch), nameof(Prefix)));
+            Log.Info("RevertAnthony: Patched AbstractModel.AfterTurnEnd for BladeOfInkPower");
+            _patched = true;
+            return;
+        }
+
+        var afterSideTurnEnd = typeof(AbstractModel).GetMethod("AfterSideTurnEnd",
+            BindingFlags.Public | BindingFlags.Instance, null,
+            new[] { typeof(PlayerChoiceContext), typeof(CombatSide), typeof(IEnumerable<Creature>) }, null);
+
+        if (afterSideTurnEnd != null)
+        {
+            harmony.Patch(afterSideTurnEnd,
+                prefix: new HarmonyMethod(typeof(BladeOfInkPowerTurnEndPatch), nameof(Prefix)));
+            Log.Info("RevertAnthony: Patched AbstractModel.AfterSideTurnEnd for BladeOfInkPower");
+            _patched = true;
+            return;
+        }
+
+        Log.Warn("RevertAnthony: Neither AfterTurnEnd nor AfterSideTurnEnd found on AbstractModel");
+    }
+
+    static bool Prefix(AbstractModel __instance, PlayerChoiceContext choiceContext, CombatSide side, ref Task __result)
+    {
+        if (__instance is BladeOfInkPower power && RevertAnthony.IsVersion("blade-of-ink", "v0.99.1"))
+        {
+            __result = power.HandleTurnEnd(choiceContext, side);
+            return false;
+        }
+        return true;
     }
 }

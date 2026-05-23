@@ -36,7 +36,7 @@ public sealed class BladeOfInkPower : PowerModel
         }
     }
 
-    public override async Task AfterTurnEnd(PlayerChoiceContext choiceContext, CombatSide side)
+    public async Task HandleTurnEnd(PlayerChoiceContext choiceContext, CombatSide side)
     {
         if (side == base.Owner.Side)
         {
