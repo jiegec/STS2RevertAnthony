@@ -71,7 +71,7 @@ static class BladeOfInk_OnPlay_Patch
     static async Task OldOnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay, BladeOfInk instance)
     {
         await CreatureCmd.TriggerAnim(instance.Owner.Creature, "Cast", instance.Owner.Character.CastAnimDelay);
-        await PowerCmd.Apply<BladeOfInkPower>(instance.Owner.Creature, instance.DynamicVars.Strength.IntValue, instance.Owner.Creature, instance);
+        await Compat.ApplyPower<BladeOfInkPower>(choiceContext, instance.Owner.Creature, instance.DynamicVars.Strength.IntValue, instance.Owner.Creature, instance);
     }
 }
 

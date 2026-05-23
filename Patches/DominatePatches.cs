@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HarmonyLib;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
@@ -31,7 +32,8 @@ static class Dominate_ShouldGlowGoldInternal_Patch
         if (__instance is Dominate && RevertAnthony.IsVersion("dominate", "v0.99.1"))
         {
             // v0.99.1: glow if any hittable enemy has Vulnerable
-            __result = __instance.CombatState?.HittableEnemies.Any((Creature e) => e.HasPower<VulnerablePower>()) ?? false;
+            var cs = Compat.GetCombatState(__instance) as CombatState;
+            __result = cs != null && cs.HittableEnemies.Any((Creature e) => e.HasPower<VulnerablePower>());
         }
     }
 }
@@ -73,7 +75,7 @@ static class Dominate_OnPlay_Patch
         ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
         int strengthToApply = cardPlay.Target.GetPower<VulnerablePower>()?.Amount ?? 0;
         await CreatureCmd.TriggerAnim(instance.Owner.Creature, "Cast", instance.Owner.Character.CastAnimDelay);
-        await PowerCmd.Apply<StrengthPower>(instance.Owner.Creature, strengthToApply, instance.Owner.Creature, instance);
+        await Compat.ApplyPower<StrengthPower>(choiceContext, instance.Owner.Creature, strengthToApply, instance.Owner.Creature, instance);
     }
 }
 

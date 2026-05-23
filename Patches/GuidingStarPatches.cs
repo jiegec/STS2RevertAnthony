@@ -48,7 +48,7 @@ static class GuidingStar_OnPlay_Patch
         await DamageCmd.Attack(instance.DynamicVars.Damage.BaseValue).WithNoAttackerAnim().FromCard(instance)
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
-        await PowerCmd.Apply<DrawCardsNextTurnPower>(instance.Owner.Creature, instance.DynamicVars.Cards.BaseValue, instance.Owner.Creature, instance);
+        await Compat.ApplyPower<DrawCardsNextTurnPower>(choiceContext, instance.Owner.Creature, instance.DynamicVars.Cards.BaseValue, instance.Owner.Creature, instance);
     }
 }
 

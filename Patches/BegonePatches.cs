@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.CardSelection;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -71,7 +72,7 @@ static class Begone_OnPlay_Patch
 
         if (cardModel != null)
         {
-            CardModel cardModel2 = instance.CombatState.CreateCard<MinionDiveBomb>(instance.Owner);
+            CardModel cardModel2 = (Compat.GetCombatState(instance) as CombatState).CreateCard<MinionDiveBomb>(instance.Owner);
             if (instance.IsUpgraded)
             {
                 CardCmd.Upgrade(cardModel2);

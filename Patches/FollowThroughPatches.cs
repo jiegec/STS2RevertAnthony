@@ -10,9 +10,9 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
+using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -25,34 +25,57 @@ namespace RevertAnthony;
 // Current:  1-cost Attack, Common, AnyEnemy, Damage 7(+2), "CardCount" 5
 //          ShouldGlow: hand size >= CardCount → hit target 2 times instead of 1
 
-[HarmonyPatch(typeof(FollowThrough), "get_ShouldGlowGoldInternal")]
-static class FollowThrough_ShouldGlowGoldInternal_Patch
+static class FollowThroughPatches
 {
-    static bool Prefix(FollowThrough __instance, ref bool __result)
-    {
-        if (RevertAnthony.IsVersion("follow-through", "v0.99.1"))
-        {
-            // v0.99.1: glow if last card played was a Skill
-            // Current: glow if hand size >= CardCount
-            CardPlayStartedEntry cardPlayStartedEntry = CombatManager.Instance.History.CardPlaysStarted.LastOrDefault((CardPlayStartedEntry e) => e.CardPlay.Card.Owner == __instance.Owner && e.HappenedThisTurn(__instance.CombatState) && e.CardPlay.Card != __instance);
-            if (cardPlayStartedEntry == null)
-            {
-                __result = false;
-            }
-            else
-            {
-                __result = cardPlayStartedEntry.CardPlay.Card.Type == CardType.Skill;
-            }
-            return false;
-        }
-        return true;
-    }
-}
+    private static Type _followThroughType = null;
 
-[HarmonyPatch(typeof(FollowThrough), "get_CanonicalVars")]
-static class FollowThrough_CanonicalVars_Patch
-{
-    static bool Prefix(ref IEnumerable<DynamicVar> __result)
+    public static void ApplyPatchesIfAvailable(Harmony harmony)
+    {
+        _followThroughType = AccessTools.TypeByName("MegaCrit.Sts2.Core.Models.Cards.FollowThrough");
+        if (_followThroughType == null)
+        {
+            Log.Info("RevertAnthony: FollowThrough type not found (removed in this game version), skipping patches");
+            return;
+        }
+
+        Log.Info("RevertAnthony: Found FollowThrough type, applying patches");
+
+        harmony.Patch(AccessTools.PropertyGetter(_followThroughType, "ShouldGlowGoldInternal"),
+            prefix: new HarmonyMethod(typeof(FollowThroughPatches), nameof(ShouldGlowGoldPrefix)));
+        Log.Info("RevertAnthony: Patched ShouldGlowGoldInternal");
+
+        harmony.Patch(AccessTools.PropertyGetter(_followThroughType, "CanonicalVars"),
+            prefix: new HarmonyMethod(typeof(FollowThroughPatches), nameof(CanonicalVarsPrefix)));
+        Log.Info("RevertAnthony: Patched CanonicalVars");
+
+        harmony.Patch(AccessTools.Method(_followThroughType, "OnPlay"),
+            prefix: new HarmonyMethod(typeof(FollowThroughPatches), nameof(OnPlayPrefix)));
+        Log.Info("RevertAnthony: Patched OnPlay");
+
+        harmony.Patch(AccessTools.Method(_followThroughType, "OnUpgrade"),
+            prefix: new HarmonyMethod(typeof(FollowThroughPatches), nameof(OnUpgradePrefix)));
+        Log.Info("RevertAnthony: Patched OnUpgrade");
+    }
+
+    // v0.99.1: glow if last card played was a Skill (current: glow if hand size >= CardCount)
+    static bool ShouldGlowGoldPrefix(CardModel __instance, ref bool __result)
+    {
+        if (!RevertAnthony.IsVersion("follow-through", "v0.99.1"))
+            return true;
+
+        CardPlayStartedEntry cardPlayStartedEntry = CombatManager.Instance.History.CardPlaysStarted.LastOrDefault((CardPlayStartedEntry e) => e.CardPlay.Card.Owner == __instance.Owner && e.HappenedThisTurn(__instance.CombatState) && e.CardPlay.Card != __instance);
+        if (cardPlayStartedEntry == null)
+        {
+            __result = false;
+        }
+        else
+        {
+            __result = cardPlayStartedEntry.CardPlay.Card.Type == CardType.Skill;
+        }
+        return false;
+    }
+
+    static bool CanonicalVarsPrefix(ref IEnumerable<DynamicVar> __result)
     {
         if (RevertAnthony.IsVersion("follow-through", "v0.99.1"))
         {
@@ -66,28 +89,10 @@ static class FollowThrough_CanonicalVars_Patch
         }
         return true;
     }
-}
 
-[HarmonyPatch(typeof(CardModel), "ExtraHoverTips", MethodType.Getter)]
-static class FollowThrough_ExtraHoverTips_Patch
-{
-    static void Postfix(CardModel __instance, ref IEnumerable<IHoverTip> __result)
-    {
-        if (__instance is FollowThrough && RevertAnthony.IsVersion("follow-through", "v0.99.1"))
-        {
-            // v0.99.1: show WeakPower tooltip (current: no extra hover tips)
-            __result = new IHoverTip[]
-            {
-                HoverTipFactory.FromPower<WeakPower>(),
-            };
-        }
-    }
-}
-
-[HarmonyPatch(typeof(FollowThrough), "OnPlay")]
-static class FollowThrough_OnPlay_Patch
-{
-    static bool Prefix(PlayerChoiceContext choiceContext, CardPlay cardPlay, FollowThrough __instance, ref Task __result)
+    // v0.99.1: attack all enemies; if last card was a Skill, apply Weak to all
+    // Current: attack single enemy; if hand >= CardCount, hit 2 times instead of 1
+    static bool OnPlayPrefix(PlayerChoiceContext choiceContext, CardPlay cardPlay, CardModel __instance, ref Task __result)
     {
         if (!RevertAnthony.IsVersion("follow-through", "v0.99.1"))
             return true;
@@ -96,9 +101,7 @@ static class FollowThrough_OnPlay_Patch
         return false;
     }
 
-    // v0.99.1: attack all enemies; if last card was a Skill, apply Weak to all
-    // Current: attack single enemy; if hand >= CardCount, hit 2 times instead of 1
-    static async Task OldOnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay, FollowThrough instance)
+    static async Task OldOnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay, CardModel instance)
     {
         await DamageCmd.Attack(instance.DynamicVars.Damage.BaseValue).FromCard(instance).TargetingAllOpponents(instance.CombatState)
             .WithHitFx("vfx/vfx_attack_slash")
@@ -116,6 +119,34 @@ static class FollowThrough_OnPlay_Patch
             await PowerCmd.Apply<WeakPower>(instance.CombatState.HittableEnemies, instance.DynamicVars.Weak.BaseValue, instance.Owner.Creature, instance);
         }
     }
+
+    // v0.99.1: +2 damage, +1 weak (current: +2 damage only)
+    static bool OnUpgradePrefix(CardModel __instance)
+    {
+        if (RevertAnthony.IsVersion("follow-through", "v0.99.1"))
+        {
+            __instance.DynamicVars.Damage.UpgradeValueBy(2m);
+            __instance.DynamicVars.Weak.UpgradeValueBy(1m);
+            return false;
+        }
+        return true;
+    }
+}
+
+[HarmonyPatch(typeof(CardModel), "ExtraHoverTips", MethodType.Getter)]
+static class FollowThrough_ExtraHoverTips_Patch
+{
+    static void Postfix(CardModel __instance, ref IEnumerable<IHoverTip> __result)
+    {
+        if (__instance.GetType().Name == "FollowThrough" && RevertAnthony.IsVersion("follow-through", "v0.99.1"))
+        {
+            // v0.99.1: show WeakPower tooltip (current: no extra hover tips)
+            __result = new IHoverTip[]
+            {
+                HoverTipFactory.FromPower<WeakPower>(),
+            };
+        }
+    }
 }
 
 [HarmonyPatch(typeof(CardModel), "Rarity", MethodType.Getter)]
@@ -123,7 +154,7 @@ static class FollowThrough_Rarity_Patch
 {
     static void Postfix(CardModel __instance, ref CardRarity __result)
     {
-        if (__instance is FollowThrough && RevertAnthony.IsVersion("follow-through", "v0.99.1"))
+        if (__instance.GetType().Name == "FollowThrough" && RevertAnthony.IsVersion("follow-through", "v0.99.1"))
             __result = CardRarity.Uncommon;
     }
 }
@@ -133,7 +164,7 @@ static class FollowThrough_TargetType_Patch
 {
     static void Postfix(CardModel __instance, ref TargetType __result)
     {
-        if (__instance is FollowThrough && RevertAnthony.IsVersion("follow-through", "v0.99.1"))
+        if (__instance.GetType().Name == "FollowThrough" && RevertAnthony.IsVersion("follow-through", "v0.99.1"))
             __result = TargetType.AllEnemies;
     }
 }
@@ -143,23 +174,7 @@ static class FollowThrough_Description_Patch
 {
     static void Postfix(CardModel __instance, ref LocString __result)
     {
-        if (__instance is FollowThrough && RevertAnthony.IsVersion("follow-through", "v0.99.1"))
+        if (__instance.GetType().Name == "FollowThrough" && RevertAnthony.IsVersion("follow-through", "v0.99.1"))
             __result = new LocString("cards", "FOLLOW_THROUGH_V0991.description");
-    }
-}
-
-[HarmonyPatch(typeof(FollowThrough), "OnUpgrade")]
-static class FollowThrough_OnUpgrade_Patch
-{
-    static bool Prefix(FollowThrough __instance)
-    {
-        if (RevertAnthony.IsVersion("follow-through", "v0.99.1"))
-        {
-            // v0.99.1: +2 damage, +1 weak (current: +2 damage only)
-            __instance.DynamicVars.Damage.UpgradeValueBy(2m);
-            __instance.DynamicVars.Weak.UpgradeValueBy(1m);
-            return false;
-        }
-        return true;
     }
 }

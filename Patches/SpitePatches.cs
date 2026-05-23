@@ -31,7 +31,7 @@ static class Spite_ShouldGlowGoldInternal_Patch
         {
             // v0.99.1: glow if player took unblocked damage this turn (checks CurrentSide == Player)
             // Current: glow if owner creature lost HP this turn (no side check)
-            __result = CombatManager.Instance.History.Entries.OfType<DamageReceivedEntry>().Any((DamageReceivedEntry e) => e.HappenedThisTurn(e.Receiver?.CombatState) && e.Receiver != null && e.Result.UnblockedDamage > 0 && e.CurrentSide == CombatSide.Player);
+            __result = CombatManager.Instance.History.Entries.OfType<DamageReceivedEntry>().Any((DamageReceivedEntry e) => e.Receiver != null && e.HappenedThisTurn(Compat.GetCombatState(e.Receiver)) && e.Result.UnblockedDamage > 0 && e.CurrentSide == CombatSide.Player);
             return false;
         }
         return true;
@@ -78,7 +78,7 @@ static class Spite_OnPlay_Patch
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
 
-        bool tookDamageThisTurn = CombatManager.Instance.History.Entries.OfType<DamageReceivedEntry>().Any((DamageReceivedEntry e) => e.HappenedThisTurn(instance.CombatState) && e.Receiver == instance.Owner.Creature && e.Result.UnblockedDamage > 0 && e.CurrentSide == CombatSide.Player);
+        bool tookDamageThisTurn = CombatManager.Instance.History.Entries.OfType<DamageReceivedEntry>().Any((DamageReceivedEntry e) => e.HappenedThisTurn(Compat.GetCombatState(instance)) && e.Receiver == instance.Owner.Creature && e.Result.UnblockedDamage > 0 && e.CurrentSide == CombatSide.Player);
 
         if (tookDamageThisTurn)
         {
