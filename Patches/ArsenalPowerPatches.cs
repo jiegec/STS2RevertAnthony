@@ -3,6 +3,7 @@ using HarmonyLib;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 
@@ -26,12 +27,33 @@ static class ArsenalPower_AfterCardGeneratedForCombat_Patch
 }
 
 // v0.99.1 ArsenalPower overrides AfterCardPlayed (inherited from AbstractModel)
-// Since the override was removed in current version, we patch the base class method
-// to inject the old behavior when the instance is ArsenalPower and v0.99.1 is selected
-[HarmonyPatch(typeof(AbstractModel), "AfterCardPlayed")]
-static class ArsenalPower_AbstractModel_AfterCardPlayed_Patch
+// The override was removed in current version. Since parameter name differs between
+// versions (context vs choiceContext), we patch manually to avoid Harmony name matching.
+static class ArsenalPowerAfterCardPlayedPatch
 {
-    static bool Prefix(AbstractModel __instance, PlayerChoiceContext context, CardPlay cardPlay)
+    private static bool _patched;
+
+    public static void Apply(Harmony harmony)
+    {
+        if (_patched)
+            return;
+
+        var method = typeof(AbstractModel).GetMethod("AfterCardPlayed",
+            System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance, null,
+            new[] { typeof(PlayerChoiceContext), typeof(CardPlay) }, null);
+
+        if (method == null)
+        {
+            Log.Warn("RevertAnthony: AbstractModel.AfterCardPlayed not found");
+            return;
+        }
+
+        harmony.Patch(method, prefix: new HarmonyMethod(typeof(ArsenalPowerAfterCardPlayedPatch), nameof(Prefix)));
+        Log.Info("RevertAnthony: Patched AbstractModel.AfterCardPlayed for ArsenalPower");
+        _patched = true;
+    }
+
+    static bool Prefix(AbstractModel __instance, object[] __args)
     {
         if (!(__instance is ArsenalPower arsenalPower))
             return true;
@@ -39,9 +61,12 @@ static class ArsenalPower_AbstractModel_AfterCardPlayed_Patch
         if (!RevertAnthony.IsVersion("arsenal", "v0.99.1"))
             return true;
 
+        var context = (PlayerChoiceContext)__args[0];
+        var cardPlay = (CardPlay)__args[1];
+
         // v0.99.1 behavior: trigger when playing a Colorless card
         _ = TriggerArsenalPower(context, cardPlay, arsenalPower);
-        return true; // Continue with original method (base AfterCardPlayed is empty for powers)
+        return true;
     }
 
     static async Task TriggerArsenalPower(PlayerChoiceContext context, CardPlay cardPlay, ArsenalPower instance)

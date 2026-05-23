@@ -139,6 +139,7 @@ public static class RevertAnthony
         _harmony.PatchAll(typeof(RevertAnthony).Assembly);
         FollowThroughPatches.ApplyPatchesIfAvailable(_harmony);
         BladeOfInkPowerTurnEndPatch.Apply(_harmony);
+        ArsenalPowerAfterCardPlayedPatch.Apply(_harmony);
         Log.Info("RevertAnthony: Harmony patches applied");
 
         DeferredLogPatches();
