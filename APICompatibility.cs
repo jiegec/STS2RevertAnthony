@@ -26,8 +26,11 @@ static class Compat
     static MethodInfo _happenedThisTurn;
     static MethodInfo _soulCreateMethod;
     static MethodInfo _addGeneratedCardsToCombatMethod;
+    static MethodInfo _powerCmdApplyV1032Enumerable;
+    static MethodInfo _powerCmdApplyV1032Creature;
     static MethodInfo _powerCmdApplyV104Enumerable;
     static MethodInfo _powerCmdApplyV104Creature;
+    static PropertyInfo _currentSideProp;
 
     public static bool IsV104OrNewer()
     {
@@ -81,6 +84,19 @@ static class Compat
             Log.Info($"RevertAnthony: Compat Resolved CombatHistoryEntry.HappenedThisTurn, param type={_happenedThisTurn?.GetParameters()[0]?.ParameterType?.Name ?? "null"}");
         }
         return (bool)_happenedThisTurn.Invoke(entry, new[] { state });
+    }
+
+    // ---- CombatHistoryEntry.CurrentSide (public -> private in v0.106.1) ----
+
+    public static CombatSide GetCurrentSide(this CombatHistoryEntry entry)
+    {
+        if (_currentSideProp == null)
+        {
+            _currentSideProp = typeof(CombatHistoryEntry).GetProperty("CurrentSide",
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            Log.Info($"RevertAnthony: Compat Resolved CombatHistoryEntry.CurrentSide");
+        }
+        return (CombatSide)_currentSideProp?.GetValue(entry);
     }
 
     // ---- Soul.Create (CombatState -> ICombatState) ----
@@ -156,11 +172,31 @@ static class Compat
 
     static Task ApplyPowerV1032Enumerable<T>(IEnumerable<Creature> targets, decimal amount,
         Creature applier, CardModel cardSource, bool silent) where T : PowerModel
-        => PowerCmd.Apply<T>(targets, amount, applier, cardSource, silent);
+    {
+        if (_powerCmdApplyV1032Enumerable == null)
+        {
+            _powerCmdApplyV1032Enumerable = typeof(PowerCmd).GetMethod("Apply", 1, BindingFlags.Public | BindingFlags.Static, null,
+                new[] { typeof(IEnumerable<Creature>), typeof(decimal), typeof(Creature), typeof(CardModel), typeof(bool) }, null);
+            if (_powerCmdApplyV1032Enumerable != null)
+                Log.Info("RevertAnthony: Compat Resolved PowerCmd.Apply<T>(IEnumerable<Creature>, ...) v0.103.2");
+        }
+        return (Task)_powerCmdApplyV1032Enumerable.MakeGenericMethod(typeof(T))
+            .Invoke(null, new object[] { targets, amount, applier, cardSource, silent });
+    }
 
     static Task ApplyPowerV1032Creature<T>(Creature target, decimal amount,
         Creature applier, CardModel cardSource, bool silent) where T : PowerModel
-        => PowerCmd.Apply<T>(target, amount, applier, cardSource, silent);
+    {
+        if (_powerCmdApplyV1032Creature == null)
+        {
+            _powerCmdApplyV1032Creature = typeof(PowerCmd).GetMethod("Apply", 1, BindingFlags.Public | BindingFlags.Static, null,
+                new[] { typeof(Creature), typeof(decimal), typeof(Creature), typeof(CardModel), typeof(bool) }, null);
+            if (_powerCmdApplyV1032Creature != null)
+                Log.Info("RevertAnthony: Compat Resolved PowerCmd.Apply<T>(Creature, ...) v0.103.2");
+        }
+        return (Task)_powerCmdApplyV1032Creature.MakeGenericMethod(typeof(T))
+            .Invoke(null, new object[] { target, amount, applier, cardSource, silent });
+    }
 
     static Task ApplyPowerV104Enumerable<T>(PlayerChoiceContext ctx, IEnumerable<Creature> targets,
         decimal amount, Creature applier, CardModel cardSource, bool silent) where T : PowerModel
