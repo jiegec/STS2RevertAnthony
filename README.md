@@ -86,6 +86,7 @@ All cards listed below can be reverted to their v0.99.1 or v0.103.2 versions. De
 | **Break** | Cost / Upgrade | 1 / +10 Dmg, +2 Vuln | 1 / +10 Dmg, +2 Vuln | 2 / +5 Dmg, +2 Vuln |
 | **Cinder** | Damage / Upgrade / OnPlay | 18 / +6 / Exhaust random hand card | 18 / +6 / Exhaust random hand card | 17 / +5 / Exhaust top draw pile card |
 | **Colossus** | Rarity | Uncommon | Uncommon | Rare |
+| **Conflagration** | Vars / OnPlay / Upgrade | Dmg 2, Repeat 4 / Attack all with repeats / +1 Repeat | CalcBase 8, ExtraDmg 2 / Scales with attacks / +1 Base, +1 Extra | CalcBase 8, ExtraDmg 2 / Scales with attacks / +1 Base, +1 Extra |
 | **Dominate** | Vars / OnPlay / Upgrade | Vuln 1 + StrPerVuln 1 / Apply Vuln then gain Str / +1 Vuln | Vuln 1 + StrPerVuln 1 / Apply Vuln then gain Str / +1 Vuln | StrPerVuln 1 only / Gain Str from existing Vuln / Remove Exhaust |
 | **Expect A Fight** | OnPlay | Gain energy + NoEnergyGainPower | Gain energy + NoEnergyGainPower | Gain energy |
 | **Fight Me** | Self Strength | 3 | 3 | 2 |
@@ -102,6 +103,7 @@ All cards listed below can be reverted to their v0.99.1 or v0.103.2 versions. De
 | **Banshees Cry** | Cost / Upgrade | 9 / -2 Cost | 9 / -2 Cost | 6 / +6 Damage |
 | **Borrowed Time** | Keywords / OnPlay / Upgrade | None / Gain energy + cards cost +1 / None | None / Gain energy + cards cost +1 / None | None / Apply Doom + gain energy / +1 Energy |
 | **Danse Macabre** | Power / Upgrade | 4 / +2 | 4 / +2 | 3 / +1 |
+| **Death March** | ExtraDamage / Upgrade | 4 / +2 | 3 / +1 | 3 / +1 |
 | **Debilitate** | Damage / Power | 10 / 2 | 10 / 3 | 7 / 3 |
 | **Defy** | Upgrade | +3 Block | +3 Block | +1 Block, +1 Weak |
 | **Dirge** | Keywords | Exhaust | Exhaust | None |
@@ -115,11 +117,14 @@ All cards listed below can be reverted to their v0.99.1 or v0.103.2 versions. De
 |------|----------|-------------------|----------|---------|
 | **Alignment** | Star Cost | 3 | 3 | 2 |
 | **Arsenal** | Upgrade | +Innate | +Innate | +1 ArsenalPower |
+| **Astral Pulse** | Damage / Hit Count / Upgrade | 6, 2 hits / +2 Dmg | 14, 1 hit / +4 Dmg | 14, 1 hit / +4 Dmg |
 | **Begone** | Type / Target / Vars / OnPlay | Skill / Self / None / Transform to MinionStrike | Skill / Self / None / Transform to MinionStrike | Attack / AnyEnemy / Dmg 4(+1) / Deal dmg, transform to MinionDiveBomb |
+| **Bulwark** | Block / Forge | 12 / 10 | 13 / 10 | 13 / 10 |
 | **Bundle Of Joy** | Cost | 1 | 1 | 2 |
 | **Celestial Might** | Upgrade | +1 Repeat |  | +2 Damage |
 | **Charge** | Transforms to | MinionStrike | MinionStrike | MinionDiveBomb |
 | **Collision Course** | Damage / Upgrade | 11 / +4 | 11 / +4 | 9 / +3 |
+| **Crescent Spear** | CalculationBase | 8 | 6 | 6 |
 | **Falling Star** | Damage | 8 | 8 | 7 |
 | **Gather Light** | Block | 8 |  | 7 |
 | **Glitterstream** | Next Turn Block | 5 | 5 | 4 |
@@ -158,6 +163,7 @@ All cards listed below can be reverted to their v0.99.1 or v0.103.2 versions. De
 | **Skewer** | Damage | 8 | 8 | 7 |
 | **Speedster** | Upgrade | +Innate | +Innate | +1 SpeedsterPower |
 | **Untouchable** | Block / Upgrade | 6 / +3 | 6 / +2 | 9 / +3 |
+
 
 ## Configuration
 

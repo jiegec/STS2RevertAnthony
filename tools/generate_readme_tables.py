@@ -65,6 +65,9 @@ CARD_DATA = {
     "colossus": [
         ("Rarity", "Uncommon", "Uncommon", "Rare"),
     ],
+    "conflagration": [
+        ("Vars / OnPlay / Upgrade", "Dmg 2, Repeat 4 / Attack all with repeats / +1 Repeat", "CalcBase 8, ExtraDmg 2 / Scales with attacks / +1 Base, +1 Extra", "CalcBase 8, ExtraDmg 2 / Scales with attacks / +1 Base, +1 Extra"),
+    ],
     "dominate": [
         ("Vars / OnPlay / Upgrade", "Vuln 1 + StrPerVuln 1 / Apply Vuln then gain Str / +1 Vuln", "Vuln 1 + StrPerVuln 1 / Apply Vuln then gain Str / +1 Vuln", "StrPerVuln 1 only / Gain Str from existing Vuln / Remove Exhaust"),
     ],
@@ -100,6 +103,9 @@ CARD_DATA = {
     "danse-macabre": [
         ("Power / Upgrade", "4 / +2", "4 / +2", "3 / +1"),
     ],
+    "death-march": [
+        ("ExtraDamage / Upgrade", "4 / +2", "3 / +1", "3 / +1"),
+    ],
     "debilitate": [
         ("Damage / Power", "10 / 2", "10 / 3", "7 / 3"),
     ],
@@ -126,11 +132,17 @@ CARD_DATA = {
     "arsenal": [
         ("Upgrade", "+Innate", "+Innate", "+1 ArsenalPower"),
     ],
+    "astral-pulse": [
+        ("Damage / Hit Count / Upgrade", "6, 2 hits / +2 Dmg", "14, 1 hit / +4 Dmg", "14, 1 hit / +4 Dmg"),
+    ],
     "begone": [
         ("Type / Target / Vars / OnPlay", "Skill / Self / None / Transform to MinionStrike", "Skill / Self / None / Transform to MinionStrike", "Attack / AnyEnemy / Dmg 4(+1) / Deal dmg, transform to MinionDiveBomb"),
     ],
     "bundle-of-joy": [
         ("Cost", "1", "1", "2"),
+    ],
+    "bulwark": [
+        ("Block / Forge", "12 / 10", "13 / 10", "13 / 10"),
     ],
     "celestial-might": [
         ("Upgrade", "+1 Repeat", "", "+2 Damage"),
@@ -140,6 +152,9 @@ CARD_DATA = {
     ],
     "collision-course": [
         ("Damage / Upgrade", "11 / +4", "11 / +4", "9 / +3"),
+    ],
+    "crescent-spear": [
+        ("CalculationBase", "8", "6", "6"),
     ],
     "falling-star": [
         ("Damage", "8", "8", "7"),
@@ -263,23 +278,38 @@ CHARACTERS = {
     "COLORLESS": ["believe-in-you", "eternal-armor", "hidden-gem", "huddle-up", "production", "seeker-strike"],
     "ANCIENT": ["neows-fury"],
     "CURSE": ["folly"],
-    "IRONCLAD": ["break", "cinder", "colossus", "dominate", "expect-a-fight", "fight-me", "forgotten-ritual", "hemokinesis", "spite", "stoke", "tremble"],
-    "NECROBINDER": ["banshees-cry", "borrowed-time", "danse-macabre", "debilitate", "defy", "dirge", "grave-warden", "sculpting-strike", "seance"],
-    "REGENT": ["alignment", "arsenal", "begone", "bundle-of-joy", "celestial-might", "charge", "collision-course", "falling-star", "gather-light", "glitterstream", "glow", "grand-finale", "guiding-star", "heirloom-hammer", "i-am-invincible", "kingly-kick", "kingly-punch", "minion-dive-bomb", "minion-strike", "parry", "patter", "refine-blade", "solar-strike", "spoils-of-battle", "sword-sage", "void-form", "wrought-in-war"],
+    "IRONCLAD": ["break", "cinder", "colossus", "conflagration", "dominate", "expect-a-fight", "fight-me", "forgotten-ritual", "hemokinesis", "spite", "stoke", "tremble"],
+    "NECROBINDER": ["banshees-cry", "borrowed-time", "danse-macabre", "death-march", "debilitate", "defy", "dirge", "grave-warden", "sculpting-strike", "seance"],
+    "REGENT": ["alignment", "arsenal", "astral-pulse", "begone", "bulwark", "bundle-of-joy", "celestial-might", "charge", "collision-course", "crescent-spear", "falling-star", "gather-light", "glitterstream", "glow", "grand-finale", "guiding-star", "heirloom-hammer", "i-am-invincible", "kingly-kick", "kingly-punch", "minion-dive-bomb", "minion-strike", "parry", "patter", "refine-blade", "solar-strike", "spoils-of-battle", "sword-sage", "void-form", "wrought-in-war"],
     "SILENT": ["acrobatics", "anticipate", "blade-of-ink", "corrosive-wave", "flick-flack", "follow-through", "leading-strike", "memento-mori", "pinpoint", "serpent-form", "skewer", "speedster", "untouchable"],
 }
 
-print("## Supported Cards")
-print()
-print("All cards listed below can be reverted to their v0.99.1 or v0.103.2 versions. Descriptions are also reverted to match the old version text, so tooltips and card text display correctly.")
-print()
+lines = []
+lines.append("## Supported Cards")
+lines.append("")
+lines.append("All cards listed below can be reverted to their v0.99.1 or v0.103.2 versions. Descriptions are also reverted to match the old version text, so tooltips and card text display correctly.")
+lines.append("")
 
 for char_name, card_slugs in CHARACTERS.items():
-    print()
-    print(f"### {char_name}")
-    print()
-    print("| Card | Property | v0.107.1 (Current) | v0.103.2 | v0.99.1 |")
-    print("|------|----------|-------------------|----------|---------|")
+    lines.append("")
+    lines.append(f"### {char_name}")
+    lines.append("")
+    lines.append("| Card | Property | v0.107.1 (Current) | v0.103.2 | v0.99.1 |")
+    lines.append("|------|----------|-------------------|----------|---------|")
     for slug in card_slugs:
         if slug in CARD_DATA:
-            print(format_row(slug.replace('-', ' ').title(), CARD_DATA[slug]))
+            lines.append(format_row(slug.replace('-', ' ').title(), CARD_DATA[slug]))
+
+new_section = "\n".join(lines)
+
+with open("README.md") as f:
+    content = f.read()
+
+start = content.index("## Supported Cards")
+end = content.index("\n## Configuration")
+content = content[:start] + new_section + "\n\n" + content[end:]
+
+with open("README.md", "w") as f:
+    f.write(content)
+
+print("README.md updated")
