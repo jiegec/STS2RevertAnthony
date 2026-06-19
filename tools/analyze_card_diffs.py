@@ -1,5 +1,5 @@
 """
-Analyze card diffs between game versions for supported cards.
+Analyze card and power diffs between game versions for supported cards.
 Usage: python3 tools/analyze_card_diffs.py
 Define VERSIONS below to compare different version sets.
 """
@@ -14,21 +14,22 @@ VERSIONS = ["v0.99.1", "v0.103.2", "v0.107.1"]
 def pascal_to_kebab(name):
     return re.sub(r'(?<!^)(?=[A-Z])', '-', name).lower()
 
-def parse_card_diff(filepath, version_a, version_b):
+def parse_diff_file(filepath, subdir_pattern, version_a, version_b):
+    """Parse a diff file and extract per-file changes matching subdir_pattern."""
     with open(filepath) as f:
         content = f.read()
 
     sections = re.split(r'^diff ', content, flags=re.MULTILINE)
 
-    card_changes = {}
+    changes = {}
     for section in sections:
         if not section.strip():
             continue
-        m = re.search(r'/Cards/(\w+)\.cs', section)
+        m = re.search(r'/(?:' + subdir_pattern + r')/(\w+)\.cs', section, re.IGNORECASE)
         if not m:
             continue
-        pascal_name = m.group(1)
-        slug = pascal_to_kebab(pascal_name)
+        name = m.group(1)
+        slug = pascal_to_kebab(name)
 
         hunks = re.findall(r'@@.*?@@\n(.*?)(?=\n@@|\Z)', section, re.DOTALL)
 
@@ -36,18 +37,19 @@ def parse_card_diff(filepath, version_a, version_b):
         for hunk in hunks:
             for line in hunk.split('\n'):
                 if line.startswith('-'):
-                    summary_lines.append(f'[{version_a}] {line[1:].strip()}')
+                    if not line[1:].strip().startswith('using '):
+                        summary_lines.append(f'[{version_a}] {line[1:].strip()}')
                 elif line.startswith('+'):
-                    summary_lines.append(f'[{version_b}] {line[1:].strip()}')
+                    if not line[1:].strip().startswith('using '):
+                        summary_lines.append(f'[{version_b}] {line[1:].strip()}')
 
-        card_changes[slug] = {
-            'pascal': pascal_name,
-            'hunks': hunks,
+        changes[slug] = {
+            'pascal': name,
             'summary': summary_lines[:30],
             'has_changes': bool(hunks and any(h.strip() for h in hunks))
         }
 
-    return card_changes
+    return changes
 
 def diff_key(version_a, version_b):
     return f"{version_a}_to_{version_b}"
@@ -55,39 +57,57 @@ def diff_key(version_a, version_b):
 # Build version pairs from the VERSIONS list
 version_pairs = [(VERSIONS[i], VERSIONS[i+1]) for i in range(len(VERSIONS) - 1)]
 
-# Parse all diff files
-card_data = {}  # slug -> { diff_key -> has_changes, diff_key_summary -> [...] }
+# Parse card and power diffs for each version pair
+card_data = {}
+power_data = {}
 for va, vb in version_pairs:
-    filename = f"code-{va}-{vb}-cards.diff"
     dk = diff_key(va, vb)
-    diffs = parse_card_diff(filename, va, vb)
-    for slug, info in diffs.items():
-        if slug not in card_data:
-            card_data[slug] = {}
-        card_data[slug][dk] = info.get('has_changes', False)
-        card_data[slug][f"{dk}_summary"] = info.get('summary', [])
 
-# Get supported cards
+    card_filename = f"code-{va}-{vb}-cards.diff"
+    if os.path.exists(card_filename):
+        diffs = parse_diff_file(card_filename, r'Models/Cards', va, vb)
+        for slug, info in diffs.items():
+            if slug not in card_data:
+                card_data[slug] = {}
+            card_data[slug][dk] = info.get('has_changes', False)
+            card_data[slug][f"{dk}_summary"] = info.get('summary', [])
+
+    power_filename = f"code-{va}-{vb}-powers.diff"
+    if os.path.exists(power_filename):
+        diffs = parse_diff_file(power_filename, r'Models/Powers', va, vb)
+        for slug, info in diffs.items():
+            if slug not in power_data:
+                power_data[slug] = {}
+            power_data[slug][dk] = info.get('has_changes', False)
+            power_data[slug][f"{dk}_summary"] = info.get('summary', [])
+
+# Get supported cards and their slugs
 supported_cards = []
+card_slugs_set = set()
 with open('RevertAnthony.cs') as f:
     for line in f:
         m = re.search(r'new SupportedCard\(\"([^\"]+)\"', line)
         if m:
             supported_cards.append(m.group(1))
+            card_slugs_set.add(m.group(1))
 
-# Determine category for each card
-def categorize(slug, pairs):
+# Heuristic: map a card slug to a potential power slug
+# e.g. "debilitate" -> "debilitate-power" (if power class is "DebilitatePower")
+def card_slug_to_power_slug(slug):
+    pascal = ''.join(word.capitalize() for word in slug.split('-'))
+    return pascal.lower() + '-power'
+
+# Categorize a card's diff status across all version pairs
+def categorize(slug, pairs, data):
     change_flags = {}
     for va, vb in pairs:
         dk = diff_key(va, vb)
-        change_flags[dk] = card_data.get(slug, {}).get(dk, False)
-
+        change_flags[dk] = data.get(slug, {}).get(dk, False)
     changed_count = sum(1 for v in change_flags.values() if v)
     if changed_count == 0:
         return 'unchanged'
     if changed_count == len(pairs):
         return 'all_differ'
-    # Find which pairs changed
     changed_pairs = [dk for dk, v in change_flags.items() if v]
     return 'changed_in_' + '_'.join(changed_pairs)
 
@@ -99,7 +119,7 @@ print("=" * 80)
 
 for slug in sorted(supported_cards):
     c = card_data.get(slug, {})
-    category = categorize(slug, version_pairs)
+    category = categorize(slug, version_pairs, card_data)
     print(f"\n--- {slug} ---")
     print(f"Category: {category}")
 
@@ -107,21 +127,73 @@ for slug in sorted(supported_cards):
         dk = diff_key(va, vb)
         changes = c.get(f"{dk}_summary", [])
         if changes:
-            print(f"\n  {va} → {vb} changes:")
-            for line in changes[:10]:
+            print(f"\n  [{va} → {vb}] Card changes:")
+            for line in changes[:8]:
                 print(f"    {line}")
+
+    # Check if there's a related power that changed
+    power_slug = card_slug_to_power_slug(slug)
+    p = power_data.get(power_slug, {})
+    if p:
+        for va, vb in version_pairs:
+            dk = diff_key(va, vb)
+            pchanges = p.get(f"{dk}_summary", [])
+            if pchanges:
+                print(f"\n  [{va} → {vb}] Related power {p.get('pascal', power_slug)} changes:")
+                for line in pchanges[:6]:
+                    print(f"    {line}")
+
+    # Also check exact power name (slug might already match)
+    p2 = power_data.get(slug, {})
+    if p2 and p2 is not p:
+        for va, vb in version_pairs:
+            dk = diff_key(va, vb)
+            pchanges = p2.get(f"{dk}_summary", [])
+            if pchanges:
+                print(f"\n  [{va} → {vb}] Related power {p2.get('pascal', slug)} changes:")
+                for line in pchanges[:6]:
+                    print(f"    {line}")
 
 print("\n\n")
 print("=" * 80)
-print("SUMMARY")
+print("CARD SUMMARY")
 print(f"Versions: {' → '.join(VERSIONS)}")
 print("=" * 80)
 
 categories = defaultdict(list)
 for slug in supported_cards:
-    categories[categorize(slug, version_pairs)].append(slug)
+    categories[categorize(slug, version_pairs, card_data)].append(slug)
 
 for cat, cards in sorted(categories.items()):
     print(f"\n{cat} ({len(cards)} cards):")
     for c in sorted(cards):
         print(f"  - {c}")
+
+print("\n\n")
+print("=" * 80)
+print("POWER CHANGES (all powers, not just card-related)")
+print(f"Versions: {' → '.join(VERSIONS)}")
+print("=" * 80)
+
+power_categories = defaultdict(list)
+for slug in power_data:
+    power_categories[categorize(slug, version_pairs, power_data)].append(slug)
+
+for cat, powers in sorted(power_categories.items()):
+    print(f"\n{cat} ({len(powers)} powers):")
+    for p in sorted(powers):
+        pascal = power_data[p].get('pascal', p)
+        summaries = []
+        for va, vb in version_pairs:
+            dk = diff_key(va, vb)
+            s = power_data[p].get(f"{dk}_summary", [])
+            if s:
+                summaries.append(f"{va}→{vb}: {len(s)} lines")
+        print(f"\n  {pascal} ({', '.join(summaries)})")
+        for va, vb in version_pairs:
+            dk = diff_key(va, vb)
+            changes = power_data[p].get(f"{dk}_summary", [])
+            if changes:
+                print(f"    [{va} → {vb}]")
+                for line in changes[:10]:
+                    print(f"      {line}")
