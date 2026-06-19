@@ -125,12 +125,12 @@ public static class RevertAnthony
 
     public static string SlugToLocKey(string slug) => slug.Replace("-", "_").ToUpperInvariant();
 
-    public static bool IsVersion(string cardSlug, string version) =>
-        CardVersions.TryGetValue(cardSlug, out var currentVersion) && currentVersion == version;
-
-    public static bool IsAnyOldVersion(string cardSlug) =>
-        CardVersions.TryGetValue(cardSlug, out var currentVersion) &&
-        SupportedCards.Any(c => c.Slug == cardSlug && c.OldVersions.Contains(currentVersion));
+    public static bool IsVersion(string cardSlug, params string[] versions)
+    {
+        if (!CardVersions.TryGetValue(cardSlug, out var currentVersion))
+            return false;
+        return versions.Contains(currentVersion);
+    }
 
     private static bool _batchOperationInProgress;
 

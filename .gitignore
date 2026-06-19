@@ -7,3 +7,4 @@
 *.cs.uid
 dist/
 *.zip
+__pycache__/

@@ -2,7 +2,7 @@
 
 ## Architecture
 
-This mod allows users to select which version of each card to use (current game version or an older version like v0.99.1). It uses Harmony patches to intercept card properties and behavior at runtime.
+This mod allows users to select which version of each card to use (current game version, v0.103.2, or v0.99.1). It uses Harmony patches to intercept card properties and behavior at runtime.
 
 ## Key Components
 
@@ -54,7 +54,7 @@ static class CardClassName_MethodName_Patch
 {
     static bool Prefix(ref ReturnType __result)
     {
-        if (RevertAnthony.IsVersion("card-slug", "v0.99.1"))
+        if (RevertAnthony.IsVersion("card-slug", "v0.99.1", "v0.103.2"))
         {
             __result = oldValue;
             return false; // Skip original method
@@ -74,7 +74,7 @@ static class CardName_PropertyName_Patch
 {
     static void Postfix(CardModel __instance, ref ReturnType __result)
     {
-        if (__instance is CardClassName && RevertAnthony.IsVersion("card-slug", "v0.99.1"))
+        if (__instance is CardClassName && RevertAnthony.IsVersion("card-slug", "v0.99.1", "v0.103.2"))
         {
             __result = oldValue;
         }
@@ -92,7 +92,7 @@ static class CardName_OnUpgrade_Patch
 {
     static void Postfix(CardModel __instance)
     {
-        if (__instance is CardClassName && RevertAnthony.IsVersion("card-slug", "v0.99.1"))
+        if (__instance is CardClassName && RevertAnthony.IsVersion("card-slug", "v0.99.1", "v0.103.2"))
         {
             // Old behavior
             __instance.DynamicVars.Damage.UpgradeValueBy(1m);
@@ -113,7 +113,7 @@ static class CardClassName_CanonicalVars_Patch
 {
     static bool Prefix(ref IEnumerable<DynamicVar> __result)
     {
-        if (RevertAnthony.IsVersion("card-slug", "v0.99.1"))
+        if (RevertAnthony.IsVersion("card-slug", "v0.99.1", "v0.103.2"))
         {
             __result = new DynamicVar[]
             {
@@ -135,7 +135,7 @@ static class CardClassName_OnPlay_Patch
 {
     static bool Prefix(PlayerChoiceContext ctx, CardPlay play, CardClassName __instance, ref Task __result)
     {
-        if (!RevertAnthony.IsVersion("card-slug", "v0.99.1"))
+        if (!RevertAnthony.IsVersion("card-slug", "v0.99.1", "v0.103.2"))
             return true;
 
         __result = OldOnPlay(ctx, play, __instance);
@@ -161,7 +161,7 @@ static class CardName_EnergyCost_Patch
 {
     static void Postfix(CardModel __instance, ref int __result)
     {
-        if (__instance is CardClassName && RevertAnthony.IsVersion("card-slug", "v0.99.1"))
+        if (__instance is CardClassName && RevertAnthony.IsVersion("card-slug", "v0.99.1", "v0.103.2"))
         {
             __result = 0; // Old cost
         }
@@ -177,7 +177,7 @@ static class CardName_Rarity_Patch
 {
     static void Postfix(CardModel __instance, ref CardRarity __result)
     {
-        if (__instance is CardClassName && RevertAnthony.IsVersion("card-slug", "v0.99.1"))
+        if (__instance is CardClassName && RevertAnthony.IsVersion("card-slug", "v0.99.1", "v0.103.2"))
         {
             __result = CardRarity.Common;
         }
@@ -193,7 +193,7 @@ static class CardName_TargetType_Patch
 {
     static void Postfix(CardModel __instance, ref TargetType __result)
     {
-        if (__instance is CardClassName && RevertAnthony.IsVersion("card-slug", "v0.99.1"))
+        if (__instance is CardClassName && RevertAnthony.IsVersion("card-slug", "v0.99.1", "v0.103.2"))
         {
             __result = TargetType.AnyEnemy;
         }
@@ -209,7 +209,7 @@ static class CardName_CardType_Patch
 {
     static void Postfix(CardModel __instance, ref CardType __result)
     {
-        if (__instance is CardClassName && RevertAnthony.IsVersion("card-slug", "v0.99.1"))
+        if (__instance is CardClassName && RevertAnthony.IsVersion("card-slug", "v0.99.1", "v0.103.2"))
         {
             __result = CardType.Attack;
         }
@@ -225,7 +225,7 @@ static class CardName_Description_Patch
 {
     static void Postfix(CardModel __instance, ref LocString __result)
     {
-        if (__instance is CardClassName && RevertAnthony.IsVersion("card-slug", "v0.99.1"))
+        if (__instance is CardClassName && RevertAnthony.IsVersion("card-slug", "v0.99.1", "v0.103.2"))
         {
             __result = new LocString("cards", "CARD_NAME_V0991.description");
         }
@@ -241,7 +241,7 @@ static class CardName_ShouldGlowGoldInternal_Patch
 {
     static void Postfix(CardModel __instance, ref bool __result)
     {
-        if (__instance is CardClassName && RevertAnthony.IsVersion("card-slug", "v0.99.1"))
+        if (__instance is CardClassName && RevertAnthony.IsVersion("card-slug", "v0.99.1", "v0.103.2"))
         {
             __result = true; // Old glow condition
         }
@@ -261,6 +261,20 @@ static class CardName_ShouldGlowGoldInternal_Patch
 6. **Protected members** - Use string literals (e.g., `"Rarity"`, `"CanonicalEnergyCost"`) instead of `nameof()`
 7. **Clear canonical cache** - When a user switches versions, `ClearCanonicalCache()` resets the canonical instance so new mutable clones pick up patched values
 8. **ModConfig types** - Available types: `Header`, `Dropdown`, `Toggle`, `TextInput`, `Slider`, `Button`, `Separator`, `ColorPicker`. There is NO `Description` type.
+
+### Version Checking Methods
+
+- **`IsVersion(slug, ...versions)`** — Returns true if the user selected one of the given versions. Call with specific versions (`IsVersion(slug, "v0.99.1", "v0.103.2")`) to check only those. Pass specific versions so future additions don't accidentally match.
+
+### SupportedCard Declarations
+
+Cards now support multiple old versions. Declare them in order of newest to oldest:
+
+```csharp
+new SupportedCard("slug", "CHARACTER", "v0.103.2", "v0.99.1"),
+```
+
+The config UI automatically renders a dropdown with all versions listed. When adding a new card, check which versions it changed in (compare decompiled sources) and list all applicable old versions.
 
 ## Localization (Card Descriptions)
 
