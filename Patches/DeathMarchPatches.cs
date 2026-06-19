@@ -27,7 +27,7 @@ static class DeathMarch_CanonicalVars_Patch
             {
                 new CalculationBaseVar(8m),
                 new ExtraDamageVar(3m),
-                new CalculatedDamageVar(ValueProp.Move).WithMultiplier((CardModel card, Creature _) => CombatManager.Instance.History.Entries.OfType<CardDrawnEntry>().Count((CardDrawnEntry e) => e.HappenedThisTurn(Compat.GetCombatState(card)) && e.Actor == card.Owner.Creature && !e.FromHandDraw)),
+                new CalculatedDamageVar(ValueProp.Move).WithMultiplier((CardModel card, Creature _) => CombatManager.Instance.History.Entries.OfType<CardDrawnEntry>().Count((CardDrawnEntry e) => e.HappenedThisTurn(card.CombatState) && e.Actor == card.Owner.Creature && !e.FromHandDraw)),
             };
             return false;
         }

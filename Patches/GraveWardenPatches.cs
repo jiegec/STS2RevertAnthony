@@ -54,7 +54,7 @@ static class GraveWarden_OnPlay_Patch
     {
         await CreatureCmd.TriggerAnim(instance.Owner.Creature, "Cast", instance.Owner.Character.CastAnimDelay);
         await CreatureCmd.GainBlock(instance.Owner.Creature, instance.DynamicVars.Block, cardPlay);
-        List<Soul> list = Compat.SoulCreate(instance.Owner, instance.DynamicVars.Cards.IntValue, Compat.GetCombatState(instance)).ToList();
+        List<Soul> list = Soul.Create(instance.Owner, instance.DynamicVars.Cards.IntValue, instance.CombatState).ToList();
         if (instance.IsUpgraded)
         {
             foreach (Soul item in list)
@@ -62,7 +62,7 @@ static class GraveWarden_OnPlay_Patch
                 CardCmd.Upgrade(item);
             }
         }
-        CardCmd.PreviewCardPileAdd(await Compat.AddGeneratedCardsToCombatCompat(list, PileType.Draw, instance.Owner, CardPilePosition.Random));
+        CardCmd.PreviewCardPileAdd(await CardPileCmd.AddGeneratedCardsToCombat(list, PileType.Draw, instance.Owner, CardPilePosition.Random));
     }
 }
 

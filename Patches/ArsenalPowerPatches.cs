@@ -76,7 +76,7 @@ static class ArsenalPowerAfterCardPlayedPatch
             // Flash() is protected - use AccessTools to call it
             var flashMethod = AccessTools.Method(typeof(MegaCrit.Sts2.Core.Models.PowerModel), "Flash");
             flashMethod?.Invoke(instance, null);
-            await Compat.ApplyPower<StrengthPower>(context, instance.Owner, instance.Amount, instance.Owner, null);
+            await PowerCmd.Apply<StrengthPower>(context, instance.Owner, instance.Amount, instance.Owner, null);
         }
     }
 }

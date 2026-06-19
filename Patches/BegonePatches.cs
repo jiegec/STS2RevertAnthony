@@ -72,7 +72,7 @@ static class Begone_OnPlay_Patch
 
         if (cardModel != null)
         {
-            CardModel cardModel2 = (Compat.GetCombatState(instance) as CombatState).CreateCard<MinionDiveBomb>(instance.Owner);
+            CardModel cardModel2 = (instance.CombatState as CombatState).CreateCard<MinionDiveBomb>(instance.Owner);
             if (instance.IsUpgraded)
             {
                 CardCmd.Upgrade(cardModel2);

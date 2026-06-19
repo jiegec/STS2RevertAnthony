@@ -76,7 +76,7 @@ static class BorrowedTime_OnPlay_Patch
     static async Task OldOnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay, BorrowedTime instance)
     {
         await CreatureCmd.TriggerAnim(instance.Owner.Creature, "Cast", instance.Owner.Character.CastAnimDelay);
-        await Compat.ApplyPower<DoomPower>(choiceContext, instance.Owner.Creature, instance.DynamicVars.Doom.BaseValue, instance.Owner.Creature, instance);
+        await PowerCmd.Apply<DoomPower>(choiceContext, instance.Owner.Creature, instance.DynamicVars.Doom.BaseValue, instance.Owner.Creature, instance);
         await PlayerCmd.GainEnergy(instance.DynamicVars.Energy.BaseValue, instance.Owner);
     }
 }

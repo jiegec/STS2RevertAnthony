@@ -30,7 +30,7 @@ public sealed class BladeOfInkPower : PowerModel
         if (cardPlay.Card.Owner == base.Owner.Player && cardPlay.Card.Type == CardType.Attack)
         {
             Flash();
-            await Compat.ApplyPower<StrengthPower>(context, base.Owner, base.Amount, base.Owner, null, silent: true);
+            await PowerCmd.Apply<StrengthPower>(context, base.Owner, base.Amount, base.Owner, null, silent: true);
             base.DynamicVars["StrengthApplied"].BaseValue += (decimal)base.Amount;
             InvokeDisplayAmountChanged();
         }
@@ -40,7 +40,7 @@ public sealed class BladeOfInkPower : PowerModel
     {
         if (side == base.Owner.Side)
         {
-            await Compat.ApplyPower<StrengthPower>(choiceContext, base.Owner, -base.DynamicVars["StrengthApplied"].BaseValue, base.Owner, null, silent: true);
+            await PowerCmd.Apply<StrengthPower>(choiceContext, base.Owner, -base.DynamicVars["StrengthApplied"].BaseValue, base.Owner, null, silent: true);
             await PowerCmd.Remove(this);
         }
     }

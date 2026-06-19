@@ -39,7 +39,7 @@ static class Conflagration_CanonicalVars_Patch
                 new CalculatedDamageVar(ValueProp.Move).WithMultiplier((CardModel card, Creature _) =>
                     CombatManager.Instance.History.CardPlaysFinished.Count((CardPlayFinishedEntry e) =>
                     {
-                        if (e.HappenedThisTurn(Compat.GetCombatState(card))) {
+                        if (e.HappenedThisTurn(card.CombatState)) {
                             return false;
                         }
                         if (e.CardPlay.Card.Type != CardType.Attack) {

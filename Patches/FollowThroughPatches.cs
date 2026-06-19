@@ -116,7 +116,7 @@ static class FollowThroughPatches
 
         if (wasLastCardSkill)
         {
-            await Compat.ApplyPower<WeakPower>(choiceContext, instance.CombatState.HittableEnemies, instance.DynamicVars.Weak.BaseValue, instance.Owner.Creature, instance);
+            await PowerCmd.Apply<WeakPower>(choiceContext, instance.CombatState.HittableEnemies, instance.DynamicVars.Weak.BaseValue, instance.Owner.Creature, instance);
         }
     }
 
