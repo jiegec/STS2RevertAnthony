@@ -45,118 +45,119 @@ cd STS2RevertAnthony
 
 ## Supported Cards
 
-All cards listed below can be reverted to their v0.99.1 versions. Descriptions are also reverted to match the old version text, so tooltips and card text display correctly.
+All cards listed below can be reverted to their v0.99.1 or v0.103.2 versions. Descriptions are also reverted to match the old version text, so tooltips and card text display correctly.
+
 
 ### DEFECT
 
-| Card | Property | Current | v0.99.1 |
-|------|----------|---------|---------|
-| **Hotfix** | Keywords / Upgrade | Exhaust / Remove Exhaust | **None / +1 Focus** |
-| **Rip and Tear** | Rarity | Event | **Uncommon** |
-| **Voltaic** | Cost | 3 | **2** |
+| Card | Property | v0.107.1 (Current) | v0.103.2 | v0.99.1 |
+|------|----------|-------------------|----------|---------|
+| **Hotfix** | Keywords / Upgrade | Exhaust / Remove Exhaust | Exhaust / Remove Exhaust | None / +1 Focus |
+| **Rip And Tear** | Rarity | Event | Event | Uncommon |
+| **Voltaic** | Cost | 3 | 3 | 2 |
 
 ### COLORLESS
 
-| Card | Property | Current | v0.99.1 |
-|------|----------|---------|---------|
-| **Believe In You** | Energy | 2(3) | **3(4)** |
-| **Eternal Armor** | Plating / Upgrade | 9(+3) | **7(+2)** |
-| **Hidden Gem** | OnPlay / Generation | Excludes enchanted replay / Cannot generate in combat | **No filter / Anywhere** |
-| **Huddle Up** | Keywords | Exhaust | **None** |
-| **Production** | Upgrade | +1 Energy | **Remove Exhaust** |
-| **Seeker Strike** | Damage / Cards | 9 / 3 | **6 / 3** |
+| Card | Property | v0.107.1 (Current) | v0.103.2 | v0.99.1 |
+|------|----------|-------------------|----------|---------|
+| **Believe In You** | Energy | 2(3) | 2(3) | 3(4) |
+| **Eternal Armor** | Plating / Upgrade | 9(+3) | 9(+3) | 7(+2) |
+| **Hidden Gem** | OnPlay / Generation | Excludes enchanted replay / Cannot generate in combat | Excludes enchanted replay / Cannot generate in combat | No filter / Anywhere |
+| **Huddle Up** | Keywords | Exhaust | Exhaust | None |
+| **Production** | Upgrade | +1 Energy | +1 Energy | Remove Exhaust |
+| **Seeker Strike** | Damage / Cards | 9 / 3 | 9 / 3 | 6 / 3 |
 
 ### ANCIENT
 
-| Card | Property | Current | v0.99.1 |
-|------|----------|---------|---------|
-| **Neow's Fury** | Upgrade | +4 Damage, +1 Cards | **+4 Damage** |
+| Card | Property | v0.107.1 (Current) | v0.103.2 | v0.99.1 |
+|------|----------|-------------------|----------|---------|
+| **Neows Fury** | Upgrade | +4 Damage, +1 Cards | +4 Damage, +1 Cards | +4 Damage |
 
 ### CURSE
 
-| Card | Property | Current | v0.99.1 |
-|------|----------|---------|---------|
-| **Folly** | Keywords | Unplayable, Eternal, Innate, Ethereal | **Unplayable, Eternal, Innate** |
+| Card | Property | v0.107.1 (Current) | v0.103.2 | v0.99.1 |
+|------|----------|-------------------|----------|---------|
+| **Folly** | Keywords | Unplayable, Eternal, Innate, Ethereal | Unplayable, Eternal, Innate, Ethereal | Unplayable, Eternal, Innate |
 
 ### IRONCLAD
 
-| Card | Property | Current | v0.99.1 |
-|------|----------|---------|---------|
-| **Break** | Cost / Upgrade | 1 / +10 Dmg, +2 Vuln | **2 / +5 Dmg, +2 Vuln** |
-| **Cinder** | Damage / Upgrade / OnPlay | 18 / +6 / Exhaust random hand card | **17 / +5 / Exhaust top draw pile card** |
-| **Colossus** | Rarity | Uncommon | **Rare** |
-| **Dominate** | Vars / OnPlay / Upgrade | Vuln 1 + StrPerVuln 1 / Apply Vuln then gain Str / +1 Vuln | **StrPerVuln 1 only / Gain Str from existing Vuln / Remove Exhaust** |
-| **Expect A Fight** | OnPlay | Gain energy + NoEnergyGainPower | **Gain energy** |
-| **Fight Me** | Self Strength | 3 | **2** |
-| **Forgotten Ritual** | Keywords | Exhaust | **None** |
-| **Hemokinesis** | Damage / Self-damage | 18 / 2 | **15 / 2** |
-| **Spite** | Vars / OnPlay / Upgrade | Dmg 5, Repeat 2 / Hit 1-2x based on HP loss / +1 Repeat | **Dmg 6, Cards 1 / Deal dmg; draw 1 if took damage / +3 Dmg** |
-| **Stoke** | Keywords / OnPlay / Upgrade | None / Exhaust hand, draw new random cards / None | **Exhaust / Exhaust hand, draw same count / -1 Cost** |
-| **Tremble** | Vulnerable / Keywords | 3 / Exhaust | **2 / None** |
+| Card | Property | v0.107.1 (Current) | v0.103.2 | v0.99.1 |
+|------|----------|-------------------|----------|---------|
+| **Break** | Cost / Upgrade | 1 / +10 Dmg, +2 Vuln | 1 / +10 Dmg, +2 Vuln | 2 / +5 Dmg, +2 Vuln |
+| **Cinder** | Damage / Upgrade / OnPlay | 18 / +6 / Exhaust random hand card | 18 / +6 / Exhaust random hand card | 17 / +5 / Exhaust top draw pile card |
+| **Colossus** | Rarity | Uncommon | Uncommon | Rare |
+| **Dominate** | Vars / OnPlay / Upgrade | Vuln 1 + StrPerVuln 1 / Apply Vuln then gain Str / +1 Vuln | Vuln 1 + StrPerVuln 1 / Apply Vuln then gain Str / +1 Vuln | StrPerVuln 1 only / Gain Str from existing Vuln / Remove Exhaust |
+| **Expect A Fight** | OnPlay | Gain energy + NoEnergyGainPower | Gain energy + NoEnergyGainPower | Gain energy |
+| **Fight Me** | Self Strength | 3 | 3 | 2 |
+| **Forgotten Ritual** | Keywords | Exhaust | Exhaust | None |
+| **Hemokinesis** | Damage / Self-damage | 18 / 2 | 18 / 2 | 15 / 2 |
+| **Spite** | Vars / OnPlay / Upgrade | Dmg 5, Repeat 2 / Hit 1-2x based on HP loss / +1 Repeat | Dmg 5, Repeat 2 / Hit 1-2x based on HP loss / +1 Repeat | Dmg 6, Cards 1 / Deal dmg; draw 1 if took damage / +3 Dmg |
+| **Stoke** | Keywords / OnPlay / Upgrade | None / Exhaust hand, draw new random cards / None | None / Exhaust hand, draw new random cards / None | Exhaust / Exhaust hand, draw same count / -1 Cost |
+| **Tremble** | Vulnerable / Keywords | 3 / Exhaust | 3 / Exhaust | 2 / None |
 
 ### NECROBINDER
 
-| Card | Property | Current | v0.99.1 |
-|------|----------|---------|---------|
-| **Banshee's Cry** | Cost / Upgrade | 9 / -2 Cost | **6 / +6 Damage** |
-| **Borrowed Time** | Keywords / OnPlay / Upgrade | None / Gain energy + cards cost +1 / None | **None / Apply Doom + gain energy / +1 Energy** |
-| **Danse Macabre** | Power / Upgrade | 4 / +2 | **3 / +1** |
-| **Debilitate** | Damage | 10 | **7** |
-| **Defy** | Upgrade | +3 Block | **+1 Block, +1 Weak** |
-| **Dirge** | Keywords | Exhaust | **None** |
-| **Grave Warden** | Souls / Hover / Upgrade | Unupgraded Souls / Soul (no upg param) / +3 Block | **Upgraded Souls if card upg / Soul (upg=true) / +2 Block** |
-| **Sculpting Strike** | Damage | 9 | **8** |
-| **Seance** | Cost / Hover / OnPlay / Upgrade | 1 / Show Soul / Transform draw pile to Soul / None | **0 / Show upgraded Soul / Transform draw pile to upgraded Soul / None** |
+| Card | Property | v0.107.1 (Current) | v0.103.2 | v0.99.1 |
+|------|----------|-------------------|----------|---------|
+| **Banshees Cry** | Cost / Upgrade | 9 / -2 Cost | 9 / -2 Cost | 6 / +6 Damage |
+| **Borrowed Time** | Keywords / OnPlay / Upgrade | None / Gain energy + cards cost +1 / None | None / Gain energy + cards cost +1 / None | None / Apply Doom + gain energy / +1 Energy |
+| **Danse Macabre** | Power / Upgrade | 4 / +2 | 4 / +2 | 3 / +1 |
+| **Debilitate** | Damage / Power | 10 / 2 | 10 / 3 | 7 / 3 |
+| **Defy** | Upgrade | +3 Block | +3 Block | +1 Block, +1 Weak |
+| **Dirge** | Keywords | Exhaust | Exhaust | None |
+| **Grave Warden** | Souls / Hover / Upgrade | Unupgraded Souls / Soul (no upg param) / +3 Block | Unupgraded Souls / Soul (no upg param) / +3 Block | Upgraded Souls if card upg / Soul (upg=true) / +2 Block |
+| **Sculpting Strike** | Damage | 9 | 9 | 8 |
+| **Seance** | Cost / Hover / OnPlay / Upgrade | 1 / Show Soul / Transform draw pile to Soul / None | 1 / Show Soul / Transform draw pile to Soul / None | 0 / Show upgraded Soul / Transform draw pile to upgraded Soul / None |
 
 ### REGENT
 
-| Card | Property | Current | v0.99.1 |
-|------|----------|---------|---------|
-| **Alignment** | Star Cost | 3 | **2** |
-| **Arsenal** | Upgrade | +Innate | **+1 ArsenalPower** |
-| **Begone** | Type / Target / Vars / OnPlay | Skill / Self / None / Transform to MinionStrike | **Attack / AnyEnemy / Dmg 4(+1) / Deal dmg, transform to MinionDiveBomb** |
-| **Bundle of Joy** | Cost | 1 | **2** |
-| **Celestial Might** | Upgrade | +1 Repeat | **+2 Damage** |
-| **Charge** | Transforms to | MinionStrike | **MinionDiveBomb** |
-| **Collision Course** | Damage / Upgrade | 11 / +4 | **9 / +3** |
-| **Falling Star** | Damage | 8 | **7** |
-| **Gather Light** | Block | 8 | **7** |
-| **Glitterstream** | Next Turn Block | 5 | **4** |
-| **Glow** | Cards / OnPlay | 1 / Gain stars + draw 1 + DrawCardsNextTurnPower | **2 / Gain stars + draw 2** |
-| **Grand Finale** | Damage / Upgrade | 60 / +15 | **50 / +10** |
-| **Guiding Star** | OnPlay | Deal dmg + draw immediately | **Deal dmg + DrawCardsNextTurnPower** |
-| **Heirloom Hammer** | Damage | 20 | **17** |
-| **I Am Invincible** | Block | 10 | **9** |
-| **Kingly Kick** | Damage / Upgrade | 27 / +8 | **24 / +6** |
-| **Kingly Punch** | Increase / Upgrade | 4 / +2 Dmg, +2 Incr | **3 / +2 Increase** |
-| **Minion Dive Bomb** | Cost | 0 | **1** |
-| **Minion Strike** | Damage | 6 | **7** |
-| **Parry** | ParryPower / Upgrade | 10 / +4 | **6 / +3** |
-| **Patter** | Block | 9 | **8** |
-| **Refine Blade** | Forge | 9 | **6** |
-| **Solar Strike** | Damage | 9 | **8** |
-| **Spoils of Battle** | Vars / OnPlay / Upgrade | Forge 5, Cards 2 / Forge + draw 2 / +3 Forge | **Forge 10 / Forge only / +5 Forge** |
-| **Sword Sage** | Power | No energy cost increase | **Add energy cost to SovereignBlade** |
-| **Void Form** | Keywords / Upgrade | Ethereal / Remove Ethereal | **None / +1 VoidFormPower** |
-| **Wrought in War** | Forge | 7 | **5** |
+| Card | Property | v0.107.1 (Current) | v0.103.2 | v0.99.1 |
+|------|----------|-------------------|----------|---------|
+| **Alignment** | Star Cost | 3 | 3 | 2 |
+| **Arsenal** | Upgrade | +Innate | +Innate | +1 ArsenalPower |
+| **Begone** | Type / Target / Vars / OnPlay | Skill / Self / None / Transform to MinionStrike | Skill / Self / None / Transform to MinionStrike | Attack / AnyEnemy / Dmg 4(+1) / Deal dmg, transform to MinionDiveBomb |
+| **Bundle Of Joy** | Cost | 1 | 1 | 2 |
+| **Celestial Might** | Upgrade | +1 Repeat |  | +2 Damage |
+| **Charge** | Transforms to | MinionStrike | MinionStrike | MinionDiveBomb |
+| **Collision Course** | Damage / Upgrade | 11 / +4 | 11 / +4 | 9 / +3 |
+| **Falling Star** | Damage | 8 | 8 | 7 |
+| **Gather Light** | Block | 8 |  | 7 |
+| **Glitterstream** | Next Turn Block | 5 | 5 | 4 |
+| **Glow** | Cards / OnPlay | 1 / Gain stars + draw 1 + DrawCardsNextTurnPower | 1 / Gain stars + draw 1 + DrawCardsNextTurnPower | 2 / Gain stars + draw 2 |
+| **Grand Finale** | Damage / Upgrade | 60 / +15 | 60 / +15 | 50 / +10 |
+| **Guiding Star** | OnPlay | Deal dmg + draw immediately |  | Deal dmg + DrawCardsNextTurnPower |
+| **Heirloom Hammer** | Damage | 20 | 20 | 17 |
+| **I Am Invincible** | Block | 10 | 10 | 9 |
+| **Kingly Kick** | Damage / Upgrade | 27 / +8 |  | 24 / +6 |
+| **Kingly Punch** | Increase / Upgrade | 4 / +2 Dmg, +2 Incr |  | 3 / +2 Increase |
+| **Minion Dive Bomb** | Cost | 0 | 0 | 1 |
+| **Minion Strike** | Damage | 6 | 6 | 7 |
+| **Parry** | ParryPower / Upgrade | 10 / +4 | 10 / +4 | 6 / +3 |
+| **Patter** | Block | 8 | 9 | 8 |
+| **Refine Blade** | Forge | 9 | 9 | 6 |
+| **Solar Strike** | Damage | 9 | 9 | 8 |
+| **Spoils Of Battle** | Vars / OnPlay / Upgrade | Forge 5, Cards 2 / Forge + draw 2 / +3 Forge | Forge 5, Cards 2 / Forge + draw 2 / +3 Forge | Forge 10 / Forge only / +5 Forge |
+| **Sword Sage** | Power | No energy cost increase | No energy cost increase | Add energy cost to SovereignBlade |
+| **Void Form** | Keywords / Upgrade | Ethereal / Remove Ethereal | Ethereal / Remove Ethereal | None / +1 VoidFormPower |
+| **Wrought In War** | Forge | 7 | 7 | 5 |
 
 ### SILENT
 
-| Card | Property | Current | v0.99.1 |
-|------|----------|---------|---------|
-| **Acrobatics** | Rarity | Uncommon | **Common** |
-| **Anticipate** | Dexterity / Upgrade | 2 / +1 | **3 / +2** |
-| **Blade of Ink** | Vars / OnPlay / Upgrade | Shivs 2(+1) with Inky / Create Shivs / +1 Shiv | **Strength 2(+1) / Apply BladeOfInkPower / +1 Str** |
-| **Corrosive Wave** | Poison | 2 | **3** |
-| **Flick Flack** | Damage | 6 | **7** |
-| **Follow Through** | Vars / Target / OnPlay / Upgrade | Dmg 7, CardCount 5 / AnyEnemy / Hit 1-2x / +2 Dmg | **Dmg 6, Weak 1 / AllEnemies / Aoe + Weak if last was skill / +2 Dmg, +1 Weak** |
-| **Leading Strike** | Shivs / Damage | 2 / 3 | **1 / 7** |
-| **Memento Mori** | CalculationBase | 9 | **8** |
-| **Pinpoint** | Damage / Upgrade | 15 / +4 | **17 / +5** |
-| **Serpent Form** | Upgrade | +2 Power | **+1 Power** |
-| **Skewer** | Damage | 8 | **7** |
-| **Speedster** | Upgrade | +Innate | **+1 SpeedsterPower** |
-| **Untouchable** | Block / Upgrade | 6 / +2 | **9 / +3** |
+| Card | Property | v0.107.1 (Current) | v0.103.2 | v0.99.1 |
+|------|----------|-------------------|----------|---------|
+| **Acrobatics** | Rarity | Uncommon | Uncommon | Common |
+| **Anticipate** | Dexterity / Upgrade | 2 / +1 | 2 / +1 | 3 / +2 |
+| **Blade Of Ink** | Vars / OnPlay / Upgrade | Shivs 2(+1) with Inky / Create Shivs / +1 Shiv | Shivs 2(+1) with Inky / Create Shivs / +1 Shiv | Strength 2(+1) / Apply BladeOfInkPower / +1 Str |
+| **Corrosive Wave** | Poison | 2 | 2 | 3 |
+| **Flick Flack** | Damage | 6 | 6 | 7 |
+| **Follow Through** | Vars / Target / OnPlay / Upgrade | Dmg 7, CardCount 5 / AnyEnemy / Hit 1-2x / +2 Dmg | Dmg 7, CardCount 5 / AnyEnemy / Hit 1-2x / +2 Dmg | Dmg 6, Weak 1 / AllEnemies / Aoe + Weak if last was skill / +2 Dmg, +1 Weak |
+| **Leading Strike** | Shivs / Damage | 2 / 3 | 2 / 3 | 1 / 7 |
+| **Memento Mori** | CalculationBase | 9 | 9 | 8 |
+| **Pinpoint** | Damage / Upgrade | 15 / +4 | 15 / +4 | 17 / +5 |
+| **Serpent Form** | Upgrade | +2 Power | +2 Power | +1 Power |
+| **Skewer** | Damage | 8 | 8 | 7 |
+| **Speedster** | Upgrade | +Innate | +Innate | +1 SpeedsterPower |
+| **Untouchable** | Block / Upgrade | 6 / +3 | 6 / +2 | 9 / +3 |
 
 ## Configuration
 
