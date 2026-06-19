@@ -7,15 +7,25 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace RevertAnthony;
 
-// Patter v0.99.1 vs current
+// Patter v0.99.1/v0.103.2 vs current
 // v0.99.1: Block 8, Vigor 2
-// Current:  Block 9, Vigor 2
+// v0.103.2: Block 9, Vigor 2
+// v0.107.1: Block 8, Vigor 2
 
 [HarmonyPatch(typeof(Patter), "get_CanonicalVars")]
 static class Patter_CanonicalVars_Patch
 {
     static bool Prefix(ref IEnumerable<DynamicVar> __result)
     {
+        if (RevertAnthony.IsVersion("patter", "v0.103.2"))
+        {
+            __result = new DynamicVar[]
+            {
+                new BlockVar(9m, ValueProp.Move),
+                new PowerVar<VigorPower>(2m),
+            };
+            return false;
+        }
         if (RevertAnthony.IsVersion("patter", "v0.99.1"))
         {
             __result = new DynamicVar[]

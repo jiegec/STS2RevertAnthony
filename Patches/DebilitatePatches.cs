@@ -7,15 +7,25 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace RevertAnthony;
 
-// Debilitate v0.99.1 vs current
-// v0.99.1:  Damage 7, DebilitatePower 3
-// Current: Damage 10, DebilitatePower 3
+// Debilitate v0.99.1/v0.103.2 vs current
+// v0.99.1: Damage 7, DebilitatePower 3
+// v0.103.2: Damage 10, DebilitatePower 3
+// v0.107.1: Damage 10, DebilitatePower 2
 
 [HarmonyPatch(typeof(Debilitate), "get_CanonicalVars")]
 static class Debilitate_CanonicalVars_Patch
 {
     static bool Prefix(ref IEnumerable<DynamicVar> __result)
     {
+        if (RevertAnthony.IsVersion("debilitate", "v0.103.2"))
+        {
+            __result = new DynamicVar[]
+            {
+                new DamageVar(10m, ValueProp.Move),
+                new PowerVar<DebilitatePower>(3m),
+            };
+            return false;
+        }
         if (RevertAnthony.IsVersion("debilitate", "v0.99.1"))
         {
             __result = new DynamicVar[]
