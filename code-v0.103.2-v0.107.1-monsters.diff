@@ -1,7 +1,7 @@
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Aeonglass.cs latest/MegaCrit/Sts2/Core/Models/monsters/Aeonglass.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Aeonglass.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Aeonglass.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Aeonglass.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Aeonglass.cs
-@@ -0,0 +1,163 @@
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Aeonglass.cs
+@@ -0,0 +1,167 @@
 +using System.Collections.Generic;
 +using System.Threading.Tasks;
 +using MegaCrit.Sts2.Core.Audio;
@@ -37,11 +37,11 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Aeonglass.cs latest/
 +
 +	private int EbbDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 32, 26);
 +
++	private int EbbBlock => 33;
++
 +	private int EyeLasersDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 12, 11);
 +
 +	private int EyeLasersRepeat => 2;
-+
-+	private int IncreasingIntensityBlock => 33;
 +
 +	private int IncreasingIntensityBaseStrength => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 4, 3);
 +
@@ -60,7 +60,7 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Aeonglass.cs latest/
 +		}
 +	}
 +
-+	private int WitherUpgradeCount
++	public int WitherUpgradeCount
 +	{
 +		get
 +		{
@@ -101,9 +101,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Aeonglass.cs latest/
 +	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
 +	{
 +		List<MonsterState> list = new List<MonsterState>();
-+		MoveState moveState = new MoveState("EBB_MOVE", EbbMove, new SingleAttackIntent(EbbDamage), new DebuffIntent());
++		MoveState moveState = new MoveState("EBB_MOVE", EbbMove, new SingleAttackIntent(EbbDamage), new DefendIntent());
 +		MoveState moveState2 = new MoveState("EYE_LASERS_MOVE", EyeLasersMove, new MultiAttackIntent(EyeLasersDamage, EyeLasersRepeat));
-+		MoveState moveState3 = new MoveState("INCREASING_INTENSITY_MOVE", IncreasingIntensityMove, new StatusIntent(WitherAmount), new BuffIntent(), new DefendIntent());
++		MoveState moveState3 = new MoveState("INCREASING_INTENSITY_MOVE", IncreasingIntensityMove, new StatusIntent(WitherAmount), new BuffIntent());
 +		moveState.FollowUpState = moveState2;
 +		moveState2.FollowUpState = moveState3;
 +		moveState3.FollowUpState = moveState;
@@ -118,7 +118,7 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Aeonglass.cs latest/
 +		await DamageCmd.Attack(EbbDamage).FromMonster(this).WithAttackerAnim("Attack", 0.15f)
 +			.WithHitFx("vfx/vfx_attack_blunt")
 +			.Execute(null);
-+		await PowerCmd.Apply<EbbPower>(new ThrowingPlayerChoiceContext(), targets, 3m, base.Creature, null);
++		await CreatureCmd.GainBlock(base.Creature, EbbBlock, ValueProp.Move, null);
 +	}
 +
 +	private async Task EyeLasersMove(IReadOnlyList<Creature> targets)
@@ -149,7 +149,6 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Aeonglass.cs latest/
 +		await CardPileCmd.AddToCombatAndPreview<Wither>(targets, PileType.Discard, WitherAmount, null);
 +		await PowerCmd.Apply<StrengthPower>(new ThrowingPlayerChoiceContext(), base.Creature, IncreasingIntensityTotalStrength, base.Creature, null);
 +		AdditionalStrength++;
-+		await CreatureCmd.GainBlock(base.Creature, IncreasingIntensityBlock, ValueProp.Move, null);
 +	}
 +
 +	public override Task AfterCardGeneratedForCombat(CardModel card, Player? creator)
@@ -158,16 +157,21 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Aeonglass.cs latest/
 +		{
 +			return Task.CompletedTask;
 +		}
++		MatchWitherToUpgradeCount(wither);
++		return Task.CompletedTask;
++	}
++
++	public void MatchWitherToUpgradeCount(Wither wither)
++	{
 +		for (int i = 0; i < WitherUpgradeCount; i++)
 +		{
 +			wither.FakeUpgrade();
 +		}
-+		return Task.CompletedTask;
 +	}
 +}
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/AssassinRubyRaider.cs latest/MegaCrit/Sts2/Core/Models/monsters/AssassinRubyRaider.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/AssassinRubyRaider.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/AssassinRubyRaider.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/AssassinRubyRaider.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/AssassinRubyRaider.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/AssassinRubyRaider.cs
 @@ -9,21 +9,21 @@
  using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
  
@@ -191,9 +195,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/AssassinRubyRaider.c
  		moveState.FollowUpState = moveState;
  		list.Add(moveState);
  		return new MonsterMoveStateMachine(list, moveState);
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/AxeRubyRaider.cs latest/MegaCrit/Sts2/Core/Models/monsters/AxeRubyRaider.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/AxeRubyRaider.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/AxeRubyRaider.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/AxeRubyRaider.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/AxeRubyRaider.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/AxeRubyRaider.cs
 @@ -6,20 +6,24 @@
  using MegaCrit.Sts2.Core.Entities.Creatures;
  using MegaCrit.Sts2.Core.Helpers;
@@ -241,9 +245,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/AxeRubyRaider.cs lat
 +		return false;
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Axebot.cs latest/MegaCrit/Sts2/Core/Models/monsters/Axebot.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Axebot.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Axebot.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Axebot.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Axebot.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Axebot.cs
 @@ -1,57 +1,57 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -406,9 +410,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Axebot.cs latest/Meg
  		AnimState animState4 = new AnimState("sharpen");
  		AnimState animState5 = new AnimState("respawn");
  		AnimState animState6 = new AnimState("hurt");
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BattleFriendV1.cs latest/MegaCrit/Sts2/Core/Models/monsters/BattleFriendV1.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BattleFriendV1.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/BattleFriendV1.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BattleFriendV1.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/BattleFriendV1.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/BattleFriendV1.cs
 @@ -1,16 +1,17 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -450,9 +454,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BattleFriendV1.cs la
  		AnimState nextState = new AnimState("die_loop", isLooping: true);
  		animState2.NextState = animState;
  		animState3.NextState = nextState;
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BattleFriendV2.cs latest/MegaCrit/Sts2/Core/Models/monsters/BattleFriendV2.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BattleFriendV2.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/BattleFriendV2.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BattleFriendV2.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/BattleFriendV2.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/BattleFriendV2.cs
 @@ -1,16 +1,17 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -494,9 +498,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BattleFriendV2.cs la
  		AnimState nextState = new AnimState("die_loop", isLooping: true);
  		animState2.NextState = animState;
  		animState3.NextState = nextState;
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BattleFriendV3.cs latest/MegaCrit/Sts2/Core/Models/monsters/BattleFriendV3.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BattleFriendV3.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/BattleFriendV3.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BattleFriendV3.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/BattleFriendV3.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/BattleFriendV3.cs
 @@ -1,16 +1,17 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -538,9 +542,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BattleFriendV3.cs la
  		AnimState nextState = new AnimState("die_loop", isLooping: true);
  		animState2.NextState = animState;
  		animState3.NextState = nextState;
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BowlbugNectar.cs latest/MegaCrit/Sts2/Core/Models/monsters/BowlbugNectar.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BowlbugNectar.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/BowlbugNectar.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BowlbugNectar.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/BowlbugNectar.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/BowlbugNectar.cs
 @@ -1,18 +1,19 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -584,9 +588,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BowlbugNectar.cs lat
  		AnimState animState4 = new AnimState("attack");
  		AnimState animState5 = new AnimState("hurt");
  		AnimState state = new AnimState("die");
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BowlbugRock.cs latest/MegaCrit/Sts2/Core/Models/monsters/BowlbugRock.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BowlbugRock.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/BowlbugRock.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BowlbugRock.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/BowlbugRock.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/BowlbugRock.cs
 @@ -1,30 +1,34 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -716,9 +720,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BowlbugRock.cs lates
 +		return list;
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BowlbugSilk.cs latest/MegaCrit/Sts2/Core/Models/monsters/BowlbugSilk.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BowlbugSilk.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/BowlbugSilk.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BowlbugSilk.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/BowlbugSilk.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/BowlbugSilk.cs
 @@ -1,18 +1,19 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -809,9 +813,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BowlbugSilk.cs lates
  		AnimState animState4 = new AnimState("hurt");
  		AnimState state = new AnimState("die");
  		animState2.NextState = animState;
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BruteRubyRaider.cs latest/MegaCrit/Sts2/Core/Models/monsters/BruteRubyRaider.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BruteRubyRaider.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/BruteRubyRaider.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BruteRubyRaider.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/BruteRubyRaider.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/BruteRubyRaider.cs
 @@ -1,25 +1,28 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -861,9 +865,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BruteRubyRaider.cs l
 +		return moveStateId != "ROAR_MOVE";
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BygoneEffigy.cs latest/MegaCrit/Sts2/Core/Models/monsters/BygoneEffigy.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BygoneEffigy.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/BygoneEffigy.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BygoneEffigy.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/BygoneEffigy.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/BygoneEffigy.cs
 @@ -1,19 +1,20 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -973,9 +977,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/BygoneEffigy.cs late
  		await Cmd.Wait(0.25f);
  	}
  
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Byrdonis.cs latest/MegaCrit/Sts2/Core/Models/monsters/Byrdonis.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Byrdonis.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Byrdonis.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Byrdonis.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Byrdonis.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Byrdonis.cs
 @@ -1,17 +1,18 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -1018,9 +1022,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Byrdonis.cs latest/M
  		{
  			FollowUpState = moveState
  		});
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/CalcifiedCultist.cs latest/MegaCrit/Sts2/Core/Models/monsters/CalcifiedCultist.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/CalcifiedCultist.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/CalcifiedCultist.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/CalcifiedCultist.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/CalcifiedCultist.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/CalcifiedCultist.cs
 @@ -1,19 +1,20 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -1065,9 +1069,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/CalcifiedCultist.cs 
  			.Execute(null);
  	}
  
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/CeremonialBeast.cs latest/MegaCrit/Sts2/Core/Models/monsters/CeremonialBeast.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/CeremonialBeast.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/CeremonialBeast.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/CeremonialBeast.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/CeremonialBeast.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/CeremonialBeast.cs
 @@ -1,57 +1,60 @@
 -using System;
  using System.Collections.Generic;
@@ -1310,9 +1314,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/CeremonialBeast.cs l
  		return list;
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Chomper.cs latest/MegaCrit/Sts2/Core/Models/monsters/Chomper.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Chomper.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Chomper.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Chomper.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Chomper.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Chomper.cs
 @@ -1,16 +1,17 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -1369,9 +1373,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Chomper.cs latest/Me
 +		await CardPileCmd.AddToCombatAndPreview<Dazed>(targets, PileType.Discard, 3, null);
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/CorpseSlug.cs latest/MegaCrit/Sts2/Core/Models/monsters/CorpseSlug.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/CorpseSlug.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/CorpseSlug.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/CorpseSlug.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/CorpseSlug.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/CorpseSlug.cs
 @@ -1,31 +1,34 @@
  using System.Collections.Generic;
  using System.Linq;
@@ -1519,9 +1523,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/CorpseSlug.cs latest
  		return creatureAnimator;
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Crusher.cs latest/MegaCrit/Sts2/Core/Models/monsters/Crusher.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Crusher.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Crusher.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Crusher.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Crusher.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Crusher.cs
 @@ -1,35 +1,51 @@
  using System;
  using System.Collections.Generic;
@@ -1701,9 +1705,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Crusher.cs latest/Me
  		await CreatureCmd.GainBlock(base.Creature, 18m, ValueProp.Move, null);
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/CubexConstruct.cs latest/MegaCrit/Sts2/Core/Models/monsters/CubexConstruct.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/CubexConstruct.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/CubexConstruct.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/CubexConstruct.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/CubexConstruct.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/CubexConstruct.cs
 @@ -1,190 +1,200 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -1960,9 +1964,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/CubexConstruct.cs la
  		return creatureAnimator;
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/DampCultist.cs latest/MegaCrit/Sts2/Core/Models/monsters/DampCultist.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/DampCultist.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/DampCultist.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/DampCultist.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/DampCultist.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/DampCultist.cs
 @@ -1,19 +1,20 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -2007,9 +2011,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/DampCultist.cs lates
  			.Execute(null);
  	}
  
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/DecimillipedeSegment.cs latest/MegaCrit/Sts2/Core/Models/monsters/DecimillipedeSegment.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/DecimillipedeSegment.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/DecimillipedeSegment.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/DecimillipedeSegment.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/DecimillipedeSegment.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/DecimillipedeSegment.cs
 @@ -13,33 +13,34 @@
  using MegaCrit.Sts2.Core.Entities.Players;
  using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -2214,15 +2218,19 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/DecimillipedeSegment
 -	protected abstract void SegmentAttack();
 +	public abstract void SegmentAttack();
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/DecimillipedeSegmentBack.cs latest/MegaCrit/Sts2/Core/Models/monsters/DecimillipedeSegmentBack.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/DecimillipedeSegmentBack.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/DecimillipedeSegmentBack.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/DecimillipedeSegmentBack.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/DecimillipedeSegmentBack.cs
-@@ -1,12 +1,11 @@
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/DecimillipedeSegmentBack.cs
+@@ -1,12 +1,15 @@
  using MegaCrit.Sts2.Core.Nodes.Animation;
 -using MegaCrit.Sts2.Core.Nodes.Rooms;
  
  namespace MegaCrit.Sts2.Core.Models.Monsters;
  
++/// <summary>
++/// Monster class exists to connect this to the correct monster visual scene.
++/// All logic lives in the <see cref="T:MegaCrit.Sts2.Core.Models.Monsters.DecimillipedeSegment" />.
++/// </summary>
  public sealed class DecimillipedeSegmentBack : DecimillipedeSegment
  {
 -	protected override void SegmentAttack()
@@ -2232,15 +2240,19 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/DecimillipedeSegment
 +		base.Creature.GetCreatureNode()?.GetSpecialNode<NDecimillipedeSegmentDriver>("%Visuals/SegmentDriver")?.AttackShake();
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/DecimillipedeSegmentFront.cs latest/MegaCrit/Sts2/Core/Models/monsters/DecimillipedeSegmentFront.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/DecimillipedeSegmentFront.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/DecimillipedeSegmentFront.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/DecimillipedeSegmentFront.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/DecimillipedeSegmentFront.cs
-@@ -1,12 +1,11 @@
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/DecimillipedeSegmentFront.cs
+@@ -1,12 +1,15 @@
  using MegaCrit.Sts2.Core.Nodes.Animation;
 -using MegaCrit.Sts2.Core.Nodes.Rooms;
  
  namespace MegaCrit.Sts2.Core.Models.Monsters;
  
++/// <summary>
++/// Monster class exists to connect this to the correct monster visual scene.
++/// All logic lives in the <see cref="T:MegaCrit.Sts2.Core.Models.Monsters.DecimillipedeSegment" />.
++/// </summary>
  public sealed class DecimillipedeSegmentFront : DecimillipedeSegment
  {
 -	protected override void SegmentAttack()
@@ -2250,16 +2262,20 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/DecimillipedeSegment
 +		base.Creature.GetCreatureNode()?.GetSpecialNode<NDecimillipedeSegmentDriver>("%Visuals/SegmentDriver")?.AttackShake();
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/DecimillipedeSegmentMiddle.cs latest/MegaCrit/Sts2/Core/Models/monsters/DecimillipedeSegmentMiddle.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/DecimillipedeSegmentMiddle.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/DecimillipedeSegmentMiddle.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/DecimillipedeSegmentMiddle.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/DecimillipedeSegmentMiddle.cs
-@@ -1,15 +1,14 @@
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/DecimillipedeSegmentMiddle.cs
+@@ -1,15 +1,18 @@
  using MegaCrit.Sts2.Core.Nodes.Animation;
  using MegaCrit.Sts2.Core.Nodes.Combat;
 -using MegaCrit.Sts2.Core.Nodes.Rooms;
  
  namespace MegaCrit.Sts2.Core.Models.Monsters;
  
++/// <summary>
++/// Monster class exists to connect this to the correct monster visual scene.
++/// All logic lives in the <see cref="T:MegaCrit.Sts2.Core.Models.Monsters.DecimillipedeSegment" />.
++/// </summary>
  public sealed class DecimillipedeSegmentMiddle : DecimillipedeSegment
  {
 -	protected override void SegmentAttack()
@@ -2273,9 +2289,35 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/DecimillipedeSegment
 +		creatureNode?.GetSpecialNode<NDecimillipedeSegmentDriver>("%Visuals/LeftSegmentDriver")?.AttackShake();
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/DevotedSculptor.cs latest/MegaCrit/Sts2/Core/Models/monsters/DevotedSculptor.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/DeprecatedMonster.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/DeprecatedMonster.cs
+--- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/DeprecatedMonster.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/DeprecatedMonster.cs
+@@ -1,19 +1,22 @@
+ using System;
+ using System.Collections.Generic;
+ using System.Threading.Tasks;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
++/// <summary>
++/// Represents a monster that has been removed from the game. Mostly used for the run history.
++/// </summary>
+ public sealed class DeprecatedMonster : MonsterModel
+ {
+ 	public override int MinInitialHp => 0;
+ 
+ 	public override int MaxInitialHp => 0;
+ 
+ 	public override bool HasDeathSfx => false;
+ 
+ 	public override IEnumerable<string> AssetPaths => Array.Empty<string>();
+ 
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/DevotedSculptor.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/DevotedSculptor.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/DevotedSculptor.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/DevotedSculptor.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/DevotedSculptor.cs
 @@ -1,16 +1,17 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -2317,9 +2359,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/DevotedSculptor.cs l
  			.Execute(null);
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Doormaker.cs latest/MegaCrit/Sts2/Core/Models/monsters/Doormaker.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Doormaker.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Doormaker.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Doormaker.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Doormaker.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Doormaker.cs
 @@ -1,209 +0,0 @@
 -using System.Collections.Generic;
 -using System.Linq;
@@ -2530,9 +2572,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Doormaker.cs latest/
 -		return Task.CompletedTask;
 -	}
 -}
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Entomancer.cs latest/MegaCrit/Sts2/Core/Models/monsters/Entomancer.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Entomancer.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Entomancer.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Entomancer.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Entomancer.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Entomancer.cs
 @@ -1,18 +1,19 @@
  using System.Collections.Generic;
  using System.Linq;
@@ -2606,9 +2648,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Entomancer.cs latest
  			.OnlyPlayAnimOnce()
  			.WithAttackerFx(null, "event:/sfx/enemy/enemy_attacks/entomancer/entomancer_attack_ranged")
  			.WithHitFx("vfx/vfx_attack_slash")
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Exoskeleton.cs latest/MegaCrit/Sts2/Core/Models/monsters/Exoskeleton.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Exoskeleton.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Exoskeleton.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Exoskeleton.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Exoskeleton.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Exoskeleton.cs
 @@ -1,18 +1,19 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -2683,9 +2725,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Exoskeleton.cs lates
  		AnimState animState3 = new AnimState("cast");
  		AnimState animState4 = new AnimState("buff");
  		AnimState animState5 = new AnimState("attack");
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/EyeWithTeeth.cs latest/MegaCrit/Sts2/Core/Models/monsters/EyeWithTeeth.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/EyeWithTeeth.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/EyeWithTeeth.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/EyeWithTeeth.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/EyeWithTeeth.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/EyeWithTeeth.cs
 @@ -1,19 +1,20 @@
  using System.Collections.Generic;
  using System.Linq;
@@ -2748,9 +2790,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/EyeWithTeeth.cs late
  		animState2.NextState = animState;
  		CreatureAnimator creatureAnimator = new CreatureAnimator(animState, controller);
  		creatureAnimator.AddAnyState("Attack", animState2);
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Fabricator.cs latest/MegaCrit/Sts2/Core/Models/monsters/Fabricator.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Fabricator.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Fabricator.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Fabricator.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Fabricator.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Fabricator.cs
 @@ -1,27 +1,34 @@
  using System.Collections.Generic;
  using System.Linq;
@@ -2857,9 +2899,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Fabricator.cs latest
 +		return moveStateId != "FABRICATING_STRIKE_MOVE";
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/FakeMerchantMonster.cs latest/MegaCrit/Sts2/Core/Models/monsters/FakeMerchantMonster.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/FakeMerchantMonster.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/FakeMerchantMonster.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/FakeMerchantMonster.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/FakeMerchantMonster.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/FakeMerchantMonster.cs
 @@ -1,18 +1,19 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -2934,9 +2976,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/FakeMerchantMonster.
  		return table.GetLocStringsWithPrefix(base.Id.Entry + ".moves." + moveId + ".speakLine");
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/FlailKnight.cs latest/MegaCrit/Sts2/Core/Models/monsters/FlailKnight.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/FlailKnight.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/FlailKnight.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/FlailKnight.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/FlailKnight.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/FlailKnight.cs
 @@ -1,34 +1,33 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -3033,9 +3075,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/FlailKnight.cs lates
  		return creatureAnimator;
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Flyconid.cs latest/MegaCrit/Sts2/Core/Models/monsters/Flyconid.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Flyconid.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Flyconid.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Flyconid.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Flyconid.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Flyconid.cs
 @@ -1,23 +1,22 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -3107,9 +3149,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Flyconid.cs latest/M
  			.Execute(null);
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Fogmog.cs latest/MegaCrit/Sts2/Core/Models/monsters/Fogmog.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Fogmog.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Fogmog.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Fogmog.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Fogmog.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Fogmog.cs
 @@ -1,28 +1,33 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -3202,9 +3244,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Fogmog.cs latest/Meg
 +		return false;
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/FossilStalker.cs latest/MegaCrit/Sts2/Core/Models/monsters/FossilStalker.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/FossilStalker.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/FossilStalker.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/FossilStalker.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/FossilStalker.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/FossilStalker.cs
 @@ -1,55 +1,58 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -3288,9 +3330,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/FossilStalker.cs lat
  			.Execute(null);
  	}
  
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/FrogKnight.cs latest/MegaCrit/Sts2/Core/Models/monsters/FrogKnight.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/FrogKnight.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/FrogKnight.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/FrogKnight.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/FrogKnight.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/FrogKnight.cs
 @@ -1,18 +1,19 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -3375,9 +3417,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/FrogKnight.cs latest
  			.WithHitFx("vfx/vfx_attack_slash")
  			.Execute(null);
  		await Cmd.Wait(1f);
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/FuzzyWurmCrawler.cs latest/MegaCrit/Sts2/Core/Models/monsters/FuzzyWurmCrawler.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/FuzzyWurmCrawler.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/FuzzyWurmCrawler.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/FuzzyWurmCrawler.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/FuzzyWurmCrawler.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/FuzzyWurmCrawler.cs
 @@ -1,31 +1,34 @@
  using System.Collections.Generic;
  using System.Linq;
@@ -3483,9 +3525,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/FuzzyWurmCrawler.cs 
 +		return moveStateId != "FIRST_ACID_GOOP";
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/GasBomb.cs latest/MegaCrit/Sts2/Core/Models/monsters/GasBomb.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/GasBomb.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/GasBomb.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/GasBomb.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/GasBomb.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/GasBomb.cs
 @@ -1,20 +1,21 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -3531,9 +3573,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/GasBomb.cs latest/Me
  		return new MonsterMoveStateMachine(list, moveState);
  	}
  
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/GlobeHead.cs latest/MegaCrit/Sts2/Core/Models/monsters/GlobeHead.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/GlobeHead.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/GlobeHead.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/GlobeHead.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/GlobeHead.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/GlobeHead.cs
 @@ -1,25 +1,28 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -3615,9 +3657,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/GlobeHead.cs latest/
 +		return moveStateId != "GALVANIC_BURST";
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/GremlinMerc.cs latest/MegaCrit/Sts2/Core/Models/monsters/GremlinMerc.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/GremlinMerc.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/GremlinMerc.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/GremlinMerc.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/GremlinMerc.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/GremlinMerc.cs
 @@ -1,19 +1,20 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -3711,9 +3753,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/GremlinMerc.cs lates
  		AnimState animState4 = new AnimState("hurt");
  		AnimState state = new AnimState("die");
  		animState2.NextState = animState;
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/HauntedShip.cs latest/MegaCrit/Sts2/Core/Models/monsters/HauntedShip.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/HauntedShip.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/HauntedShip.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/HauntedShip.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/HauntedShip.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/HauntedShip.cs
 @@ -1,76 +1,65 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -3827,9 +3869,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/HauntedShip.cs lates
  		AnimState animState4 = new AnimState("attack");
  		AnimState animState5 = new AnimState("hurt");
  		AnimState state = new AnimState("die");
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/HunterKiller.cs latest/MegaCrit/Sts2/Core/Models/monsters/HunterKiller.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/HunterKiller.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/HunterKiller.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/HunterKiller.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/HunterKiller.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/HunterKiller.cs
 @@ -1,17 +1,18 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -3872,9 +3914,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/HunterKiller.cs late
  			.Execute(null);
  	}
  
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/InfestedPrism.cs latest/MegaCrit/Sts2/Core/Models/monsters/InfestedPrism.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/InfestedPrism.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/InfestedPrism.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/InfestedPrism.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/InfestedPrism.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/InfestedPrism.cs
 @@ -1,18 +1,19 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -3989,9 +4031,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/InfestedPrism.cs lat
  		AnimState animState4 = new AnimState("attack_block");
  		AnimState animState5 = new AnimState("attack_double");
  		AnimState animState6 = new AnimState("hurt");
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Inklet.cs latest/MegaCrit/Sts2/Core/Models/monsters/Inklet.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Inklet.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Inklet.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Inklet.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Inklet.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Inklet.cs
 @@ -1,28 +1,31 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -4065,9 +4107,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Inklet.cs latest/Meg
 +		return moveStateId != "PIERCING_GAZE_MOVE";
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/KinFollower.cs latest/MegaCrit/Sts2/Core/Models/monsters/KinFollower.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/KinFollower.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/KinFollower.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/KinFollower.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/KinFollower.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/KinFollower.cs
 @@ -3,26 +3,26 @@
  using System.Linq;
  using System.Runtime.InteropServices;
@@ -4163,9 +4205,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/KinFollower.cs lates
  			.WithHitFx("vfx/vfx_attack_slash")
  			.OnlyPlayAnimOnce()
  			.Execute(null);
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/KinPriest.cs latest/MegaCrit/Sts2/Core/Models/monsters/KinPriest.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/KinPriest.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/KinPriest.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/KinPriest.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/KinPriest.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/KinPriest.cs
 @@ -38,22 +38,20 @@
  	private const string _soulBeamSfx = "event:/sfx/enemy/enemy_attacks/the_kin_priest/the_kin_priest_soul_beam";
  
@@ -4246,10 +4288,35 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/KinPriest.cs latest/
  		AnimState animState4 = new AnimState("attack_laser");
  		AnimState animState5 = new AnimState("hurt");
  		AnimState state = new AnimState("die");
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/KnowledgeDemon.cs latest/MegaCrit/Sts2/Core/Models/monsters/KnowledgeDemon.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/KnowledgeDemon.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/KnowledgeDemon.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/KnowledgeDemon.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/KnowledgeDemon.cs
-@@ -187,38 +187,38 @@
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/KnowledgeDemon.cs
+@@ -14,20 +14,24 @@
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+ using MegaCrit.Sts2.Core.Nodes.Audio;
+ using MegaCrit.Sts2.Core.Nodes.Vfx;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class KnowledgeDemon : MonsterModel
+ {
++	/// <summary>
++	/// For cards that specifically come from Knowledge Demon's Curse of Knowledge move.
++	/// Unlike normal cards, these have an immediate effect when chosen by the player.
++	/// </summary>
+ 	public interface IChoosable
+ 	{
+ 		Task OnChosen();
+ 	}
+ 
+ 	private const string _knowledgeDemonCustomTrackName = "knowledge_demon_progress";
+ 
+ 	private const string _clapSfx = "event:/sfx/enemy/enemy_attacks/knowledge_demon/knowledge_demon_clap";
+ 
+ 	private const string _flameSfx = "event:/sfx/enemy/enemy_attacks/knowledge_demon/knowledge_demon_flame";
+@@ -187,38 +191,38 @@
  	{
  		await DamageCmd.Attack(SlapDamage).FromMonster(this).WithAttackerAnim("MediumAttackTrigger", 0.5f)
  			.WithAttackerFx(null, "event:/sfx/enemy/enemy_attacks/knowledge_demon/knowledge_demon_slap")
@@ -4291,9 +4358,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/KnowledgeDemon.cs la
  		AnimState animState4 = new AnimState("attack_heavy");
  		AnimState animState5 = new AnimState("brain_rot");
  		AnimState animState6 = new AnimState("heal");
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/LagavulinMatriarch.cs latest/MegaCrit/Sts2/Core/Models/monsters/LagavulinMatriarch.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/LagavulinMatriarch.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/LagavulinMatriarch.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/LagavulinMatriarch.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/LagavulinMatriarch.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/LagavulinMatriarch.cs
 @@ -6,28 +6,29 @@
  using MegaCrit.Sts2.Core.Bindings.MegaSpine;
  using MegaCrit.Sts2.Core.Commands;
@@ -4489,9 +4556,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/LagavulinMatriarch.c
 +		return list;
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/LeafSlimeM.cs latest/MegaCrit/Sts2/Core/Models/monsters/LeafSlimeM.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/LeafSlimeM.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/LeafSlimeM.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/LeafSlimeM.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/LeafSlimeM.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/LeafSlimeM.cs
 @@ -4,21 +4,20 @@
  using MegaCrit.Sts2.Core.Audio;
  using MegaCrit.Sts2.Core.Commands;
@@ -4547,9 +4614,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/LeafSlimeM.cs latest
 +		await CardPileCmd.AddToCombatAndPreview<Slimed>(targets, PileType.Discard, 2, null);
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/LeafSlimeS.cs latest/MegaCrit/Sts2/Core/Models/monsters/LeafSlimeS.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/LeafSlimeS.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/LeafSlimeS.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/LeafSlimeS.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/LeafSlimeS.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/LeafSlimeS.cs
 @@ -21,21 +21,21 @@
  
  	public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 16, 15);
@@ -4588,9 +4655,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/LeafSlimeS.cs latest
 +		await CardPileCmd.AddToCombatAndPreview<Slimed>(targets, PileType.Discard, 1, null);
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/LivingFog.cs latest/MegaCrit/Sts2/Core/Models/monsters/LivingFog.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/LivingFog.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/LivingFog.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/LivingFog.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/LivingFog.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/LivingFog.cs
 @@ -1,20 +1,21 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -4652,9 +4719,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/LivingFog.cs latest/
  
  	private async Task SuperGasBlastMove(IReadOnlyList<Creature> targets)
  	{
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/LivingShield.cs latest/MegaCrit/Sts2/Core/Models/monsters/LivingShield.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/LivingShield.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/LivingShield.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/LivingShield.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/LivingShield.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/LivingShield.cs
 @@ -1,17 +1,18 @@
  using System.Collections.Generic;
  using System.Linq;
@@ -4717,9 +4784,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/LivingShield.cs late
  		return base.Creature.CombatState.GetTeammatesOf(base.Creature).Count((Creature c) => c.IsAlive && c != base.Creature);
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/LouseProgenitor.cs latest/MegaCrit/Sts2/Core/Models/monsters/LouseProgenitor.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/LouseProgenitor.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/LouseProgenitor.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/LouseProgenitor.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/LouseProgenitor.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/LouseProgenitor.cs
 @@ -1,18 +1,19 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -4795,9 +4862,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/LouseProgenitor.cs l
  			SfxCmd.Play("event:/sfx/enemy/enemy_attacks/giant_louse/giant_louse_uncurl");
  			await CreatureCmd.TriggerAnim(base.Creature, "Uncurl", 0.9f);
  			Curled = false;
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/MagiKnight.cs latest/MegaCrit/Sts2/Core/Models/monsters/MagiKnight.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/MagiKnight.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/MagiKnight.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/MagiKnight.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/MagiKnight.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/MagiKnight.cs
 @@ -1,36 +1,38 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -4941,9 +5008,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/MagiKnight.cs latest
 +		return moveStateId != "PREP_MOVE";
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Mawler.cs latest/MegaCrit/Sts2/Core/Models/monsters/Mawler.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Mawler.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Mawler.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Mawler.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Mawler.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Mawler.cs
 @@ -1,17 +1,18 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -4986,9 +5053,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Mawler.cs latest/Meg
  			.WithAttackerFx(null, AttackSfx)
  			.WithHitFx("vfx/vfx_attack_slash")
  			.Execute(null);
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/MechaKnight.cs latest/MegaCrit/Sts2/Core/Models/monsters/MechaKnight.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/MechaKnight.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/MechaKnight.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/MechaKnight.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/MechaKnight.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/MechaKnight.cs
 @@ -1,20 +1,21 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -5065,9 +5132,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/MechaKnight.cs lates
  		AnimState animState3 = new AnimState("attack_flame");
  		AnimState animState4 = new AnimState("attack_cleave");
  		AnimState animState5 = new AnimState("charge");
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Mocks/MockArtifactMonster.cs latest/MegaCrit/Sts2/Core/Models/monsters/Mocks/MockArtifactMonster.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Mocks/MockArtifactMonster.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Mocks/MockArtifactMonster.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Mocks/MockArtifactMonster.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Mocks/MockArtifactMonster.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Mocks/MockArtifactMonster.cs
 @@ -1,14 +1,15 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -5104,9 +5171,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Mocks/MockArtifactMo
  		return Task.CompletedTask;
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Mocks/MockAttackAndSummonMinionMonster.cs latest/MegaCrit/Sts2/Core/Models/monsters/Mocks/MockAttackAndSummonMinionMonster.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Mocks/MockAttackAndSummonMinionMonster.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Mocks/MockAttackAndSummonMinionMonster.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Mocks/MockAttackAndSummonMinionMonster.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Mocks/MockAttackAndSummonMinionMonster.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Mocks/MockAttackAndSummonMinionMonster.cs
 @@ -1,14 +1,15 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -5139,9 +5206,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Mocks/MockAttackAndS
 +		await PowerCmd.Apply<MinionPower>(new ThrowingPlayerChoiceContext(), target, 1m, base.Creature, null);
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Mocks/MockIntangibleMonster.cs latest/MegaCrit/Sts2/Core/Models/monsters/Mocks/MockIntangibleMonster.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Mocks/MockIntangibleMonster.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Mocks/MockIntangibleMonster.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Mocks/MockIntangibleMonster.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Mocks/MockIntangibleMonster.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Mocks/MockIntangibleMonster.cs
 @@ -1,14 +1,15 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -5178,9 +5245,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Mocks/MockIntangible
  		return Task.CompletedTask;
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Mocks/MockPlatingMonster.cs latest/MegaCrit/Sts2/Core/Models/monsters/Mocks/MockPlatingMonster.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Mocks/MockPlatingMonster.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Mocks/MockPlatingMonster.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Mocks/MockPlatingMonster.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Mocks/MockPlatingMonster.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Mocks/MockPlatingMonster.cs
 @@ -1,14 +1,15 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -5217,9 +5284,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Mocks/MockPlatingMon
  		return Task.CompletedTask;
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Mocks/MockReattachMonster.cs latest/MegaCrit/Sts2/Core/Models/monsters/Mocks/MockReattachMonster.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Mocks/MockReattachMonster.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Mocks/MockReattachMonster.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Mocks/MockReattachMonster.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Mocks/MockReattachMonster.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Mocks/MockReattachMonster.cs
 @@ -1,14 +1,15 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -5259,9 +5326,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Mocks/MockReattachMo
  		MoveState moveState2 = new MoveState("REATTACH_MOVE", ReattachMove, new HealIntent())
  		{
  			MustPerformOnceBeforeTransitioning = true,
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/MysteriousKnight.cs latest/MegaCrit/Sts2/Core/Models/monsters/MysteriousKnight.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/MysteriousKnight.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/MysteriousKnight.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/MysteriousKnight.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/MysteriousKnight.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/MysteriousKnight.cs
 @@ -1,15 +1,16 @@
  using System.Threading.Tasks;
  using MegaCrit.Sts2.Core.Commands;
@@ -5281,9 +5348,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/MysteriousKnight.cs 
 +		await PowerCmd.Apply<PlatingPower>(new ThrowingPlayerChoiceContext(), base.Creature, 6m, base.Creature, null);
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Myte.cs latest/MegaCrit/Sts2/Core/Models/monsters/Myte.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Myte.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Myte.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Myte.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Myte.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Myte.cs
 @@ -1,26 +1,26 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -5365,9 +5432,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Myte.cs latest/MegaC
  		AnimState animState4 = new AnimState("hurt");
  		AnimState state = new AnimState("die");
  		AnimState animState5 = new AnimState("suck");
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Nibbit.cs latest/MegaCrit/Sts2/Core/Models/monsters/Nibbit.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Nibbit.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Nibbit.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Nibbit.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Nibbit.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Nibbit.cs
 @@ -1,28 +1,31 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -5438,9 +5505,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Nibbit.cs latest/Meg
 +		return moveStateId != "SLICE_MOVE";
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Noisebot.cs latest/MegaCrit/Sts2/Core/Models/monsters/Noisebot.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Noisebot.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Noisebot.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Noisebot.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Noisebot.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Noisebot.cs
 @@ -51,22 +51,22 @@
  	private async Task NoiseMove(IReadOnlyList<Creature> targets)
  	{
@@ -5466,9 +5533,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Noisebot.cs latest/M
  		}
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Ovicopter.cs latest/MegaCrit/Sts2/Core/Models/monsters/Ovicopter.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Ovicopter.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Ovicopter.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Ovicopter.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Ovicopter.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Ovicopter.cs
 @@ -1,28 +1,31 @@
  using System.Collections.Generic;
  using System.Linq;
@@ -5575,9 +5642,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Ovicopter.cs latest/
 +		return moveStateId != "TENDERIZER_MOVE";
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/OwlMagistrate.cs latest/MegaCrit/Sts2/Core/Models/monsters/OwlMagistrate.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/OwlMagistrate.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/OwlMagistrate.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/OwlMagistrate.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/OwlMagistrate.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/OwlMagistrate.cs
 @@ -1,18 +1,19 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -5697,9 +5764,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/OwlMagistrate.cs lat
  		AnimState animState2 = new AnimState("attack_peck");
  		AnimState animState3 = new AnimState("hurt");
  		AnimState state = new AnimState("die");
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Parafright.cs latest/MegaCrit/Sts2/Core/Models/monsters/Parafright.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Parafright.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Parafright.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Parafright.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Parafright.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Parafright.cs
 @@ -1,18 +1,19 @@
  using System.Collections.Generic;
  using System.Linq;
@@ -5743,9 +5810,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Parafright.cs latest
  		list.Add(moveState);
  		return new MonsterMoveStateMachine(list, moveState);
  	}
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/PhantasmalGardener.cs latest/MegaCrit/Sts2/Core/Models/monsters/PhantasmalGardener.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/PhantasmalGardener.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/PhantasmalGardener.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/PhantasmalGardener.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/PhantasmalGardener.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/PhantasmalGardener.cs
 @@ -1,19 +1,20 @@
 -using System;
  using System.Collections.Generic;
@@ -5817,9 +5884,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/PhantasmalGardener.c
  		AnimState animState3 = new AnimState("attack");
  		AnimState animState4 = new AnimState("attack_multi");
  		AnimState animState5 = new AnimState("hurt_extended");
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/PhrogParasite.cs latest/MegaCrit/Sts2/Core/Models/monsters/PhrogParasite.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/PhrogParasite.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/PhrogParasite.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/PhrogParasite.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/PhrogParasite.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/PhrogParasite.cs
 @@ -1,24 +1,24 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -5888,9 +5955,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/PhrogParasite.cs lat
 +		await CardPileCmd.AddToCombatAndPreview<Infection>(targets, PileType.Discard, 3, null);
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/PunchConstruct.cs latest/MegaCrit/Sts2/Core/Models/monsters/PunchConstruct.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/PunchConstruct.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/PunchConstruct.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/PunchConstruct.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/PunchConstruct.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/PunchConstruct.cs
 @@ -1,32 +1,33 @@
  using System;
  using System.Collections.Generic;
@@ -6027,9 +6094,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/PunchConstruct.cs la
  		AnimState animState4 = new AnimState("attack");
  		AnimState animState5 = new AnimState("hurt");
  		AnimState state = new AnimState("die");
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Queen.cs latest/MegaCrit/Sts2/Core/Models/monsters/Queen.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Queen.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Queen.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Queen.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Queen.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Queen.cs
 @@ -14,20 +14,28 @@
  using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
  using MegaCrit.Sts2.Core.Nodes.Audio;
@@ -6194,9 +6261,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Queen.cs latest/Mega
 +		return false;
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Rocket.cs latest/MegaCrit/Sts2/Core/Models/monsters/Rocket.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Rocket.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Rocket.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Rocket.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Rocket.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Rocket.cs
 @@ -1,43 +1,61 @@
 +using System;
  using System.Collections.Generic;
@@ -6358,9 +6425,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Rocket.cs latest/Meg
  		await Background.PlayRightRecharge(0.5f);
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/ScrollOfBiting.cs latest/MegaCrit/Sts2/Core/Models/monsters/ScrollOfBiting.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/ScrollOfBiting.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/ScrollOfBiting.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/ScrollOfBiting.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/ScrollOfBiting.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/ScrollOfBiting.cs
 @@ -1,18 +1,19 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -6453,9 +6520,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/ScrollOfBiting.cs la
  		AnimState animState4 = new AnimState("attack_double");
  		AnimState animState5 = new AnimState("hurt");
  		AnimState state = new AnimState("die");
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Seapunk.cs latest/MegaCrit/Sts2/Core/Models/monsters/Seapunk.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Seapunk.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Seapunk.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Seapunk.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Seapunk.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Seapunk.cs
 @@ -1,18 +1,19 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -6499,9 +6566,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Seapunk.cs latest/Me
  		AnimState animState4 = new AnimState("attack");
  		AnimState animState5 = new AnimState("hurt");
  		AnimState state = new AnimState("die");
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SewerClam.cs latest/MegaCrit/Sts2/Core/Models/monsters/SewerClam.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SewerClam.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/SewerClam.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SewerClam.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/SewerClam.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/SewerClam.cs
 @@ -1,18 +1,19 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -6564,9 +6631,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SewerClam.cs latest/
  			.Execute(null);
  	}
  
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/ShrinkerBeetle.cs latest/MegaCrit/Sts2/Core/Models/monsters/ShrinkerBeetle.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/ShrinkerBeetle.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/ShrinkerBeetle.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/ShrinkerBeetle.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/ShrinkerBeetle.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/ShrinkerBeetle.cs
 @@ -1,27 +1,30 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -6634,9 +6701,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/ShrinkerBeetle.cs la
 +		return moveStateId != "STOMP_MOVE";
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SkulkingColony.cs latest/MegaCrit/Sts2/Core/Models/monsters/SkulkingColony.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SkulkingColony.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/SkulkingColony.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SkulkingColony.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/SkulkingColony.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/SkulkingColony.cs
 @@ -1,97 +1,128 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -6692,7 +6759,8 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SkulkingColony.cs la
  
  	private int PiercingStabsRepeat => 2;
  
- 	private int InertiaStrengthGain => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 3, 2);
+-	private int InertiaStrengthGain => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 3, 2);
++	private int InertiaStrengthGain => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 4, 2);
  
 -	public override bool HasDeathSfx => false;
 +	public override DamageSfxType TakeDamageSfxType => DamageSfxType.Stone;
@@ -6792,9 +6860,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SkulkingColony.cs la
 +		return creatureAnimator;
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SlimedBerserker.cs latest/MegaCrit/Sts2/Core/Models/monsters/SlimedBerserker.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SlimedBerserker.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/SlimedBerserker.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SlimedBerserker.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/SlimedBerserker.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/SlimedBerserker.cs
 @@ -1,40 +1,43 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -6891,9 +6959,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SlimedBerserker.cs l
 +		return moveStateId != "SMOTHER_MOVE";
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SlitheringStrangler.cs latest/MegaCrit/Sts2/Core/Models/monsters/SlitheringStrangler.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SlitheringStrangler.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/SlitheringStrangler.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SlitheringStrangler.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/SlitheringStrangler.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/SlitheringStrangler.cs
 @@ -1,18 +1,19 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -6956,9 +7024,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SlitheringStrangler.
  			.Execute(null);
  		await CreatureCmd.GainBlock(base.Creature, 5m, ValueProp.Move, null);
  	}
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SludgeSpinner.cs latest/MegaCrit/Sts2/Core/Models/monsters/SludgeSpinner.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SludgeSpinner.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/SludgeSpinner.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SludgeSpinner.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/SludgeSpinner.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/SludgeSpinner.cs
 @@ -1,28 +1,31 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -7047,9 +7115,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SludgeSpinner.cs lat
 +		return moveStateId != "RAGE_MOVE";
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SlumberingBeetle.cs latest/MegaCrit/Sts2/Core/Models/monsters/SlumberingBeetle.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SlumberingBeetle.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/SlumberingBeetle.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SlumberingBeetle.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/SlumberingBeetle.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/SlumberingBeetle.cs
 @@ -1,19 +1,20 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -7157,9 +7225,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SlumberingBeetle.cs 
  		AnimState animState2 = new AnimState("cast");
  		AnimState animState3 = new AnimState("attack");
  		AnimState animState4 = new AnimState("roll");
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SnappingJaxfruit.cs latest/MegaCrit/Sts2/Core/Models/monsters/SnappingJaxfruit.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SnappingJaxfruit.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/SnappingJaxfruit.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SnappingJaxfruit.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/SnappingJaxfruit.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/SnappingJaxfruit.cs
 @@ -1,108 +1,83 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -7283,9 +7351,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SnappingJaxfruit.cs 
  		return creatureAnimator;
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SoulFysh.cs latest/MegaCrit/Sts2/Core/Models/monsters/SoulFysh.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SoulFysh.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/SoulFysh.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SoulFysh.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/SoulFysh.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/SoulFysh.cs
 @@ -1,31 +1,39 @@
  using System.Collections.Generic;
 +using System.Linq;
@@ -7485,9 +7553,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SoulFysh.cs latest/M
  		AnimState animState4 = new AnimState("attack_beckon");
  		AnimState animState5 = new AnimState("hurt");
  		AnimState state = new AnimState("die");
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SoulNexus.cs latest/MegaCrit/Sts2/Core/Models/monsters/SoulNexus.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SoulNexus.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/SoulNexus.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SoulNexus.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/SoulNexus.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/SoulNexus.cs
 @@ -1,28 +1,31 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -7565,9 +7633,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SoulNexus.cs latest/
 +		return moveStateId != "MAELSTROM_MOVE";
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SpectralKnight.cs latest/MegaCrit/Sts2/Core/Models/monsters/SpectralKnight.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SpectralKnight.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/SpectralKnight.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SpectralKnight.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/SpectralKnight.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/SpectralKnight.cs
 @@ -1,18 +1,19 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -7611,9 +7679,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SpectralKnight.cs la
  			.WithHitFx("vfx/vfx_attack_slash")
  			.Execute(null);
  	}
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SpinyToad.cs latest/MegaCrit/Sts2/Core/Models/monsters/SpinyToad.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SpinyToad.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/SpinyToad.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SpinyToad.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/SpinyToad.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/SpinyToad.cs
 @@ -1,18 +1,19 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -7668,9 +7736,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/SpinyToad.cs latest/
  			.WithHitFx("vfx/vfx_attack_slash")
  			.Execute(null);
  	}
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Stabbot.cs latest/MegaCrit/Sts2/Core/Models/monsters/Stabbot.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Stabbot.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Stabbot.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Stabbot.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Stabbot.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Stabbot.cs
 @@ -1,16 +1,17 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -7704,9 +7772,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Stabbot.cs latest/Me
 +		await PowerCmd.Apply<FrailPower>(new ThrowingPlayerChoiceContext(), targets, 1m, base.Creature, null);
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TerrorEel.cs latest/MegaCrit/Sts2/Core/Models/monsters/TerrorEel.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TerrorEel.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TerrorEel.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TerrorEel.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/TerrorEel.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TerrorEel.cs
 @@ -1,32 +1,35 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -7832,9 +7900,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TerrorEel.cs latest/
 +		return moveStateId != "STUN_MOVE";
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TestSubject.cs latest/MegaCrit/Sts2/Core/Models/monsters/TestSubject.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TestSubject.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TestSubject.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TestSubject.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/TestSubject.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TestSubject.cs
 @@ -17,20 +17,26 @@
  using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
  using MegaCrit.Sts2.Core.Nodes.Audio;
@@ -8032,9 +8100,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TestSubject.cs lates
 +		return false;
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheAdversaryMkOne.cs latest/MegaCrit/Sts2/Core/Models/monsters/TheAdversaryMkOne.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheAdversaryMkOne.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TheAdversaryMkOne.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheAdversaryMkOne.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/TheAdversaryMkOne.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TheAdversaryMkOne.cs
 @@ -1,15 +1,16 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -8090,9 +8158,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheAdversaryMkOne.cs
 +		await PowerCmd.Apply<StrengthPower>(new ThrowingPlayerChoiceContext(), base.Creature, 2m, base.Creature, null);
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheAdversaryMkThree.cs latest/MegaCrit/Sts2/Core/Models/monsters/TheAdversaryMkThree.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheAdversaryMkThree.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TheAdversaryMkThree.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheAdversaryMkThree.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/TheAdversaryMkThree.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TheAdversaryMkThree.cs
 @@ -1,16 +1,17 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -8149,9 +8217,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheAdversaryMkThree.
 +		await PowerCmd.Apply<StrengthPower>(new ThrowingPlayerChoiceContext(), base.Creature, 4m, base.Creature, null);
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheAdversaryMkTwo.cs latest/MegaCrit/Sts2/Core/Models/monsters/TheAdversaryMkTwo.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheAdversaryMkTwo.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TheAdversaryMkTwo.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheAdversaryMkTwo.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/TheAdversaryMkTwo.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TheAdversaryMkTwo.cs
 @@ -1,16 +1,17 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -8208,9 +8276,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheAdversaryMkTwo.cs
 +		await PowerCmd.Apply<StrengthPower>(new ThrowingPlayerChoiceContext(), base.Creature, 3m, base.Creature, null);
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheForgotten.cs latest/MegaCrit/Sts2/Core/Models/monsters/TheForgotten.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheForgotten.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TheForgotten.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheForgotten.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/TheForgotten.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TheForgotten.cs
 @@ -1,18 +1,19 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -8276,10 +8344,61 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheForgotten.cs late
  			.WithHitFx("vfx/vfx_attack_blunt")
  			.Execute(null);
  	}
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheInsatiable.cs latest/MegaCrit/Sts2/Core/Models/monsters/TheInsatiable.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheInsatiable.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TheInsatiable.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheInsatiable.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/TheInsatiable.cs
-@@ -83,21 +83,21 @@
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TheInsatiable.cs
+@@ -4,25 +4,27 @@
+ using MegaCrit.Sts2.Core.Audio;
+ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+ using MegaCrit.Sts2.Core.Commands;
+ using MegaCrit.Sts2.Core.Context;
+ using MegaCrit.Sts2.Core.Entities.Ascension;
+ using MegaCrit.Sts2.Core.Entities.Cards;
+ using MegaCrit.Sts2.Core.Entities.Creatures;
+ using MegaCrit.Sts2.Core.Entities.Players;
+ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+ using MegaCrit.Sts2.Core.Helpers;
++using MegaCrit.Sts2.Core.Localization;
+ using MegaCrit.Sts2.Core.Models.Cards;
+ using MegaCrit.Sts2.Core.Models.Powers;
+ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
+ using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
+ using MegaCrit.Sts2.Core.Nodes.Audio;
++using MegaCrit.Sts2.Core.Nodes.Combat;
+ 
+ namespace MegaCrit.Sts2.Core.Models.Monsters;
+ 
+ public sealed class TheInsatiable : MonsterModel
+ {
+ 	private const int _liquifyStatusDrawCount = 3;
+ 
+ 	private const int _liquifyStatusDiscardCount = 3;
+ 
+ 	private const int _thrashRepeat = 2;
+@@ -44,20 +46,22 @@
+ 	private const string _lungingBiteSfx = "event:/sfx/enemy/enemy_attacks/the_insatiable/the_insatiable_lunging_bite";
+ 
+ 	private const string _salivateSfx = "event:/sfx/enemy/enemy_attacks/the_insatiable/the_insatiable_salivate";
+ 
+ 	private const string _thrashSfx = "event:/sfx/enemy/enemy_attacks/the_insatiable/the_insatiable_thrash";
+ 
+ 	private bool _hasLiquified;
+ 
+ 	public static string TheInsatiableTrackName => "insatiable_progress";
+ 
++	public static string EatPlayerAnim => "eat_player";
++
+ 	public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 341, 321);
+ 
+ 	public override int MaxInitialHp => MinInitialHp;
+ 
+ 	private int ThrashDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 9, 8);
+ 
+ 	private int BiteDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 31, 28);
+ 
+ 	private int SalivateStrength => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 3, 2);
+ 
+@@ -83,21 +87,21 @@
  			return Task.CompletedTask;
  		}
  		NRunMusicController.Instance?.UpdateMusicParameter(TheInsatiableTrackName, 10f);
@@ -8302,7 +8421,7 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheInsatiable.cs lat
  		moveState3.FollowUpState = moveState2;
  		list.Add(moveState);
  		list.Add(moveState4);
-@@ -111,32 +111,32 @@
+@@ -111,32 +115,32 @@
  	{
  		SfxCmd.Play("event:/sfx/enemy/enemy_attacks/the_insatiable/the_insatiable_liquify_ground");
  		await CreatureCmd.TriggerAnim(base.Creature, "LiquifySand", 0f);
@@ -8337,7 +8456,7 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheInsatiable.cs lat
  		HasLiquified = true;
  	}
  
-@@ -156,21 +156,21 @@
+@@ -156,32 +160,32 @@
  			.OnlyPlayAnimOnce()
  			.WithHitFx("vfx/vfx_bite")
  			.WithAttackerFx(null, "event:/sfx/enemy/enemy_attacks/the_insatiable/the_insatiable_lunging_bite")
@@ -8360,9 +8479,41 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheInsatiable.cs lat
  		AnimState animState3 = new AnimState("salivate");
  		AnimState animState4 = new AnimState("attack_thrash");
  		AnimState animState5 = new AnimState("attack_bite");
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheLost.cs latest/MegaCrit/Sts2/Core/Models/monsters/TheLost.cs
+-		AnimState animState6 = new AnimState("eat_player");
++		AnimState animState6 = new AnimState(EatPlayerAnim);
+ 		AnimState animState7 = new AnimState("intro_hurt");
+ 		AnimState animState8 = new AnimState("hurt");
+ 		AnimState state = new AnimState("die");
+ 		animState2.NextState = nextState;
+ 		animState3.NextState = nextState;
+ 		animState4.NextState = nextState;
+ 		animState5.NextState = nextState;
+ 		animState8.NextState = nextState;
+ 		animState6.NextState = nextState;
+ 		animState7.NextState = animState;
+@@ -190,12 +194,19 @@
+ 		creatureAnimator.AddAnyState("Attack", animState4);
+ 		creatureAnimator.AddAnyState("Dead", state);
+ 		creatureAnimator.AddAnyState("EatPlayerTrigger", animState6);
+ 		creatureAnimator.AddAnyState("LiquifySand", animState2);
+ 		creatureAnimator.AddAnyState("Salivate", animState3);
+ 		creatureAnimator.AddAnyState("Thrash", animState4);
+ 		creatureAnimator.AddAnyState("Bite", animState5);
+ 		creatureAnimator.AddAnyState("Hit", animState7, () => !HasLiquified);
+ 		creatureAnimator.AddAnyState("Hit", animState8, () => HasLiquified);
+ 		return creatureAnimator;
++	}
++
++	public override List<BestiaryMonsterMove> GenerateBestiaryMoveList(NCreatureVisuals? creatureVisuals)
++	{
++		List<BestiaryMonsterMove> list = base.GenerateBestiaryMoveList(creatureVisuals);
++		list.Insert(4, BestiaryMonsterMove.FromAnim(new LocString("monsters", "THE_INSATIABLE.moves.DEVOUR.title"), EatPlayerAnim, "event:/sfx/enemy/enemy_attacks/the_insatiable/the_insatiable_finisher"));
++		return list;
+ 	}
+ }
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheLost.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TheLost.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheLost.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/TheLost.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TheLost.cs
 @@ -1,18 +1,19 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -8427,9 +8578,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheLost.cs latest/Me
  			.WithAttackerFx(null, AttackSfx)
  			.WithHitFx("vfx/vfx_attack_blunt")
  			.Execute(null);
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheObscura.cs latest/MegaCrit/Sts2/Core/Models/monsters/TheObscura.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheObscura.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TheObscura.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheObscura.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/TheObscura.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TheObscura.cs
 @@ -1,36 +1,41 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -8533,10 +8684,10 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TheObscura.cs latest
 +		return moveStateId != "PIERCING_GAZE_MOVE";
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/ThievingHopper.cs latest/MegaCrit/Sts2/Core/Models/monsters/ThievingHopper.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/ThievingHopper.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/ThievingHopper.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/ThievingHopper.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/ThievingHopper.cs
-@@ -4,20 +4,21 @@
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/ThievingHopper.cs
+@@ -4,33 +4,37 @@
  using System.Threading.Tasks;
  using Godot;
  using MegaCrit.Sts2.Core.Animation;
@@ -8558,7 +8709,23 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/ThievingHopper.cs la
  using MegaCrit.Sts2.Core.Nodes.Rooms;
  
  namespace MegaCrit.Sts2.Core.Models.Monsters;
-@@ -141,26 +142,26 @@
+ 
+ public sealed class ThievingHopper : MonsterModel
+ {
++	/// <summary>
++	/// The priorities used to determine which card to steal from the player's deck.
++	/// </summary>
+ 	private static readonly Func<CardModel, bool>[] _stealPriorities = new Func<CardModel, bool>[4]
+ 	{
+ 		(CardModel c) => !(c.Enchantment is Imbued) && c.Rarity == CardRarity.Uncommon,
+ 		delegate(CardModel c)
+ 		{
+ 			bool flag = !(c.Enchantment is Imbued);
+ 			bool flag2 = flag;
+ 			if (flag2)
+ 			{
+ 				bool flag3;
+@@ -141,26 +145,26 @@
  
  	private int TheftDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 19, 17);
  
@@ -8587,7 +8754,7 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/ThievingHopper.cs la
  		MoveState moveState3 = new MoveState("HAT_TRICK_MOVE", HatTrickMove, new SingleAttackIntent(HatTrickDamage));
  		MoveState moveState4 = new MoveState("FLUTTER_MOVE", FlutterMove, new BuffIntent());
  		MoveState moveState5 = new MoveState("ESCAPE_MOVE", EscapeMove, new EscapeIntent());
-@@ -176,71 +177,74 @@
+@@ -176,71 +180,74 @@
  		list.Add(moveState5);
  		return new MonsterMoveStateMachine(list, moveState);
  	}
@@ -8672,7 +8839,7 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/ThievingHopper.cs la
  	{
  		await DamageCmd.Attack(NabDamage).FromMonster(this).WithAttackerAnim("Attack", 0.3f)
  			.WithAttackerFx(null, AttackSfx)
-@@ -253,34 +257,34 @@
+@@ -253,34 +260,34 @@
  		await DamageCmd.Attack(HatTrickDamage).FromMonster(this).WithAttackerAnim("Attack", 0.3f)
  			.WithAttackerFx(null, AttackSfx)
  			.WithHitFx("vfx/vfx_attack_slash")
@@ -8710,9 +8877,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/ThievingHopper.cs la
  	{
  		AnimState animState = new AnimState("idle_loop", isLooping: true)
  		{
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Toadpole.cs latest/MegaCrit/Sts2/Core/Models/monsters/Toadpole.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Toadpole.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Toadpole.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Toadpole.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Toadpole.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Toadpole.cs
 @@ -1,18 +1,19 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -8777,9 +8944,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Toadpole.cs latest/M
  		AnimState animState4 = new AnimState("attack_triple");
  		AnimState animState5 = new AnimState("hurt");
  		AnimState state = new AnimState("die");
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TorchHeadAmalgam.cs latest/MegaCrit/Sts2/Core/Models/monsters/TorchHeadAmalgam.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TorchHeadAmalgam.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TorchHeadAmalgam.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TorchHeadAmalgam.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/TorchHeadAmalgam.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TorchHeadAmalgam.cs
 @@ -1,25 +1,25 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -8902,9 +9069,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TorchHeadAmalgam.cs 
  			.Execute(null);
  	}
  
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/ToughEgg.cs latest/MegaCrit/Sts2/Core/Models/monsters/ToughEgg.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/ToughEgg.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/ToughEgg.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/ToughEgg.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/ToughEgg.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/ToughEgg.cs
 @@ -2,20 +2,21 @@
  using System.Linq;
  using System.Threading.Tasks;
@@ -8968,9 +9135,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/ToughEgg.cs latest/M
  
  	protected override MonsterMoveStateMachine GenerateMoveStateMachine()
  	{
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TrackerRubyRaider.cs latest/MegaCrit/Sts2/Core/Models/monsters/TrackerRubyRaider.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TrackerRubyRaider.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TrackerRubyRaider.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TrackerRubyRaider.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/TrackerRubyRaider.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TrackerRubyRaider.cs
 @@ -1,25 +1,28 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -9030,9 +9197,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TrackerRubyRaider.cs
 +		return moveStateId != "TRACK_MOVE";
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Tunneler.cs latest/MegaCrit/Sts2/Core/Models/monsters/Tunneler.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Tunneler.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Tunneler.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Tunneler.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Tunneler.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Tunneler.cs
 @@ -1,65 +1,84 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -9234,9 +9401,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Tunneler.cs latest/M
 +		return moveStateId != "DIZZY_MOVE";
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TurretOperator.cs latest/MegaCrit/Sts2/Core/Models/monsters/TurretOperator.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TurretOperator.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TurretOperator.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TurretOperator.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/TurretOperator.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TurretOperator.cs
 @@ -1,18 +1,19 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -9297,9 +9464,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TurretOperator.cs la
  			.WithAttackerFx(null, AttackSfx)
  			.WithHitFx("vfx/vfx_attack_blunt")
  			.Execute(null);
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TwigSlimeM.cs latest/MegaCrit/Sts2/Core/Models/monsters/TwigSlimeM.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TwigSlimeM.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TwigSlimeM.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TwigSlimeM.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/TwigSlimeM.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TwigSlimeM.cs
 @@ -5,41 +5,42 @@
  using MegaCrit.Sts2.Core.Commands;
  using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -9378,9 +9545,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TwigSlimeM.cs latest
 +		await CardPileCmd.AddToCombatAndPreview<Slimed>(targets, PileType.Discard, 1, null);
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TwigSlimeS.cs latest/MegaCrit/Sts2/Core/Models/monsters/TwigSlimeS.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TwigSlimeS.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TwigSlimeS.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TwigSlimeS.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/TwigSlimeS.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TwigSlimeS.cs
 @@ -16,21 +16,21 @@
  
  	public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 12, 11);
@@ -9404,9 +9571,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TwigSlimeS.cs latest
  		await DamageCmd.Attack(TackleDamage).FromMonster(this).WithAttackerAnim("Attack", 0.15f)
  			.WithAttackerFx(null, AttackSfx)
  			.WithHitFx("vfx/vfx_slime_impact")
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TwoTailedRat.cs latest/MegaCrit/Sts2/Core/Models/monsters/TwoTailedRat.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TwoTailedRat.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TwoTailedRat.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TwoTailedRat.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/TwoTailedRat.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/TwoTailedRat.cs
 @@ -1,19 +1,20 @@
  using System.Collections.Generic;
  using System.Linq;
@@ -9428,7 +9595,31 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TwoTailedRat.cs late
  namespace MegaCrit.Sts2.Core.Models.Monsters;
  
  public sealed class TwoTailedRat : MonsterModel
-@@ -155,27 +156,31 @@
+@@ -75,20 +76,23 @@
+ 		{
+ 			return _turnsUntilSummonable;
+ 		}
+ 		set
+ 		{
+ 			AssertMutable();
+ 			_turnsUntilSummonable = value;
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Track how many times call for backup has happened this combat. This is so we can limit it to 3.
++	/// </summary>
+ 	public int CallForBackupCount
+ 	{
+ 		get
+ 		{
+ 			return _callForBackupCount;
+ 		}
+ 		set
+ 		{
+ 			AssertMutable();
+ 			_callForBackupCount = value;
+@@ -155,27 +159,31 @@
  			.WithAttackerFx(null, "event:/sfx/enemy/enemy_attacks/two_tail_rats/two_tail_rats_attack_hands")
  			.WithHitFx("vfx/vfx_attack_slash")
  			.Execute(null);
@@ -9461,9 +9652,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/TwoTailedRat.cs late
  		int maxCallForBackupCount = list.Max((TwoTailedRat c) => c.CallForBackupCount + 1);
  		list.ForEach(delegate(TwoTailedRat r)
  		{
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Vantom.cs latest/MegaCrit/Sts2/Core/Models/monsters/Vantom.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Vantom.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Vantom.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Vantom.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Vantom.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Vantom.cs
 @@ -1,27 +1,29 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -9678,9 +9869,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Vantom.cs latest/Meg
  		return creatureAnimator;
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/VineShambler.cs latest/MegaCrit/Sts2/Core/Models/monsters/VineShambler.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/VineShambler.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/VineShambler.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/VineShambler.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/VineShambler.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/VineShambler.cs
 @@ -1,17 +1,18 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -9723,9 +9914,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/VineShambler.cs late
  			.WithAttackerFx(null, "event:/sfx/enemy/enemy_attacks/vine_shambler/vine_shambler_defensive_swipe")
  			.WithHitFx("vfx/vfx_scratch")
  			.Execute(null);
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/WaterfallGiant.cs latest/MegaCrit/Sts2/Core/Models/monsters/WaterfallGiant.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/WaterfallGiant.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/WaterfallGiant.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/WaterfallGiant.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/WaterfallGiant.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/WaterfallGiant.cs
 @@ -6,27 +6,28 @@
  using MegaCrit.Sts2.Core.Bindings.MegaSpine;
  using MegaCrit.Sts2.Core.Commands;
@@ -9990,9 +10181,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/WaterfallGiant.cs la
 +		return moveStateId != "SIPHON_MOVE";
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Wriggler.cs latest/MegaCrit/Sts2/Core/Models/monsters/Wriggler.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Wriggler.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Wriggler.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Wriggler.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Wriggler.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Wriggler.cs
 @@ -1,29 +1,31 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -10056,9 +10247,9 @@ diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Wriggler.cs latest/M
 +		return false;
  	}
  }
-diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Zapbot.cs latest/MegaCrit/Sts2/Core/Models/monsters/Zapbot.cs
+diff -u10 -r -N v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Zapbot.cs v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Zapbot.cs
 --- v0.103.2/MegaCrit/Sts2/Core/Models/Monsters/Zapbot.cs
-+++ latest/MegaCrit/Sts2/Core/Models/monsters/Zapbot.cs
++++ v0.107.1/MegaCrit/Sts2/Core/Models/monsters/Zapbot.cs
 @@ -1,16 +1,17 @@
  using System.Collections.Generic;
  using System.Threading.Tasks;
