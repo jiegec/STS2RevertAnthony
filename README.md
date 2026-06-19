@@ -1,8 +1,8 @@
 # RevertAnthony - Slay the Spire 2 Mod
 
-A mod for Slay the Spire 2 that allows you to individually revert cards to older game versions (currently v0.99.1). Each card gets a dropdown in **ModConfig** to pick either the current version or a historical version, with changes taking effect immediately on newly spawned cards.
+A mod for Slay the Spire 2 that allows you to individually revert cards to older game versions (v0.99.1 and v0.103.2). Each card gets a dropdown in **ModConfig** to pick either the current version or a historical version, with changes taking effect immediately on newly spawned cards.
 
-**Supported game versions:** v0.103.2 and v0.106.1 (beta)
+**Supported game versions:** v0.107.1
 
 ## Features
 
@@ -216,6 +216,10 @@ When a card's version is set to an old version, the patches return the historica
 
 ## Changelog
 
+### Unreleased
+
+- Port to game version v0.107.1
+- Add v0.103.2 as selectable card version alongside v0.99.1
 
 ### v1.5.0
 
