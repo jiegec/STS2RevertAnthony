@@ -84,6 +84,8 @@ public static class RevertAnthony
         new SupportedCard("flick-flack", "SILENT", "v0.103.2", "v0.99.1"),
         new SupportedCard("folly", "CURSE", "v0.103.2", "v0.99.1"),
         new SupportedCard("forgotten-ritual", "IRONCLAD", "v0.103.2", "v0.99.1"),
+        new SupportedCard("furnace", "REGENT", "v0.103.2", "v0.99.1"),
+        new SupportedCard("fusion", "DEFECT", "v0.103.2", "v0.99.1"),
         new SupportedCard("gather-light", "REGENT", "v0.103.2", "v0.99.1"),
         new SupportedCard("glitterstream", "REGENT", "v0.103.2", "v0.99.1"),
         new SupportedCard("glow", "REGENT", "v0.103.2", "v0.99.1"),

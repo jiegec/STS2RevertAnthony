@@ -52,6 +52,7 @@ All cards listed below can be reverted to their v0.99.1 or v0.103.2 versions. De
 
 | Card | Property | v0.107.1 (Current) | v0.103.2 | v0.99.1 |
 |------|----------|-------------------|----------|---------|
+| **Fusion** | Cost / Keywords / Upgrade | 1, Exhaust / Remove Exhaust | 2, None / -1 Cost | 2, None / -1 Cost |
 | **Hotfix** | Keywords / Upgrade | Exhaust / Remove Exhaust | Exhaust / Remove Exhaust | None / +1 Focus |
 | **Rip And Tear** | Rarity | Event | Event | Uncommon |
 | **Voltaic** | Cost | 3 | 3 | 2 |
@@ -126,6 +127,7 @@ All cards listed below can be reverted to their v0.99.1 or v0.103.2 versions. De
 | **Collision Course** | Damage / Upgrade | 11 / +4 | 11 / +4 | 9 / +3 |
 | **Crescent Spear** | CalculationBase | 8 | 6 | 6 |
 | **Falling Star** | Damage | 8 | 8 | 7 |
+| **Furnace** | Forge | 5 | 4 | 4 |
 | **Gather Light** | Block | 8 |  | 7 |
 | **Glitterstream** | Next Turn Block | 5 | 5 | 4 |
 | **Glow** | Cards / OnPlay | 1 / Gain stars + draw 1 + DrawCardsNextTurnPower | 1 / Gain stars + draw 1 + DrawCardsNextTurnPower | 2 / Gain stars + draw 2 |

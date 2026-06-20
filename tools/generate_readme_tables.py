@@ -15,6 +15,9 @@ os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 CARD_DATA = {
     # --- DEFECT ---
+    "fusion": [
+        ("Cost / Keywords / Upgrade", "1, Exhaust / Remove Exhaust", "2, None / -1 Cost", "2, None / -1 Cost"),
+    ],
     "hotfix": [
         ("Keywords / Upgrade", "Exhaust / Remove Exhaust", "Exhaust / Remove Exhaust", "None / +1 Focus"),
     ],
@@ -159,6 +162,9 @@ CARD_DATA = {
     "falling-star": [
         ("Damage", "8", "8", "7"),
     ],
+    "furnace": [
+        ("Forge", "5", "4", "4"),
+    ],
     "gather-light": [
         ("Block", "8", "", "7"),
     ],
@@ -271,13 +277,13 @@ def format_row(card_name, data):
 
 # Character groupings
 CHARACTERS = {
-    "DEFECT": ["hotfix", "rip-and-tear", "voltaic"],
+    "DEFECT": ["fusion", "hotfix", "rip-and-tear", "voltaic"],
     "COLORLESS": ["believe-in-you", "eternal-armor", "hidden-gem", "huddle-up", "production", "seeker-strike"],
     "ANCIENT": ["neows-fury"],
     "CURSE": ["folly"],
     "IRONCLAD": ["break", "cinder", "colossus", "conflagration", "dominate", "expect-a-fight", "fight-me", "forgotten-ritual", "hemokinesis", "spite", "stoke", "tremble"],
     "NECROBINDER": ["banshees-cry", "borrowed-time", "danse-macabre", "death-march", "debilitate", "defy", "dirge", "grave-warden", "sculpting-strike", "seance"],
-    "REGENT": ["alignment", "arsenal", "astral-pulse", "begone", "bulwark", "bundle-of-joy", "celestial-might", "charge", "collision-course", "crescent-spear", "falling-star", "gather-light", "glitterstream", "glow", "grand-finale", "guiding-star", "heirloom-hammer", "i-am-invincible", "kingly-kick", "kingly-punch", "minion-dive-bomb", "minion-strike", "parry", "patter", "refine-blade", "solar-strike", "spoils-of-battle", "sword-sage", "void-form", "wrought-in-war"],
+    "REGENT": ["alignment", "arsenal", "astral-pulse", "begone", "bulwark", "bundle-of-joy", "celestial-might", "charge", "collision-course", "crescent-spear", "falling-star", "furnace", "gather-light", "glitterstream", "glow", "grand-finale", "guiding-star", "heirloom-hammer", "i-am-invincible", "kingly-kick", "kingly-punch", "minion-dive-bomb", "minion-strike", "parry", "patter", "refine-blade", "solar-strike", "spoils-of-battle", "sword-sage", "void-form", "wrought-in-war"],
     "SILENT": ["acrobatics", "anticipate", "blade-of-ink", "corrosive-wave", "flick-flack", "leading-strike", "memento-mori", "pinpoint", "serpent-form", "skewer", "speedster", "untouchable"],
 }
 
