@@ -82,7 +82,6 @@ public static class RevertAnthony
         new SupportedCard("falling-star", "REGENT", "v0.103.2", "v0.99.1"),
         new SupportedCard("fight-me", "IRONCLAD", "v0.103.2", "v0.99.1"),
         new SupportedCard("flick-flack", "SILENT", "v0.103.2", "v0.99.1"),
-        new SupportedCard("follow-through", "SILENT", "v0.103.2", "v0.99.1"),
         new SupportedCard("folly", "CURSE", "v0.103.2", "v0.99.1"),
         new SupportedCard("forgotten-ritual", "IRONCLAD", "v0.103.2", "v0.99.1"),
         new SupportedCard("gather-light", "REGENT", "v0.103.2", "v0.99.1"),
@@ -146,7 +145,6 @@ public static class RevertAnthony
         LoadConfig();
         _harmony = new Harmony("RevertAnthony");
         _harmony.PatchAll(typeof(RevertAnthony).Assembly);
-        FollowThroughPatches.ApplyPatchesIfAvailable(_harmony);
         BladeOfInkPowerTurnEndPatch.Apply(_harmony);
         ArsenalPowerAfterCardPlayedPatch.Apply(_harmony);
         Log.Info("RevertAnthony: Harmony patches applied");

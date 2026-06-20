@@ -155,7 +155,6 @@ All cards listed below can be reverted to their v0.99.1 or v0.103.2 versions. De
 | **Blade Of Ink** | Vars / OnPlay / Upgrade | Shivs 2(+1) with Inky / Create Shivs / +1 Shiv | Shivs 2(+1) with Inky / Create Shivs / +1 Shiv | Strength 2(+1) / Apply BladeOfInkPower / +1 Str |
 | **Corrosive Wave** | Poison | 2 | 2 | 3 |
 | **Flick Flack** | Damage | 6 | 6 | 7 |
-| **Follow Through** | Vars / Target / OnPlay / Upgrade | Dmg 7, CardCount 5 / AnyEnemy / Hit 1-2x / +2 Dmg | Dmg 7, CardCount 5 / AnyEnemy / Hit 1-2x / +2 Dmg | Dmg 6, Weak 1 / AllEnemies / Aoe + Weak if last was skill / +2 Dmg, +1 Weak |
 | **Leading Strike** | Shivs / Damage | 2 / 3 | 2 / 3 | 1 / 7 |
 | **Memento Mori** | CalculationBase | 9 | 9 | 8 |
 | **Pinpoint** | Damage / Upgrade | 15 / +4 | 15 / +4 | 17 / +5 |

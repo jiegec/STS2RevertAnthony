@@ -233,9 +233,6 @@ CARD_DATA = {
     "flick-flack": [
         ("Damage", "6", "6", "7"),
     ],
-    "follow-through": [
-        ("Vars / Target / OnPlay / Upgrade", "Dmg 7, CardCount 5 / AnyEnemy / Hit 1-2x / +2 Dmg", "Dmg 7, CardCount 5 / AnyEnemy / Hit 1-2x / +2 Dmg", "Dmg 6, Weak 1 / AllEnemies / Aoe + Weak if last was skill / +2 Dmg, +1 Weak"),
-    ],
     "leading-strike": [
         ("Shivs / Damage", "2 / 3", "2 / 3", "1 / 7"),
     ],
@@ -281,7 +278,7 @@ CHARACTERS = {
     "IRONCLAD": ["break", "cinder", "colossus", "conflagration", "dominate", "expect-a-fight", "fight-me", "forgotten-ritual", "hemokinesis", "spite", "stoke", "tremble"],
     "NECROBINDER": ["banshees-cry", "borrowed-time", "danse-macabre", "death-march", "debilitate", "defy", "dirge", "grave-warden", "sculpting-strike", "seance"],
     "REGENT": ["alignment", "arsenal", "astral-pulse", "begone", "bulwark", "bundle-of-joy", "celestial-might", "charge", "collision-course", "crescent-spear", "falling-star", "gather-light", "glitterstream", "glow", "grand-finale", "guiding-star", "heirloom-hammer", "i-am-invincible", "kingly-kick", "kingly-punch", "minion-dive-bomb", "minion-strike", "parry", "patter", "refine-blade", "solar-strike", "spoils-of-battle", "sword-sage", "void-form", "wrought-in-war"],
-    "SILENT": ["acrobatics", "anticipate", "blade-of-ink", "corrosive-wave", "flick-flack", "follow-through", "leading-strike", "memento-mori", "pinpoint", "serpent-form", "skewer", "speedster", "untouchable"],
+    "SILENT": ["acrobatics", "anticipate", "blade-of-ink", "corrosive-wave", "flick-flack", "leading-strike", "memento-mori", "pinpoint", "serpent-form", "skewer", "speedster", "untouchable"],
 }
 
 lines = []
