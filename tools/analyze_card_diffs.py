@@ -11,19 +11,31 @@ os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 VERSIONS = ["v0.99.1", "v0.103.2", "v0.107.1"]
 
-MIGRATION_PATTERNS = [
+MIGRATION_REPLACEMENTS = [
     (
-        re.compile(r'await PowerCmd\.Apply(?:<[^>]+>)?\(base\.Owner\.Creature, '),
-        re.compile(r'await PowerCmd\.Apply(?:<[^>]+>)?\(choiceContext, base\.Owner\.Creature, '),
+        re.compile(r'(PowerCmd\.Apply(?:<[^>]+>)?\()base\.Owner\.Creature, '),
+        r'\1choiceContext, base.Owner.Creature, ',
     ),
     (
-        re.compile(r'await CreatureCmd\.TriggerAnim\(base\.Owner\.Creature,\s*"Cast",\s*base\.Owner\.Character\.CastAnimDelay\)'),
-        re.compile(r'await CreatureCmd\.TriggerAnim\(base\.Owner\.Creature,\s*"PowerUp",\s*base\.Owner\.Character\.PowerUpAnimDelay\)'),
+        re.compile(r'(CreatureCmd\.TriggerAnim\()base\.Owner\.Creature,\s*"Cast",\s*base\.Owner\.Character\.CastAnimDelay\)'),
+        r'\1base.Owner.Creature, "PowerUp", base.Owner.Character.PowerUpAnimDelay)',
+    ),
+    (
+        re.compile(r'(CardPileCmd\.(?:AddGeneratedCardToCombat|AddGeneratedCardsToCombat)\(.*?)\baddedByPlayer:\s*true\b'),
+        r'\1base.Owner',
+    ),
+    (
+        re.compile(r'(CardPileCmd\.(?:AddGeneratedCardToCombat|AddGeneratedCardsToCombat)\(.*?)\baddedByPlayer:\s*false\b'),
+        r'\1null',
     ),
 ]
 
 def is_migration_pair(removed, added):
-    return any(old.search(removed) and new.search(added) for old, new in MIGRATION_PATTERNS)
+    for pattern, replacement in MIGRATION_REPLACEMENTS:
+        transformed = re.sub(pattern, replacement, removed)
+        if transformed != removed and transformed == added:
+            return True
+    return False
 
 def pascal_to_kebab(name):
     return re.sub(r'(?<!^)(?=[A-Z])', '-', name).lower()

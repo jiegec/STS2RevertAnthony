@@ -122,7 +122,7 @@ All cards listed below can be reverted to their v0.99.1 or v0.103.2 versions. De
 | **Begone** | Type / Target / Vars / OnPlay | Skill / Self / None / Transform to MinionStrike | Skill / Self / None / Transform to MinionStrike | Attack / AnyEnemy / Dmg 4(+1) / Deal dmg, transform to MinionDiveBomb |
 | **Bulwark** | Block / Forge | 12 / 10 | 13 / 10 | 13 / 10 |
 | **Bundle Of Joy** | Cost | 1 | 1 | 2 |
-| **Celestial Might** | Upgrade | +1 Repeat |  | +2 Damage |
+| **Celestial Might** | Upgrade | +1 Repeat | +1 Repeat | +2 Damage |
 | **Charge** | Transforms to | MinionStrike | MinionStrike | MinionDiveBomb |
 | **Collision Course** | Damage / Upgrade | 11 / +4 | 11 / +4 | 9 / +3 |
 | **Crescent Spear** | CalculationBase | 8 | 6 | 6 |

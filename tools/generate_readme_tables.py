@@ -148,7 +148,7 @@ CARD_DATA = {
         ("Block / Forge", "12 / 10", "13 / 10", "13 / 10"),
     ],
     "celestial-might": [
-        ("Upgrade", "+1 Repeat", "", "+2 Damage"),
+        ("Upgrade", "+1 Repeat", "+1 Repeat", "+2 Damage"),
     ],
     "charge": [
         ("Transforms to", "MinionStrike", "MinionStrike", "MinionDiveBomb"),
