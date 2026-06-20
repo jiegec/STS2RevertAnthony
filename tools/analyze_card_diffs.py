@@ -11,6 +11,20 @@ os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 VERSIONS = ["v0.99.1", "v0.103.2", "v0.107.1"]
 
+MIGRATION_PATTERNS = [
+    (
+        re.compile(r'await PowerCmd\.Apply(?:<[^>]+>)?\(base\.Owner\.Creature, '),
+        re.compile(r'await PowerCmd\.Apply(?:<[^>]+>)?\(choiceContext, base\.Owner\.Creature, '),
+    ),
+    (
+        re.compile(r'await CreatureCmd\.TriggerAnim\(base\.Owner\.Creature,\s*"Cast",\s*base\.Owner\.Character\.CastAnimDelay\)'),
+        re.compile(r'await CreatureCmd\.TriggerAnim\(base\.Owner\.Creature,\s*"PowerUp",\s*base\.Owner\.Character\.PowerUpAnimDelay\)'),
+    ),
+]
+
+def is_migration_pair(removed, added):
+    return any(old.search(removed) and new.search(added) for old, new in MIGRATION_PATTERNS)
+
 def pascal_to_kebab(name):
     return re.sub(r'(?<!^)(?=[A-Z])', '-', name).lower()
 
@@ -35,18 +49,40 @@ def parse_diff_file(filepath, subdir_pattern, version_a, version_b):
 
         summary_lines = []
         for hunk in hunks:
+            removes = []
+            adds = []
             for line in hunk.split('\n'):
                 if line.startswith('-'):
-                    if not line[1:].strip().startswith('using '):
-                        summary_lines.append(f'[{version_a}] {line[1:].strip()}')
+                    stripped = line[1:].strip()
+                    if not stripped.startswith('using '):
+                        removes.append(stripped)
                 elif line.startswith('+'):
-                    if not line[1:].strip().startswith('using '):
-                        summary_lines.append(f'[{version_b}] {line[1:].strip()}')
+                    stripped = line[1:].strip()
+                    if not stripped.startswith('using '):
+                        adds.append(stripped)
+
+            matched_removes = set()
+            matched_adds = set()
+            for i, r in enumerate(removes):
+                for j, a in enumerate(adds):
+                    if j in matched_adds:
+                        continue
+                    if is_migration_pair(r, a):
+                        matched_removes.add(i)
+                        matched_adds.add(j)
+                        break
+
+            for i, r in enumerate(removes):
+                if i not in matched_removes:
+                    summary_lines.append(f'[{version_a}] {r}')
+            for j, a in enumerate(adds):
+                if j not in matched_adds:
+                    summary_lines.append(f'[{version_b}] {a}')
 
         changes[slug] = {
             'pascal': name,
             'summary': summary_lines[:30],
-            'has_changes': bool(hunks and any(h.strip() for h in hunks))
+            'has_changes': len(summary_lines) > 0
         }
 
     return changes
