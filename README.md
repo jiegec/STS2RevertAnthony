@@ -224,7 +224,7 @@ When a card's version is set to an old version, the patches return the historica
 
 ## Changelog
 
-### Unreleased
+### v1.6.0
 
 - Port to game version v0.107.1
 - Add v0.103.2 as selectable card version alongside v0.99.1
