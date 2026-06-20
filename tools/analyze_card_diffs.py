@@ -53,13 +53,13 @@ def parse_diff_file(filepath, subdir_pattern, version_a, version_b):
             adds = []
             for line in hunk.split('\n'):
                 if line.startswith('-'):
-                    stripped = line[1:].strip()
-                    if not stripped.startswith('using '):
-                        removes.append(stripped)
+                    content = line[1:]
+                    if not content.strip().startswith('using '):
+                        removes.append(content)
                 elif line.startswith('+'):
-                    stripped = line[1:].strip()
-                    if not stripped.startswith('using '):
-                        adds.append(stripped)
+                    content = line[1:]
+                    if not content.strip().startswith('using '):
+                        adds.append(content)
 
             matched_removes = set()
             matched_adds = set()
@@ -81,7 +81,7 @@ def parse_diff_file(filepath, subdir_pattern, version_a, version_b):
 
         changes[slug] = {
             'pascal': name,
-            'summary': summary_lines[:30],
+            'summary': summary_lines,
             'has_changes': len(summary_lines) > 0
         }
 
@@ -164,7 +164,7 @@ for slug in sorted(supported_cards):
         changes = c.get(f"{dk}_summary", [])
         if changes:
             print(f"\n  [{va} → {vb}] Card changes:")
-            for line in changes[:8]:
+            for line in changes:
                 print(f"    {line}")
 
     # Check if there's a related power that changed
@@ -176,7 +176,7 @@ for slug in sorted(supported_cards):
             pchanges = p.get(f"{dk}_summary", [])
             if pchanges:
                 print(f"\n  [{va} → {vb}] Related power {p.get('pascal', power_slug)} changes:")
-                for line in pchanges[:6]:
+                for line in pchanges:
                     print(f"    {line}")
 
     # Also check exact power name (slug might already match)
@@ -187,7 +187,7 @@ for slug in sorted(supported_cards):
             pchanges = p2.get(f"{dk}_summary", [])
             if pchanges:
                 print(f"\n  [{va} → {vb}] Related power {p2.get('pascal', slug)} changes:")
-                for line in pchanges[:6]:
+                for line in pchanges:
                     print(f"    {line}")
 
 print("\n\n")
@@ -231,5 +231,5 @@ for cat, powers in sorted(power_categories.items()):
             changes = power_data[p].get(f"{dk}_summary", [])
             if changes:
                 print(f"    [{va} → {vb}]")
-                for line in changes[:10]:
+                for line in changes:
                     print(f"      {line}")
