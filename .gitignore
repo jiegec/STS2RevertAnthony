@@ -8,3 +8,5 @@
 dist/
 *.zip
 __pycache__/
+ModUploader-linux-x64/
+mod-uploader.log
