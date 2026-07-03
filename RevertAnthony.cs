@@ -513,26 +513,89 @@ public static class RevertAnthony
         string modsPath = Path.Combine(directoryName, "mods");
         string modsConfigPath = Path.Combine(modsPath, "RevertAnthonyConfig.json");
 
+        Log.Info($"Determining config file path. Mods directory: {modsPath}");
+
+        // Priority 1: Check if mods/RevertAnthonyConfig.json exists
+        Log.Info($"Priority 1: Checking for config at {modsConfigPath}");
         if (File.Exists(modsConfigPath))
         {
+            Log.Info($"Found config at {modsConfigPath} (Priority 1)");
             return modsConfigPath;
         }
+        Log.Info($"Config not found at {modsConfigPath}");
 
+        // Priority 2: Search for existing RevertAnthonyConfig.json recursively
         if (Directory.Exists(modsPath))
         {
+            Log.Info("Priority 2: Searching for RevertAnthonyConfig.json recursively in mods folder");
+            try
+            {
+                string[] configFiles = Directory.GetFiles(modsPath, "RevertAnthonyConfig.json", SearchOption.AllDirectories);
+                if (configFiles.Length > 0)
+                {
+                    string existingConfigPath = configFiles[0];
+                    Log.Info($"Found existing config at {existingConfigPath} (Priority 2)");
+                    return existingConfigPath;
+                }
+                Log.Info("RevertAnthonyConfig.json not found in mods folder or subdirectories");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Log.Info($"Permission denied while searching for RevertAnthonyConfig.json: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Log.Info($"Error searching for RevertAnthonyConfig.json: {ex.Message}");
+            }
+        }
+
+        // Priority 3: Find RevertAnthony.dll recursively and use its directory
+        if (Directory.Exists(modsPath))
+        {
+            Log.Info("Priority 3: Searching for RevertAnthony.dll recursively in mods folder");
             try
             {
                 string[] dllFiles = Directory.GetFiles(modsPath, "RevertAnthony.dll", SearchOption.AllDirectories);
                 if (dllFiles.Length > 0)
                 {
-                    string dllDirectory = Path.GetDirectoryName(dllFiles[0]);
-                    return Path.Combine(dllDirectory, "RevertAnthonyConfig.json");
+                    string dllPath = dllFiles[0];
+                    string dllDirectory = Path.GetDirectoryName(dllPath);
+                    string dllConfigPath = Path.Combine(dllDirectory, "RevertAnthonyConfig.json");
+                    Log.Info($"Found RevertAnthony.dll at {dllPath}");
+                    Log.Info($"Using config path: {dllConfigPath} (Priority 3)");
+                    return dllConfigPath;
+                }
+                else
+                {
+                    Log.Info("RevertAnthony.dll not found in mods folder or subdirectories");
                 }
             }
-            catch { }
+            catch (UnauthorizedAccessException ex)
+            {
+                Log.Info($"Permission denied while searching for RevertAnthony.dll: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Log.Info($"Error searching for RevertAnthony.dll: {ex.Message}");
+            }
+        }
+        else
+        {
+            Log.Info($"Mods directory does not exist: {modsPath}");
         }
 
-        return modsConfigPath;
+        // Priority 4: Fall back to mods/RevertAnthonyConfig.json or RevertAnthonyConfig.json in executable directory
+        if (Directory.Exists(modsPath))
+        {
+            Log.Info($"Priority 4: Falling back to default path {modsConfigPath}");
+            return modsConfigPath;
+        }
+        else
+        {
+            string fallbackPath = Path.Combine(directoryName, "RevertAnthonyConfig.json");
+            Log.Info($"Priority 4: Mods directory does not exist, falling back to {fallbackPath}");
+            return fallbackPath;
+        }
     }
 
     static void SaveConfig()
