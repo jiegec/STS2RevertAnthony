@@ -192,7 +192,7 @@ With ModConfig GUI, you can:
 Alternatively, you can customize card versions by manually editing `RevertAnthonyConfig.json`:
 
 - **Existing users**: If you already have a config file at `mods/RevertAnthonyConfig.json`, it will continue to be used (no migration needed)
-- **New users**: The config will be saved alongside `RevertAnthony.dll` (found recursively in the mods folder). If the DLL cannot be found, it falls back to `mods/RevertAnthonyConfig.json`
+- **New users**: The config will be saved alongside `RevertAnthony.dll` (found recursively in the mods folder). If the DLL cannot be found, it falls back to `mods/RevertAnthonyConfig.json` or `RevertAnthonyConfig.json`
 - **Note**: Config is saved to the same location where it was read from. The mod will not automatically migrate the config file to a different location.
 
 ```json
@@ -227,6 +227,10 @@ The mod uses Harmony patches to intercept card properties at runtime:
 When a card's version is set to an old version, the patches return the historical values. When set to Latest, the original game behavior is preserved.
 
 ## Changelog
+
+### v1.7.0
+
+- Improve configuration path search logic for Steam Workshop
 
 ### v1.6.0
 
