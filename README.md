@@ -146,9 +146,11 @@ All cards listed below can be reverted to their v0.99.1 or v0.103.2 versions. De
 | **Parry** | ParryPower / Upgrade | 10 / +4 | 10 / +4 | 6 / +3 |
 | **Patter** | Block | 8 | 9 | 8 |
 | **Refine Blade** | Forge | 9 | 9 | 6 |
+| **Reflect** | Block / Upgrade | 15 / +5 | 17 / +4 | 17 / +4 |
 | **Solar Strike** | Damage | 9 | 9 | 8 |
 | **Spoils Of Battle** | Vars / OnPlay / Upgrade | Forge 5, Cards 2 / Forge + draw 2 / +3 Forge | Forge 5, Cards 2 / Forge + draw 2 / +3 Forge | Forge 10 / Forge only / +5 Forge |
 | **Sword Sage** | Power | No energy cost increase | No energy cost increase | Add energy cost to SovereignBlade |
+| **The Sealed Throne** | Upgrade | -1 cost | Innate | Innate |
 | **Void Form** | Keywords / Upgrade | Ethereal / Remove Ethereal | Ethereal / Remove Ethereal | None / +1 VoidFormPower |
 | **Wrought In War** | Forge | 7 | 7 | 5 |
 

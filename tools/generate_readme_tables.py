@@ -207,6 +207,9 @@ CARD_DATA = {
     "refine-blade": [
         ("Forge", "9", "9", "6"),
     ],
+    "reflect": [
+        ("Block / Upgrade", "15 / +5", "17 / +4", "17 / +4"),
+    ],
     "solar-strike": [
         ("Damage", "9", "9", "8"),
     ],
@@ -215,6 +218,9 @@ CARD_DATA = {
     ],
     "sword-sage": [
         ("Power", "No energy cost increase", "No energy cost increase", "Add energy cost to SovereignBlade"),
+    ],
+    "the-sealed-throne": [
+        ("Upgrade", "-1 cost", "Innate", "Innate"),
     ],
     "void-form": [
         ("Keywords / Upgrade", "Ethereal / Remove Ethereal", "Ethereal / Remove Ethereal", "None / +1 VoidFormPower"),
@@ -283,7 +289,7 @@ CHARACTERS = {
     "CURSE": ["folly"],
     "IRONCLAD": ["break", "cinder", "colossus", "conflagration", "dominate", "expect-a-fight", "fight-me", "forgotten-ritual", "hemokinesis", "spite", "stoke", "tremble"],
     "NECROBINDER": ["banshees-cry", "borrowed-time", "danse-macabre", "death-march", "debilitate", "defy", "dirge", "grave-warden", "sculpting-strike", "seance"],
-    "REGENT": ["alignment", "arsenal", "astral-pulse", "begone", "bulwark", "bundle-of-joy", "celestial-might", "charge", "collision-course", "crescent-spear", "falling-star", "furnace", "gather-light", "glitterstream", "glow", "grand-finale", "guiding-star", "heirloom-hammer", "i-am-invincible", "kingly-kick", "kingly-punch", "minion-dive-bomb", "minion-strike", "parry", "patter", "refine-blade", "solar-strike", "spoils-of-battle", "sword-sage", "void-form", "wrought-in-war"],
+    "REGENT": ["alignment", "arsenal", "astral-pulse", "begone", "bulwark", "bundle-of-joy", "celestial-might", "charge", "collision-course", "crescent-spear", "falling-star", "furnace", "gather-light", "glitterstream", "glow", "grand-finale", "guiding-star", "heirloom-hammer", "i-am-invincible", "kingly-kick", "kingly-punch", "minion-dive-bomb", "minion-strike", "parry", "patter", "refine-blade", "reflect", "solar-strike", "spoils-of-battle", "sword-sage", "the-sealed-throne", "void-form", "wrought-in-war"],
     "SILENT": ["acrobatics", "anticipate", "blade-of-ink", "corrosive-wave", "flick-flack", "leading-strike", "memento-mori", "pinpoint", "serpent-form", "skewer", "speedster", "untouchable"],
 }
 
