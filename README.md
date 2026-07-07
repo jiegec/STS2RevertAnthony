@@ -58,7 +58,9 @@ All cards listed below can be reverted to their v0.99.1 or v0.103.2 versions. De
 |------|----------|-------------------|----------|---------|
 | **Fusion** | Cost / Keywords / Upgrade | 1, Exhaust / Remove Exhaust | 2, None / -1 Cost | 2, None / -1 Cost |
 | **Hotfix** | Keywords / Upgrade | Exhaust / Remove Exhaust | Exhaust / Remove Exhaust | None / +1 Focus |
+| **Hyperbeam** | Damage / Focus Loss | 28 / -3 | 26 / -3 | 26 / -3 |
 | **Rip And Tear** | Rarity | Event | Event | Uncommon |
+| **Synthesis** | Damage / Upgrade | 14 / +6 | 12 / +6 | 12 / +6 |
 | **Voltaic** | Cost | 3 | 3 | 2 |
 
 ### COLORLESS
@@ -67,6 +69,7 @@ All cards listed below can be reverted to their v0.99.1 or v0.103.2 versions. De
 |------|----------|-------------------|----------|---------|
 | **Believe In You** | Energy | 2(3) | 2(3) | 3(4) |
 | **Eternal Armor** | Plating / Upgrade | 9(+3) | 9(+3) | 7(+2) |
+| **Fasten** | Extra Block | 4 | 5 | 5 |
 | **Hidden Gem** | OnPlay / Generation | Excludes enchanted replay / Cannot generate in combat | Excludes enchanted replay / Cannot generate in combat | No filter / Anywhere |
 | **Huddle Up** | Keywords | Exhaust | Exhaust | None |
 | **Production** | Upgrade | +1 Energy | +1 Energy | Remove Exhaust |
@@ -97,6 +100,7 @@ All cards listed below can be reverted to their v0.99.1 or v0.103.2 versions. De
 | **Fight Me** | Self Strength | 3 | 3 | 2 |
 | **Forgotten Ritual** | Keywords | Exhaust | Exhaust | None |
 | **Hemokinesis** | Damage / Self-damage | 18 / 2 | 18 / 2 | 15 / 2 |
+| **Juggernaut** | JuggernautPower / Upgrade | 6 / +2 | 5 / +2 | 5 / +2 |
 | **Spite** | Vars / OnPlay / Upgrade | Dmg 5, Repeat 2 / Hit 1-2x based on HP loss / +1 Repeat | Dmg 5, Repeat 2 / Hit 1-2x based on HP loss / +1 Repeat | Dmg 6, Cards 1 / Deal dmg; draw 1 if took damage / +3 Dmg |
 | **Stoke** | Keywords / OnPlay / Upgrade | None / Exhaust hand, draw new random cards / None | None / Exhaust hand, draw new random cards / None | Exhaust / Exhaust hand, draw same count / -1 Cost |
 | **Tremble** | Vulnerable / Keywords | 3 / Exhaust | 3 / Exhaust | 2 / None |
@@ -115,6 +119,7 @@ All cards listed below can be reverted to their v0.99.1 or v0.103.2 versions. De
 | **Grave Warden** | Souls / Hover / Upgrade | Unupgraded Souls / Soul (no upg param) / +3 Block | Unupgraded Souls / Soul (no upg param) / +3 Block | Upgraded Souls if card upg / Soul (upg=true) / +2 Block |
 | **Sculpting Strike** | Damage | 9 | 9 | 8 |
 | **Seance** | Cost / Hover / OnPlay / Upgrade | 1 / Show Soul / Transform draw pile to Soul / None | 1 / Show Soul / Transform draw pile to Soul / None | 0 / Show upgraded Soul / Transform draw pile to upgraded Soul / None |
+| **The Scythe** | Increase | 4 | 3 | 3 |
 
 ### REGENT
 
@@ -143,6 +148,7 @@ All cards listed below can be reverted to their v0.99.1 or v0.103.2 versions. De
 | **Kingly Punch** | Increase / Upgrade | 4 / +2 Dmg, +2 Incr |  | 3 / +2 Increase |
 | **Minion Dive Bomb** | Cost | 0 | 0 | 1 |
 | **Minion Strike** | Damage | 6 | 6 | 7 |
+| **Monarchs Gaze** | Cost | 2 | 3 | 3 |
 | **Parry** | ParryPower / Upgrade | 10 / +4 | 10 / +4 | 6 / +3 |
 | **Patter** | Block | 8 | 9 | 8 |
 | **Refine Blade** | Forge | 9 | 9 | 6 |
@@ -166,6 +172,8 @@ All cards listed below can be reverted to their v0.99.1 or v0.103.2 versions. De
 | **Leading Strike** | Shivs / Damage | 2 / 3 | 2 / 3 | 1 / 7 |
 | **Memento Mori** | CalculationBase | 9 | 9 | 8 |
 | **Pinpoint** | Damage / Upgrade | 15 / +4 | 15 / +4 | 17 / +5 |
+| **Pounce** | Damage / Upgrade | 14 / +6 | 12 / +6 | 12 / +6 |
+| **Predator** | Rarity | Common | Uncommon | Uncommon |
 | **Serpent Form** | Upgrade | +2 Power | +2 Power | +1 Power |
 | **Skewer** | Damage | 8 | 8 | 7 |
 | **Speedster** | Upgrade | +Innate | +Innate | +1 SpeedsterPower |

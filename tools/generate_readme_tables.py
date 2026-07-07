@@ -21,8 +21,14 @@ CARD_DATA = {
     "hotfix": [
         ("Keywords / Upgrade", "Exhaust / Remove Exhaust", "Exhaust / Remove Exhaust", "None / +1 Focus"),
     ],
+    "hyperbeam": [
+        ("Damage / Focus Loss", "28 / -3", "26 / -3", "26 / -3"),
+    ],
     "rip-and-tear": [
         ("Rarity", "Event", "Event", "Uncommon"),
+    ],
+    "synthesis": [
+        ("Damage / Upgrade", "14 / +6", "12 / +6", "12 / +6"),
     ],
     "voltaic": [
         ("Cost", "3", "3", "2"),
@@ -34,6 +40,9 @@ CARD_DATA = {
     ],
     "eternal-armor": [
         ("Plating / Upgrade", "9(+3)", "9(+3)", "7(+2)"),
+    ],
+    "fasten": [
+        ("Extra Block", "4", "5", "5"),
     ],
     "hidden-gem": [
         ("OnPlay / Generation", "Excludes enchanted replay / Cannot generate in combat", "Excludes enchanted replay / Cannot generate in combat", "No filter / Anywhere"),
@@ -86,6 +95,9 @@ CARD_DATA = {
     "hemokinesis": [
         ("Damage / Self-damage", "18 / 2", "18 / 2", "15 / 2"),
     ],
+    "juggernaut": [
+        ("JuggernautPower / Upgrade", "6 / +2", "5 / +2", "5 / +2"),
+    ],
     "spite": [
         ("Vars / OnPlay / Upgrade", "Dmg 5, Repeat 2 / Hit 1-2x based on HP loss / +1 Repeat", "Dmg 5, Repeat 2 / Hit 1-2x based on HP loss / +1 Repeat", "Dmg 6, Cards 1 / Deal dmg; draw 1 if took damage / +3 Dmg"),
     ],
@@ -126,6 +138,9 @@ CARD_DATA = {
     ],
     "seance": [
         ("Cost / Hover / OnPlay / Upgrade", "1 / Show Soul / Transform draw pile to Soul / None", "1 / Show Soul / Transform draw pile to Soul / None", "0 / Show upgraded Soul / Transform draw pile to upgraded Soul / None"),
+    ],
+    "the-scythe": [
+        ("Increase", "4", "3", "3"),
     ],
 
     # --- REGENT ---
@@ -198,6 +213,9 @@ CARD_DATA = {
     "minion-strike": [
         ("Damage", "6", "6", "7"),
     ],
+    "monarchs-gaze": [
+        ("Cost", "2", "3", "3"),
+    ],
     "parry": [
         ("ParryPower / Upgrade", "10 / +4", "10 / +4", "6 / +3"),
     ],
@@ -254,6 +272,12 @@ CARD_DATA = {
     "pinpoint": [
         ("Damage / Upgrade", "15 / +4", "15 / +4", "17 / +5"),
     ],
+    "pounce": [
+        ("Damage / Upgrade", "14 / +6", "12 / +6", "12 / +6"),
+    ],
+    "predator": [
+        ("Rarity", "Common", "Uncommon", "Uncommon"),
+    ],
     "serpent-form": [
         ("Upgrade", "+2 Power", "+2 Power", "+1 Power"),
     ],
@@ -283,14 +307,14 @@ def format_row(card_name, data):
 
 # Character groupings
 CHARACTERS = {
-    "DEFECT": ["fusion", "hotfix", "rip-and-tear", "voltaic"],
-    "COLORLESS": ["believe-in-you", "eternal-armor", "hidden-gem", "huddle-up", "production", "seeker-strike"],
+    "DEFECT": ["fusion", "hotfix", "hyperbeam", "rip-and-tear", "synthesis", "voltaic"],
+    "COLORLESS": ["believe-in-you", "eternal-armor", "fasten", "hidden-gem", "huddle-up", "production", "seeker-strike"],
     "ANCIENT": ["neows-fury"],
     "CURSE": ["folly"],
-    "IRONCLAD": ["break", "cinder", "colossus", "conflagration", "dominate", "expect-a-fight", "fight-me", "forgotten-ritual", "hemokinesis", "spite", "stoke", "tremble"],
-    "NECROBINDER": ["banshees-cry", "borrowed-time", "danse-macabre", "death-march", "debilitate", "defy", "dirge", "grave-warden", "sculpting-strike", "seance"],
-    "REGENT": ["alignment", "arsenal", "astral-pulse", "begone", "bulwark", "bundle-of-joy", "celestial-might", "charge", "collision-course", "crescent-spear", "falling-star", "furnace", "gather-light", "glitterstream", "glow", "grand-finale", "guiding-star", "heirloom-hammer", "i-am-invincible", "kingly-kick", "kingly-punch", "minion-dive-bomb", "minion-strike", "parry", "patter", "refine-blade", "reflect", "solar-strike", "spoils-of-battle", "sword-sage", "the-sealed-throne", "void-form", "wrought-in-war"],
-    "SILENT": ["acrobatics", "anticipate", "blade-of-ink", "corrosive-wave", "flick-flack", "leading-strike", "memento-mori", "pinpoint", "serpent-form", "skewer", "speedster", "untouchable"],
+    "IRONCLAD": ["break", "cinder", "colossus", "conflagration", "dominate", "expect-a-fight", "fight-me", "forgotten-ritual", "hemokinesis", "juggernaut", "spite", "stoke", "tremble"],
+    "NECROBINDER": ["banshees-cry", "borrowed-time", "danse-macabre", "death-march", "debilitate", "defy", "dirge", "grave-warden", "sculpting-strike", "seance", "the-scythe"],
+    "REGENT": ["alignment", "arsenal", "astral-pulse", "begone", "bulwark", "bundle-of-joy", "celestial-might", "charge", "collision-course", "crescent-spear", "falling-star", "furnace", "gather-light", "glitterstream", "glow", "grand-finale", "guiding-star", "heirloom-hammer", "i-am-invincible", "kingly-kick", "kingly-punch", "minion-dive-bomb", "minion-strike", "monarchs-gaze", "parry", "patter", "refine-blade", "reflect", "solar-strike", "spoils-of-battle", "sword-sage", "the-sealed-throne", "void-form", "wrought-in-war"],
+    "SILENT": ["acrobatics", "anticipate", "blade-of-ink", "corrosive-wave", "flick-flack", "leading-strike", "memento-mori", "pinpoint", "pounce", "predator", "serpent-form", "skewer", "speedster", "untouchable"],
 }
 
 lines = []
