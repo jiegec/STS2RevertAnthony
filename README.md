@@ -238,6 +238,10 @@ When a card's version is set to an old version, the patches return the historica
 
 ## Changelog
 
+### v1.8.0
+
+- Add Reflect, TheSealedThrone, MonarchsGaze, Synthesis, Pounce, TheScythe, Hyperbeam, Predator, Juggernaut, Fasten reversion
+
 ### v1.7.0
 
 - Improve configuration path search logic for Steam Workshop
